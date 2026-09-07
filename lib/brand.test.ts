@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { STUDIO } from "./brand";
+import { brand } from "./brand";
 
 test("studio name", () => {
-  expect(STUDIO).toBe("Alfaro Labs");
+  expect(brand.studio).toBe("Alfaro Labs");
 });

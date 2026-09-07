@@ -1,9 +1,28 @@
 import { expect, test } from "@playwright/test";
 
-test("home shows Alfaro Labs", async ({ page }) => {
+test("home shows the hire first screen", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: "Alfaro Labs" })).toBeVisible();
-  await expect(page).toHaveTitle(/Alfaro Labs/);
+  await expect(page.getByRole("heading", { level: 1, name: "Carlos Alfaro" })).toBeVisible();
+  await expect(page.getByText("I ship tools and products. Agentic engineering is how I run the work.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "See the work" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Hire me" })).toHaveAttribute(
+    "href",
+    "mailto:carlos@alfarolabs.com",
+  );
+  await expect(page.getByRole("heading", { name: "Contract" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Technical lead" })).toBeVisible();
+});
+
+test("live cards link out and private cards do not", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /Patchlist/ })).toHaveAttribute("href", "https://patchlist.app");
+  await expect(page.getByRole("link", { name: /Dial/ })).toHaveAttribute(
+    "href",
+    "https://dial.carlos-0f0.workers.dev",
+  );
+  await expect(page.getByRole("heading", { name: "Gearmind" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Gearmind/ })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Crewbook/ })).toHaveCount(0);
 });
 
 test("unknown path is a not found page", async ({ page }) => {

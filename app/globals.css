@@ -1,13 +1,64 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/dm-sans.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/dm-sans-italic.woff2") format("woff2");
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --color-paper: #f4f1ea;
+  --color-ink: #1a1916;
+  --color-background: #f4f1ea;
+  --color-foreground: #1a1916;
+  --color-card: #f7f4ee;
+  --color-card-foreground: #1a1916;
+  --color-primary: #1a1916;
+  --color-primary-foreground: #f4f1ea;
+  --color-muted: #ebe6dc;
+  --color-muted-foreground: #6a655c;
+  --color-border: #d9d2c6;
+  --color-ring: #1a1916;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius: 0.75rem;
+}
 
 html,
 body {
   margin: 0;
   min-height: 100%;
   min-height: 100dvh;
-  background: #fff;
-  color: #111;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
 
 body {
