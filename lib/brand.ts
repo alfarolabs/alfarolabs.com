@@ -1,1 +1,1 @@
-export const STUDIO = "Alfaro Labs";
+export { person as brand } from "./site";
