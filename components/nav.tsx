@@ -2,7 +2,7 @@ import Link from "next/link";
 import { mailto, person } from "@/lib/site";
 
 const links = [
-  { href: "#work", label: "Work" },
+  { href: "/work", label: "Work" },
   { href: "/method", label: "Method" },
   { href: "/engage", label: "Engage" },
 ] as const;

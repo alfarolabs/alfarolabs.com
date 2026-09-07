@@ -13,16 +13,11 @@ test("home shows the hire first screen", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Technical lead" })).toBeVisible();
 });
 
-test("live cards link out and private cards do not", async ({ page }) => {
+test("work cards go to case studies", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("link", { name: /Patchlist/ })).toHaveAttribute("href", "https://patchlist.app");
-  await expect(page.getByRole("link", { name: /Dial/ })).toHaveAttribute(
-    "href",
-    "https://dial.carlos-0f0.workers.dev",
-  );
-  await expect(page.getByRole("heading", { name: "Gearmind" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Gearmind/ })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: /Crewbook/ })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Patchlist/ })).toHaveAttribute("href", "/work/patchlist");
+  await expect(page.getByRole("link", { name: /Gearmind/ })).toHaveAttribute("href", "/work/gearmind");
+  await expect(page.getByRole("link", { name: /Dial/ })).toHaveAttribute("href", "/work/dial");
 });
 
 test("unknown path is a not found page", async ({ page }) => {
