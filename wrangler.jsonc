@@ -21,4 +21,9 @@
       "enabled": true
     }
   }
+  // Attach after the operator adds the Cloudflare zone for alfarolabs.com
+  // "routes": [
+  //   { "pattern": "alfarolabs.com", "custom_domain": true },
+  //   { "pattern": "www.alfarolabs.com", "custom_domain": true }
+  // ]
 }
