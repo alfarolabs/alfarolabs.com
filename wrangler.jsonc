@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "www",
+  // Worker names are alphanumeric and dashes only. Repo and package are alfarolabs.com.
+  "name": "alfarolabs-com",
   "account_id": "e0f064ffcf4f6f2353017d06f2b33169",
   "compatibility_date": "2026-09-07",
   "compatibility_flags": [
