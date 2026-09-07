@@ -8,6 +8,8 @@ Start every non-trivial task with `/poteto-mode`.
 
 Proof is the real app. Playwright and the browser, not "it compiles."
 
+If the vinext overlay says `Cannot read properties of null (reading 'useContext')` in `GlobalErrorBoundary`, the browser mixed two Vite React prebundles. Stop `npm run dev`, delete `node_modules/.vite`, start it again, then hard-reload the tab.
+
 Content lives in typed modules under `lib/`. Do not add a CMS.
 
 ## Stack
