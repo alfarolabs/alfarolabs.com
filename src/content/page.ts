@@ -47,7 +47,7 @@ export const page = {
     },
   ],
   about: [
-    "I spent years running live event audio for production companies big and small.",
+    "I have been a live-show audio technician for close to 2 decades, on shows for production companies big and small.",
     "I lived the broken workflows.",
     "I have spent 7 months building and running AI agents daily, and we can fix everything that is just admin.",
   ],

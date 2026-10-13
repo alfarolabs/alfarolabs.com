@@ -10,6 +10,7 @@ const required = [
   "we can fix everything",
   "Agent acceleration",
   "Distribution",
+  "close to 2 decades",
 ];
 
 const html = await readFile("dist/client/index.html", "utf8");
