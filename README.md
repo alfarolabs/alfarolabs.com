@@ -21,6 +21,6 @@ npm run build
 npm run smoke
 ```
 
-`npm run smoke` loads the production preview and checks the rendered home page.
+`npm run smoke` reads `dist/client/index.html` from the production build and checks that file for the home page text. Run `npm run build` first.
 
 Deploy is not a script in this repo. See `AGENTS.md`.
