@@ -13,8 +13,8 @@ function Home() {
           className="wordmark"
           src={page.logos.wordmark}
           alt="Alfaro Labs"
-          width={2150}
-          height={2109}
+          width={1212}
+          height={1211}
         />
         <h1>{page.tagline}</h1>
         <p className="agents">{page.agentsLine}</p>
@@ -87,8 +87,8 @@ function Home() {
           className="icon"
           src={page.logos.icon}
           alt=""
-          width={1774}
-          height={1793}
+          width={1000}
+          height={1000}
         />
         <p>
           <a href={page.instagram.href}>Instagram {page.instagram.label}</a>

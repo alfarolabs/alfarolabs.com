@@ -50,6 +50,7 @@ export const page = {
     "I have been a live-show audio technician for close to 2 decades, on shows for production companies big and small.",
     "I lived the broken workflows.",
     "I have spent 7 months building and running AI agents daily, and we can fix everything that is just admin.",
+    "Testing agents since Claude Code first shipped. Building them every day this year.",
   ],
   makes: [
     { name: "Patchlist", status: "Coming soon" },
@@ -62,7 +63,7 @@ export const page = {
   },
   email: "carlos@alfarolabs.com",
   logos: {
-    icon: "/brand/logo-icon.png",
-    wordmark: "/brand/logo-wordmark.png",
+    icon: "/brand/icon-on-black.svg",
+    wordmark: "/brand/wordmark-white.svg",
   },
 } as const;
