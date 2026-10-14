@@ -1,19 +1,19 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import appCss from "../styles/app.css?url";
-import { page } from "../content/page";
+import { site } from "../content/site";
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Alfaro Labs" },
-      { name: "description", content: page.oneLiner },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: page.logos.icon },
+      { rel: "icon", type: "image/svg+xml", href: site.logos.icon },
     ],
   }),
   shellComponent: RootDocument,
@@ -26,7 +26,11 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <div className="frame">
+          <SiteHeader />
+          <main id="main">{children}</main>
+          <SiteFooter />
+        </div>
         <Scripts />
       </body>
     </html>
