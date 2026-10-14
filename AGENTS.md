@@ -42,11 +42,23 @@ CI runs typecheck, the build, and one smoke test. CI does not run a browser matr
 
 ## Verification stills
 
-For a user-facing pull request, embed above-the-fold viewport stills in the pull request body at widths 375, 390, 768, 1024, 1280, 1440, and 1920.
+For a UI pull request, capture each changed screen as a real viewport screenshot. Set `fullPage` to false.
 
-Add one full-page capture at 1440.
+Use these viewports:
 
-Set the viewport to each width. Do not scale a narrower capture.
+- Desktop is 1440x900.
+- Tablet is 834x1194.
+- Phone is 390x844.
+
+Capture one image for each changed screen at each size.
+
+Name each file `<screen>-<desktop|tablet|phone>.png`. The home screen files are `home-desktop.png`, `home-tablet.png`, and `home-phone.png`.
+
+Before you embed a still, check it for a blank page or an error page.
+
+Embed the stills in the pull request body as a markdown table. Each row is one screen. The columns are desktop, tablet, and phone.
+
+Do not capture a full-page strip. Do not scale a narrower capture.
 
 ## Do not
 
