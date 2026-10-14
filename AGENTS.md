@@ -32,13 +32,23 @@ Never push `main`.
 
 Label each pull request `risk: low`, `risk: medium`, or `risk: high`.
 
-Squash-merge a `risk: low` or `risk: medium` pull request after a different agent reviews it and CI is green.
+Land a `risk: low` or `risk: medium` pull request yourself. Follow the alfaro-mode Shipping playbook. A different agent verifies the change and posts `PASS` or `PASS+NOTES` on the pull request. CI must be green. Then squash-merge it with `gh pr merge <number> --squash`.
 
 Do not merge a `risk: high` pull request until Carlos says to ship it.
 
 Do not merge a pull request when CI did not run. Do not run `gh pr merge --auto`.
 
-CI runs typecheck, the build, and one smoke test. CI does not run a browser matrix. CI does not deploy.
+CI runs typecheck, the build, and one smoke test. CI does not run a browser matrix.
+
+## Deploy
+
+Every merge to `main` deploys to production. The `ci` workflow runs `wrangler deploy` after its checks pass on `main`. The Worker serves `alfarolabs.com` and `www.alfarolabs.com`.
+
+After you merge, watch the `ci` run on `main` with `gh run watch`. Then load `https://alfarolabs.com` and check the change is live.
+
+To roll back, open a pull request that reverts the bad change. It deploys when it lands.
+
+To redeploy `main` without a change, run `gh workflow run ci --ref main`.
 
 ## Verification stills
 
@@ -65,4 +75,4 @@ Do not capture a full-page strip. Do not scale a narrower capture.
 - Copy Dial's latte palette, cup mark, or PWA splash list.
 - Add Clerk, a chat widget, or D1 until a later pull request asks for it.
 - Invent client names or metrics.
-- Run `wrangler deploy`.
+- Run `wrangler deploy` from a local machine. Production deploys come only from CI on `main`.

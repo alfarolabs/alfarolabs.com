@@ -3,6 +3,11 @@ name: ci
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   check:
@@ -17,3 +22,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - run: npm run smoke
+      - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
