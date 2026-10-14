@@ -1,21 +1,26 @@
 # Alfaro Labs
 
-Hire site for Carlos Alfaro. Live target is https://alfarolabs.com.
+Home for Alfaro Labs and Alfaro Labs Agents.
 
 ## Local
+
+Install dependencies, then start the dev server.
 
 ```bash
 npm install
 npm run dev
-npm test
-npm run test:e2e
 ```
 
-## Deploy
+The app listens on port 3000.
+
+## Check
 
 ```bash
-npx wrangler login
-npm run deploy
+npm run typecheck
+npm run build
+npm run smoke
 ```
 
-See `AGENTS.md` for how agents should work in this repo.
+`npm run smoke` reads `dist/client/index.html` from the production build and checks that file for the home page text. Run `npm run build` first.
+
+Deploy is not a script in this repo. See `AGENTS.md`.

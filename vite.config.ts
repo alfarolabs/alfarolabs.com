@@ -1,24 +1,19 @@
 import { defineConfig } from "vite";
-import vinext from "vinext";
 import { cloudflare } from "@cloudflare/vite-plugin";
-import { cdnAdapter } from "@vinext/cloudflare/cache/cdn-adapter";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
 
 export default defineConfig({
-  resolve: {
-    dedupe: ["react", "react-dom"],
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom", "react-dom/client"],
+  server: {
+    port: 3000,
   },
   plugins: [
-    vinext({
-      cache: { cdn: cdnAdapter() },
-    }),
-    cloudflare({
-      viteEnvironment: {
-        name: "rsc",
-        childEnvironments: ["ssr"],
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tanstackStart({
+      prerender: {
+        enabled: true,
       },
     }),
+    viteReact(),
   ],
 });
