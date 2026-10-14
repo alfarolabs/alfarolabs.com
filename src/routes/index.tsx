@@ -1,110 +1,101 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { page } from "../content/page";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { AgentRun } from "../components/AgentRun";
+import { BookingLink } from "../components/BookingLink";
+import { Section } from "../components/Section";
+import { home } from "../content/home";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: home.meta.title },
+      { name: "description", content: home.meta.description },
+    ],
+  }),
   component: Home,
 });
 
 function Home() {
+  const { hero, pain, breaks, split, approve, proof, about, book } = home;
   return (
-    <article className="page">
-      <header className="hero">
-        <img
-          className="wordmark"
-          src={page.logos.wordmark}
-          alt="Alfaro Labs"
-          width={1212}
-          height={1211}
-        />
+    <>
+      <header className="hero hero-split">
         <div className="hero-copy">
-          <h1>{page.tagline}</h1>
-          <p className="agents">{page.agentsLine}</p>
-          <p className="lede">{page.oneLiner}</p>
-          <a className="cta" href={page.cta.href}>
-            {page.cta.label}
-          </a>
+          <p className="eyebrow">{hero.eyebrow}</p>
+          <h1>{hero.title}</h1>
+          <p className="core-line">{hero.coreLine}</p>
+          <p className="lede">{hero.lede}</p>
+          <BookingLink />
         </div>
+        <AgentRun />
       </header>
 
-      <section className="section">
-        <h2>Pain points</h2>
-        <ul>
-          {page.pain.map((item) => (
+      <Section heading={pain.heading}>
+        <ul className="rows rows-large">
+          {pain.items.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
-      </section>
+      </Section>
 
-      <section className="section">
-        <h2>What agents handle</h2>
-        <ul className="handles">
-          {page.handles.map((item) => (
-            <li key={item}>{item}</li>
+      <Section heading={breaks.heading}>
+        <p className="lead">{breaks.lead}</p>
+        <dl className="cells cells-2">
+          {breaks.sides.map((side) => (
+            <div key={side.name} className="cell">
+              <dt>{side.name}</dt>
+              <dd>{side.body}</dd>
+            </div>
           ))}
-        </ul>
-      </section>
+        </dl>
+        <p>{breaks.close}</p>
+      </Section>
 
-      <section className="section">
-        <h2>Results</h2>
-        <ul>
-          {page.results.map((item) => (
-            <li key={item}>{item}</li>
+      <Section heading={split.heading}>
+        <p>{split.intro}</p>
+        <p>{split.tools}</p>
+        <div className="cells cells-2">
+          {[split.handle, split.keep].map((side) => (
+            <div key={side.heading} className="cell">
+              <h3>{side.heading}</h3>
+              <ul className="rows">
+                {side.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
-      </section>
+        </div>
+      </Section>
 
-      <section className="section">
-        <h2>How it works</h2>
-        <ol className="steps">
-          {page.steps.map((step) => (
-            <li key={step.name}>
-              <h3>{step.name}</h3>
-              <p>{step.body}</p>
+      <Section heading={approve.heading}>
+        <p className="lead">{approve.body}</p>
+      </Section>
+
+      <Section heading={proof.heading}>
+        <ul className="rows">
+          {proof.entries.map((entry) => (
+            <li key={entry.name}>
+              <h3>{entry.name}</h3>
+              {entry.does ? <p>{entry.does}</p> : null}
             </li>
           ))}
-        </ol>
-      </section>
+        </ul>
+        <Link className="text-link" to={proof.link.to}>
+          {proof.link.label}
+        </Link>
+      </Section>
 
-      <section className="section">
-        <h2>About</h2>
-        <div className="stack">
-          {page.about.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-      </section>
+      <Section heading={about.heading}>
+        <p>{about.body}</p>
+        <Link className="text-link" to={about.link.to}>
+          {about.link.label}
+        </Link>
+      </Section>
 
-      <section className="section">
-        <h2>Things we make</h2>
-        <div className="stack">
-          <ul>
-            {page.makes.map((item) => (
-              <li key={item.name}>
-                {item.name}. {item.status}.
-              </li>
-            ))}
-          </ul>
-          <p>{page.distribution}</p>
-        </div>
-      </section>
-
-      <footer className="section footer">
-        <img
-          className="icon"
-          src={page.logos.icon}
-          alt=""
-          width={1000}
-          height={1000}
-        />
-        <div className="footer-links">
-          <p>
-            <a href={page.instagram.href}>Instagram {page.instagram.label}</a>
-          </p>
-          <p>
-            <a href={`mailto:${page.email}`}>{page.email}</a>
-          </p>
-        </div>
-      </footer>
-    </article>
+      <Section heading={book.heading}>
+        <p>{book.body}</p>
+        <BookingLink />
+      </Section>
+    </>
   );
 }
