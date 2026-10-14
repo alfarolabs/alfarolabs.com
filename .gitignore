@@ -11,3 +11,9 @@ tsconfig.tsbuildinfo
 test-results/
 playwright-report/
 blob-report/
+
+# Linked by scripts/link-pstack.sh. Do not vendor pstack.
+.cursor/skills/
+.agents/skills/
+.claude/skills/
+
