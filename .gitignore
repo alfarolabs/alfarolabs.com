@@ -5,3 +5,8 @@ dist
 .env
 *.tsbuildinfo
 .DS_Store
+
+# Linked by scripts/link-pstack.sh. Do not vendor pstack.
+.cursor/skills/
+.agents/skills/
+.claude/skills/
