@@ -1,19 +1,12 @@
 node_modules
-.env*
-.next
-next-env.d.ts
-tsconfig.tsbuildinfo
-/dist/
-.vinext/
-.wrangler/
+dist
+.wrangler
 .dev.vars
-.grok/verify-evidence/
-test-results/
-playwright-report/
-blob-report/
+.env
+*.tsbuildinfo
+.DS_Store
 
 # Linked by scripts/link-pstack.sh. Do not vendor pstack.
 .cursor/skills/
 .agents/skills/
 .claude/skills/
-
