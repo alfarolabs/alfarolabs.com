@@ -34,7 +34,8 @@ The setup installer targets Linux x64 Orbs, not a personal Mac or Windows machin
 ## What the checks mean
 
 `npm run check` runs typecheck, build and the static smoke check. CI runs this one
-job on PRs and `main`, with no production credentials, browser matrix, or deploy.
+job on PRs and `main`, with no browser matrix. On `main` only, it then runs
+`npx wrangler deploy` with the `CLOUDFLARE_API_TOKEN` secret.
 The smoke checks all four generated pages' required text, casing, permitted logos,
 no en/em dashes, hype words or emoji, only the $850 price, and brand-phrase counts.
 

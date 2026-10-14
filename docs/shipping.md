@@ -62,16 +62,12 @@ scoped trial, default-off with an owner, expiry/removal condition, and rollback.
 ## Observed baseline, 2026-10-17 (recheck before shipping)
 
 The default branch has one GitHub `ci` workflow that checks types, build and four
-prerendered pages. It does **not** deploy. GitHub returned no deployment records;
-the current `check` run succeeded. Classic branch protection returned HTTP 403;
-the branch-rules endpoint returned an empty list, which does not resolve that gap.
-
-[Open PR #14](https://github.com/alfarolabs/alfarolabs.com/pull/14) proposes automatic
-production deployment after checks on `main`, including manual dispatch and broad
-write credentials. It is **not** the current deployment path and this work does
-not merge it or import its authorization. If it lands, merging even documentation
-can deploy to both custom domains. Its deploy job must not be canceled mid-flight;
-reconcile concurrency before combining it with this check-only workflow.
+prerendered pages. Since [PR #14](https://github.com/alfarolabs/alfarolabs.com/pull/14),
+a push to `main` (or a manual dispatch on `main`) then runs `npx wrangler deploy` with
+the `CLOUDFLARE_API_TOKEN` secret: that job is the existing deployer, and merging even
+documentation deploys to both custom domains. Runs on `main` are never cancelled.
+Classic branch protection returned HTTP 403; the branch-rules endpoint returned an empty
+list, which does not resolve that gap.
 
 No Cloudflare credentials are present in this Orb. Both public domains failed TLS
 handshake from this environment. Therefore deployment identity, actual trigger
