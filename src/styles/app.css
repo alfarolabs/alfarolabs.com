@@ -381,7 +381,12 @@ h3 {
   text-align: center;
 }
 
-.hero .placeholder[data-kind="photo"] {
+.placeholder[data-kind="screenshot"] {
+  aspect-ratio: 16 / 10;
+}
+
+.placeholder[data-kind="photo"] {
+  aspect-ratio: 4 / 5;
   max-width: 24rem;
 }
 
