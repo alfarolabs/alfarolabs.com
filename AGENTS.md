@@ -4,11 +4,7 @@ Public hire site for Carlos Alfaro. Domain `alfarolabs.com`.
 
 ## How to work
 
-Read and follow `.agents/skills/poteto-mode/SKILL.md` at the start of every coding task.
-
-Begin every worker prompt with `/poteto-mode`.
-
-Use poteto-mode for every task it fits. The skill does not appear in the skill menu. Read the file.
+Full poteto-mode is only for the hardest tasks that need the most rigor. Read and follow `.agents/skills/poteto-mode/SKILL.md` for those tasks. Lighter work (docs, small fixes, deps, chores) skips it. The skill does not appear in the skill menu.
 
 Cursor cloud agents run `bash scripts/link-pstack.sh` from the environment install. The script sparse-clones the `pstack` plugin from `https://github.com/cursor/plugins`. It links each skill into `.cursor/skills`, `.agents/skills`, and `.claude/skills`. Claude Code, Codex, and Grok Build install the same plugin themselves. Do not vendor pstack or add it as a submodule.
 
