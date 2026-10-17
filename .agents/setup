@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root"
+version="$(cat .node-version)"
+[[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo 'Invalid .node-version' >&2; exit 1; }
+[[ "$(uname -s)-$(uname -m)" == Linux-x86_64 ]] || {
+  echo 'Orb setup supports Linux x64. Elsewhere install .node-version and run npm ci.' >&2
+  exit 1
+}
+install="$HOME/.local/share/alfarolabs/node-v$version"
+if [[ ! -x "$install/bin/node" ]]; then
+  echo "Installing Node $version from nodejs.org (SHA-256 checked)"
+  temp="$(mktemp -d)"
+  trap 'rm -rf "$temp"' EXIT
+  archive="node-v$version-linux-x64.tar.xz"
+  curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/$archive" -o "$temp/$archive"
+  curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/SHASUMS256.txt" -o "$temp/SHASUMS256.txt"
+  (cd "$temp"; grep "  $archive$" SHASUMS256.txt | sha256sum --check --strict)
+  mkdir -p "$(dirname "$install")"
+  tar -xJf "$temp/$archive" -C "$temp"
+  mv "$temp/node-v$version-linux-x64" "$install"
+fi
+# Orb login shells already include ~/.local/bin; services inherit the same pin.
+mkdir -p "$HOME/.local/bin"
+for bin in node npm npx; do
+  ln -sfn "$install/bin/$bin" "$HOME/.local/bin/$bin"
+done
+export PATH="$HOME/.local/bin:$PATH"
+echo "Toolchain: $(node --version), npm $(npm --version)"
+time npm ci --no-audit --no-fund
+echo 'Setup ready. No authentication or services were started.'

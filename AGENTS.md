@@ -1,64 +1,54 @@
 # Alfaro Labs site
 
-Public hire site for Carlos Alfaro. Domain `alfarolabs.com`.
+Public hire site for Carlos Alfaro at `alfarolabs.com` and `www.alfarolabs.com`.
+TanStack Start / React / Vite on Cloudflare Workers. Copy lives in `src/content`,
+routes in `src/routes`, shared UI in `src/components`, styles in `src/styles`.
 
-## How to work
+## Own the outcome
 
-Full poteto-mode is only for the hardest tasks that need the most rigor. Read and follow `.agents/skills/poteto-mode/SKILL.md` for those tasks. Lighter work (docs, small fixes, deps, chores) skips it. The skill does not appear in the skill menu.
+Take the user's outcome through implementation and convincing proof in this thread.
+Make reversible decisions yourself; ask only for missing product decisions or approval.
+Keep implementation, debugging, and verification with the same checkout. Independent
+outcomes belong in independent Orbs, not shared worktrees or mandatory agent panels.
+Do not split one task into planning, coding, and testing threads. The user reviews
+results, not agent coordination. Use the configured model; no model-role matrix.
 
-Cursor cloud agents run `bash scripts/link-pstack.sh` from the environment install. The script sparse-clones the `pstack` plugin from `https://github.com/cursor/plugins`. It links each skill into `.cursor/skills`, `.agents/skills`, and `.claude/skills`. Claude Code, Codex, and Grok Build install the same plugin themselves. Do not vendor pstack or add it as a submodule.
+## Run and prove
 
-Run `bash scripts/link-pstack.sh` when `.agents/skills/poteto-mode/SKILL.md` is missing.
+- Fresh Orb: executable `.agents/setup` installs the pinned Node and lockfile dependencies.
+  No application secrets, database, or login are needed. Rerun setup if dependencies change.
+- Preview: `amp orb services ensure` starts the supervised Vite/Worker dev server.
+  Share its returned portal URL. Inspect with `amp orb service logs web`.
+- Baseline checks: `npm run check` (types, build, four-page static copy smoke).
+  This is cheap CI, **not** browser or production proof.
+- Load `.agents/skills/verifying-site/SKILL.md` for changes to application behavior,
+  rendering, build tooling, or setup. Reproduce bugs before fixing them; test a
+  meaningful boundary and an unchanged control through the real stack.
+- Keep inspected screenshots, clips, and concise results in `.amp/in/artifacts/`.
+  Report the tested revision, commands, decisive observations, and limitations.
+  Review load-bearing decisions, not a transcript of routine steps.
 
-## Stack
+## Approval and delivery
 
-TanStack Start on Cloudflare Workers.
+Commit locally when the outcome is ready. Never push `main`. Before publication,
+read `docs/shipping.md` and request approval naming the repository, branch, PR target,
+and any automatic deployment effects. Push, PR creation, merge, deploy, production
+writes, access changes, and recurring monitoring each require explicit authorization.
+Do not run `wrangler deploy`, bypass protections, or use `gh pr merge --auto`.
+Label authorized PRs `risk: low`, `risk: medium`, or `risk: high`; require green CI
+for the exact head and obey actual branch rules. No automatic low-risk merge.
+Distinguish **local / committed / pushed / merged / deployed / production-verified**.
+Use `.agents/skills/inspecting-production/SKILL.md` for deployment or health questions.
 
-```
-npm run dev
-npm run typecheck
-npm run build
-npm run preview
-npm run smoke
-```
+## Preserve
 
-## Pull requests
-
-Never push `main`.
-
-Label each pull request `risk: low`, `risk: medium`, or `risk: high`.
-
-Squash-merge a `risk: low` or `risk: medium` pull request after a different agent reviews it and CI is green.
-
-Do not merge a `risk: high` pull request until Carlos says to ship it.
-
-Do not merge a pull request when CI did not run. Do not run `gh pr merge --auto`.
-
-CI runs typecheck, the build, and one smoke test. CI does not run a browser matrix. CI does not deploy.
-
-## Verification stills
-
-For a UI pull request, capture each changed screen as a real viewport screenshot. Set `fullPage` to false.
-
-Use these viewports:
-
-- Desktop is 1440x900.
-- Tablet is 834x1194.
-- Phone is 390x844.
-
-Capture one image for each changed screen at each size.
-
-Name each file `<screen>-<desktop|tablet|phone>.png`. The home screen files are `home-desktop.png`, `home-tablet.png`, and `home-phone.png`.
-
-Before you embed a still, check it for a blank page or an error page.
-
-Embed the stills in the pull request body as a markdown table. Each row is one screen. The columns are desktop, tablet, and phone.
-
-Do not capture a full-page strip. Do not scale a narrower capture.
-
-## Do not
-
-- Copy Dial's latte palette, cup mark, or PWA splash list.
-- Add Clerk, a chat widget, or D1 until a later pull request asks for it.
-- Invent client names or metrics.
-- Run `wrangler deploy`.
+- Do not invent clients, proof, metrics, booking URLs, or completed integrations.
+  Booking remains a visible placeholder until Carlos supplies a real URL.
+- Preserve the copy and logo constraints checked by `scripts/smoke.mjs`; do not
+  weaken a check just to pass. Do not copy Dial's latte palette, cup mark, or splash list.
+- No Clerk, chat widget, or D1 without a later explicit request. Preserve existing data.
+- Never print tokens, credentials, environment dumps, or raw private logs. Use Amp's
+  private secret input or OAuth; request only scoped read access for inspection.
+  Never snapshot authentication in setup or send secrets to another Orb.
+- Add a narrowly scoped, default-off flag only for an explicitly approved production
+  trial; include removal and rollback conditions. Do not add a flag framework preemptively.
