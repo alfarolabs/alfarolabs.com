@@ -1,4 +1,4 @@
 {
   "name": "alfarolabs.com",
-  "install": "bash scripts/link-pstack.sh"
+  "install": "bash .agents/setup"
 }

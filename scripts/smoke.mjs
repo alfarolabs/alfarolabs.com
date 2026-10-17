@@ -1,4 +1,20 @@
 import { readFile } from "node:fs/promises";
+import { parseArgs } from "node:util";
+
+const { values } = parseArgs({ options: { url: { type: "string" } } });
+const origin = values.url ? new URL(values.url) : null;
+if (origin && (
+  !/^https?:$/.test(origin.protocol) || origin.username || origin.password ||
+  origin.pathname !== "/" || origin.search || origin.hash
+)) {
+  throw new Error("--url must be an HTTP(S) origin without credentials, path, query, or fragment");
+}
+
+async function get(path) {
+  const response = await fetch(new URL(path, origin), { signal: AbortSignal.timeout(10_000) });
+  if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
+  return response;
+}
 
 const pages = {
   "dist/client/index.html": [
@@ -58,12 +74,19 @@ function readableText(html) {
 const failures = [];
 const found = [];
 const phraseCounts = Object.fromEntries(oncePhrases.map((p) => [p, 0]));
+const assets = new Set();
 
 for (const [file, required] of Object.entries(pages)) {
-  const html = await readFile(file, "utf8");
+  const path = file.replace("dist/client", "").replace(/index\.html$/, "");
+  const response = origin ? await get(path) : null;
+  const html = response ? await response.text() : await readFile(file, "utf8");
   const text = readableText(html);
   const fail = (why) => failures.push(`${file}: ${why}`);
 
+  if (response && !response.headers.get("content-type")?.includes("text/html")) fail("not HTML");
+  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|woff2)(?:\?[^"\s]*)?)"/g)) {
+    if (!match[1].startsWith("//")) assets.add(match[1]);
+  }
   for (const line of [...required, ...everyPage]) {
     if (text.includes(line)) found.push(`${file} ${line}`);
     else fail(`missing "${line}"`);
@@ -91,11 +114,23 @@ for (const [phrase, count] of Object.entries(phraseCounts)) {
   if (count > 1) failures.push(`"${phrase}" appears ${count} times`);
 }
 
+if (origin) {
+  for (const asset of assets) {
+    const response = await get(asset);
+    if (response.headers.get("content-type")?.includes("text/html")) {
+      failures.push(`${asset}: returned HTML instead of an asset`);
+    }
+    await response.arrayBuffer();
+  }
+  const missing = await fetch(new URL("/__smoke_missing_route__", origin), { signal: AbortSignal.timeout(10_000) });
+  if (missing.status !== 404) failures.push(`missing route: expected 404, got ${missing.status}`);
+}
+
 if (failures.length > 0) {
   console.error("smoke failed");
   for (const failure of failures) console.error(failure);
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pages).length} pages`);
+console.log(`smoke ok ${Object.keys(pages).length} pages (${origin ? `HTTP, ${assets.size} assets, missing route 404` : "static HTML"})`);
 for (const line of found) console.log(`found: ${line}`);

@@ -2,11 +2,15 @@ node_modules
 dist
 .wrangler
 .dev.vars
+.dev.vars.*
 .env
+.env.*
+!.env.example
 *.tsbuildinfo
 .DS_Store
 
-# Linked by scripts/link-pstack.sh. Do not vendor pstack.
+# Legacy local skill links; repository skills are tracked.
 .cursor/skills/
-.agents/skills/
 .claude/skills/
+.amp/in/
+.amp/portals/
