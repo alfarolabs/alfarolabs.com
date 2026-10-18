@@ -34,11 +34,21 @@ Commit locally when the outcome is ready. Never push `main`. Before publication,
 read `docs/shipping.md` and request approval naming the repository, branch, PR target,
 and any automatic deployment effects. Push, PR creation, merge, deploy, production
 writes, access changes, and recurring monitoring each require explicit authorization.
-Do not run `wrangler deploy`, bypass protections, or use `gh pr merge --auto`.
+Do not run `wrangler deploy` from a local machine or an Orb, bypass protections, or use `gh pr merge --auto`.
 Label authorized PRs `risk: low`, `risk: medium`, or `risk: high`; require green CI
 for the exact head and obey actual branch rules. No automatic low-risk merge.
 Distinguish **local / committed / pushed / merged / deployed / production-verified**.
 Use `.agents/skills/inspecting-production/SKILL.md` for deployment or health questions.
+
+## Deploy
+
+Every merge to `main` deploys to production, so approval to merge is approval to deploy.
+The `ci` workflow runs `npx wrangler deploy` after `npm run check` passes on `main`;
+pull requests and other branches never deploy. The Worker serves `alfarolabs.com` and
+`www.alfarolabs.com`. After a merge, watch the `ci` run on `main` with `gh run watch`,
+then load `https://alfarolabs.com` and check the change is live. Roll back with a revert
+pull request; it deploys when it lands. Redeploy `main` without a change with
+`gh workflow run ci --ref main`.
 
 ## Preserve
 
