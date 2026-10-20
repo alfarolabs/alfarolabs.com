@@ -25,7 +25,7 @@ Call the work local, committed, pushed, merged, deployed, or production-verified
 ## Copy and scope
 
 Do not invent clients, metrics, testimonials, proof, or a booking URL.
-Leave `booking.href` null in `src/content/site.ts` until Carlos supplies a URL.
+Leave `BookingHref` null in `src/content/index.ts` until Carlos supplies a URL.
 Do not add Clerk, a chat widget, or D1 unless Carlos asks.
 Do not bring back a latte palette, cup mark, or splash list.
 Do not print tokens, credentials, or private logs.
