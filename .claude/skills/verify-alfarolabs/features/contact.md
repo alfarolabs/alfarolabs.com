@@ -21,7 +21,7 @@ Every `Book a call` button and the header `Book a call` link take the user to /c
 Preconditions:
 
 - `doctor.sh` exits 0.
-- `site.booking.href` is `null`.
+- `BookingHref` is `null`. The contact hero uses `BookingLink` with `slot="status"`.
 
 - **Hero button.** Run `scripts/drive.mjs contact`. The journey sets a marker on `/`, clicks the first `main` link `Book a call` (the hero button), asserts the path `/contact`, and confirms the marker survived.
 - **Page content.** It asserts the title `Book a call | Alfaro Labs`, the h1, the eyebrow, and the booking placeholder text.
@@ -31,6 +31,6 @@ Preconditions:
 
 ## Gotchas
 
-- `BookingLink` switches on `site.booking.href`. When that is set, every in-page button becomes an external `<a href=...>`, the contact hero shows a button instead of the placeholder, and this journey fails at the placeholder step. That failure is correct: rewrite the steps to assert the external `href` without following it. Don't delete the assertion. The header nav link always stays the internal `/contact`.
+- `BookingLink` with `slot="button"` links to `/contact`. `slot="status"` renders the booking placeholder. There is no external booking URL until `BookingHref` changes. The header nav link stays the internal `/contact`.
 - `Book a call` is ambiguous without scope. Always use `within: "nav"` or `within: "main"`.
 - Never follow the mailto or Instagram links. Assert the `href` only.

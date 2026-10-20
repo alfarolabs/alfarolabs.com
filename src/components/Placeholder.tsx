@@ -1,12 +1,9 @@
-import type { Placeholder as PlaceholderData } from "../content/site";
-import { site } from "../content/site";
+import { published, type PlaceholderKind } from "../content";
 
-export function Placeholder({ placeholder }: { placeholder: PlaceholderData }) {
+export function Placeholder({ kind }: { kind: PlaceholderKind }) {
   return (
-    <div className="placeholder" data-kind={placeholder.kind}>
-      <p>
-        {site.placeholderPrefix} {placeholder.note}
-      </p>
+    <div className="placeholder" data-kind={kind}>
+      <p>{published.placeholder[kind].toText()}</p>
     </div>
   );
 }

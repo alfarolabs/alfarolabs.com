@@ -2,64 +2,64 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { AgentRun } from "../components/AgentRun";
 import { BookingLink } from "../components/BookingLink";
 import { Section } from "../components/Section";
-import { home } from "../content/home";
+import { published } from "../content";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: home.meta.title },
-      { name: "description", content: home.meta.description },
+      { title: published.home.meta.title.toText() },
+      { name: "description", content: published.home.meta.description.toText() },
     ],
   }),
   component: Home,
 });
 
 function Home() {
-  const { hero, pain, breaks, split, approve, proof, about, book } = home;
+  const { hero, pain, breaks, split, approve, proof, about, book } = published.home;
   return (
     <>
       <header className="hero hero-split">
         <div className="hero-copy">
-          <p className="eyebrow">{hero.eyebrow}</p>
-          <h1>{hero.title}</h1>
-          <p className="core-line">{hero.coreLine}</p>
-          <p className="lede">{hero.lede}</p>
+          <p className="eyebrow">{hero.eyebrow.toText()}</p>
+          <h1>{hero.title.toText()}</h1>
+          <p className="core-line">{hero.core.toText()}</p>
+          <p className="lede">{hero.lede.toText()}</p>
           <BookingLink />
         </div>
         <AgentRun />
       </header>
 
-      <Section heading={pain.heading}>
+      <Section heading={pain.heading.toText()}>
         <ul className="rows rows-large">
           {pain.items.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item.toText()}>{item.toText()}</li>
           ))}
         </ul>
       </Section>
 
-      <Section heading={breaks.heading}>
-        <p className="lead">{breaks.lead}</p>
+      <Section heading={breaks.heading.toText()}>
+        <p className="lead">{breaks.lead.toText()}</p>
         <dl className="cells cells-2">
           {breaks.sides.map((side) => (
-            <div key={side.name} className="cell">
-              <dt>{side.name}</dt>
-              <dd>{side.body}</dd>
+            <div key={side.name.toText()} className="cell">
+              <dt>{side.name.toText()}</dt>
+              <dd>{side.body.toText()}</dd>
             </div>
           ))}
         </dl>
-        <p>{breaks.close}</p>
+        <p>{breaks.close.toText()}</p>
       </Section>
 
-      <Section heading={split.heading}>
-        <p>{split.intro}</p>
-        <p>{split.tools}</p>
+      <Section heading={split.heading.toText()}>
+        <p>{split.intro.toText()}</p>
+        <p>{split.tools.toText()}</p>
         <div className="cells cells-2">
           {[split.handle, split.keep].map((side) => (
-            <div key={side.heading} className="cell">
-              <h3>{side.heading}</h3>
+            <div key={side.heading.toText()} className="cell">
+              <h3>{side.heading.toText()}</h3>
               <ul className="rows">
                 {side.items.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item.toText()}>{item.toText()}</li>
                 ))}
               </ul>
             </div>
@@ -67,33 +67,33 @@ function Home() {
         </div>
       </Section>
 
-      <Section heading={approve.heading}>
-        <p className="lead">{approve.body}</p>
+      <Section heading={approve.heading.toText()}>
+        <p className="lead">{approve.body.toText()}</p>
       </Section>
 
-      <Section heading={proof.heading}>
+      <Section heading={proof.heading.toText()}>
         <ul className="rows">
           {proof.entries.map((entry) => (
-            <li key={entry.name}>
-              <h3>{entry.name}</h3>
-              {entry.does ? <p>{entry.does}</p> : null}
+            <li key={entry.name.toText()}>
+              <h3>{entry.name.toText()}</h3>
+              {"does" in entry ? <p>{entry.does.toText()}</p> : null}
             </li>
           ))}
         </ul>
         <Link className="text-link" to={proof.link.to}>
-          {proof.link.label}
+          {proof.link.label.toText()}
         </Link>
       </Section>
 
-      <Section heading={about.heading}>
-        <p>{about.body}</p>
+      <Section heading={about.heading.toText()}>
+        <p>{about.body.toText()}</p>
         <Link className="text-link" to={about.link.to}>
-          {about.link.label}
+          {about.link.label.toText()}
         </Link>
       </Section>
 
-      <Section heading={book.heading}>
-        <p>{book.body}</p>
+      <Section heading={book.heading.toText()}>
+        <p>{book.body.toText()}</p>
         <BookingLink />
       </Section>
     </>
