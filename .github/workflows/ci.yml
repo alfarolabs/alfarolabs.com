@@ -25,7 +25,6 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci --no-audit --no-fund
-      # Static baseline only. Browser/Worker proof belongs with the outcome in its Orb.
       - run: npm run check
       - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: npx wrangler deploy
