@@ -1,17 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { site } from "../content/site";
+import { published } from "../content";
+import { Placeholder } from "./Placeholder";
 
-export function BookingLink({ label = site.booking.label }: { label?: string }) {
-  if (site.booking.href) {
-    return (
-      <a className="button" href={site.booking.href}>
-        {label}
-      </a>
-    );
-  }
+type Copy = typeof published.booking.label;
+
+export function BookingLink({
+  slot = "button",
+  label = published.booking.label,
+}: {
+  slot?: "button" | "status";
+  label?: Copy;
+}) {
+  if (slot === "status") return <Placeholder kind="link" />;
   return (
     <Link className="button" to="/contact">
-      {label}
+      {label.toText()}
     </Link>
   );
 }

@@ -1,21 +1,22 @@
 import { Link } from "@tanstack/react-router";
-import { site } from "../content/site";
+import { published } from "../content";
+import { Logo } from "./Logo";
 
 export function SiteHeader() {
   return (
     <header className="site-header">
       <a className="skip" href="#main">
-        {site.skipLink}
+        {published.skipLink.toText()}
       </a>
       <Link className="brand" to="/">
-        <img src={site.logos.icon} alt="" width={32} height={32} />
-        <span>{site.name}</span>
+        <Logo mark="icon" alt="" width={32} height={32} />
+        <span>{published.name.toText()}</span>
       </Link>
-      <nav aria-label={site.navLabel}>
+      <nav aria-label={published.navLabel.toText()}>
         <ul className="nav">
-          {site.nav.map((item) => (
+          {published.nav.map((item) => (
             <li key={item.to}>
-              <Link to={item.to}>{item.label}</Link>
+              <Link to={item.to}>{item.label.toText()}</Link>
             </li>
           ))}
         </ul>

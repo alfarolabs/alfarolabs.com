@@ -6,7 +6,7 @@ This directory is the maintained source for verifying the user-facing behavior o
 
 - Launch with `.claude/skills/verify-alfarolabs/scripts/launch.sh`. It builds and serves the production bundle at `http://127.0.0.1:<port>`, with the port at 4791 or higher.
 - `doctor.sh` exits 0. That means our process group owns the port, HEAD is unchanged, and `dist/` is newer than `src/` and `public/`.
-- `site.booking.href` in `src/content/site.ts` is `null`, so booking is the internal `/contact` page. If it is set, see the contact feature's Gotchas.
+- `BookingHref` in `src/content/index.ts` is `null`. In-page booking buttons link to `/contact`. The contact hero renders the booking placeholder.
 - Never drive an instance that this verification run did not start. In particular, never drive a user's server on 3000 or 4173.
 
 ## Driving conventions

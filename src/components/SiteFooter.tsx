@@ -1,26 +1,19 @@
-import { site } from "../content/site";
+import { emailHref, instagramHref, published } from "../content";
+import { Logo } from "./Logo";
 
 export function SiteFooter() {
   return (
     <footer className="site-footer">
-      <img
-        className="footer-mark"
-        src={site.logos.wordmark}
-        alt={site.name}
-        width={1212}
-        height={1211}
-      />
+      <Logo mark="wordmark" alt={published.name} className="footer-mark" width={1212} height={1211} />
       <div className="footer-copy">
-        <p className="footer-tagline">
-          {site.name}. {site.tagline}
-        </p>
-        <p>{site.coreLine}</p>
+        <p className="footer-tagline">{published.footerTagline.toText()}</p>
+        <p>{published.coreLine.toText()}</p>
         <ul className="footer-links">
           <li>
-            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <a href={emailHref()}>{published.email.toText()}</a>
           </li>
           <li>
-            <a href={site.instagram.href}>{site.instagram.label}</a>
+            <a href={instagramHref()}>{published.instagram.label.toText()}</a>
           </li>
         </ul>
       </div>
