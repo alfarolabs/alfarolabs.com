@@ -23,6 +23,14 @@ import { createHash } from "node:crypto";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
+import { emailHref, instagramHref, logoSrc, published, requiredLines } from "../../../../src/content/index.ts";
+
+const ledger = requiredLines();
+const text = (line) => line.toText();
+const homeTitle = text(published.home.meta.title);
+if (ledger.pages["/"][0] !== text(published.home.hero.title)) {
+  throw new Error("home hero title is not the first required line");
+}
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = execFileSync("git", ["-C", here, "rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
@@ -54,82 +62,82 @@ const NAV = "nav";
 const journeys = {
   home: [
     { do: "goto", path: "/" },
-    { do: "expectTitle", text: "Alfaro Labs Agents. AI agents for live production." },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "AI agents for live production." } },
+    { do: "expectTitle", text: homeTitle },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: ledger.pages["/"][0] } },
     { do: "expectCount", target: { css: ".run .run-step[data-state=done]" }, count: 4 },
-    { do: "expectText", target: { css: ".run .run-label" }, text: "Agent run. Show confirmations." },
-    { do: "expectText", target: { css: ".run-step[data-state=waiting]" }, text: "Waiting for your approval" },
-    { do: "expectText", target: { css: ".run-step[data-state=waiting] .run-approve" }, text: "Approve" },
+    { do: "expectText", target: { css: ".run .run-label" }, text: text(published.home.run.label) },
+    { do: "expectText", target: { css: ".run-step[data-state=waiting]" }, text: text(published.home.run.waiting) },
+    { do: "expectText", target: { css: ".run-step[data-state=waiting] .run-approve" }, text: text(published.home.run.approve) },
     { do: "expectAttr", target: { css: ".run-approve" }, attr: "aria-hidden", value: "true" },
     { do: "shot", name: "home-hero", target: { css: ".hero" } },
     { do: "aria", name: "home-hero", target: { css: ".hero" } },
-    { do: "expectVisible", target: { role: "heading", level: 2, name: "Approve first" } },
-    { do: "expectVisible", target: { role: "heading", level: 2, name: "Sound familiar?" } },
+    { do: "expectVisible", target: { role: "heading", level: 2, name: text(published.home.approve.heading) } },
+    { do: "expectVisible", target: { role: "heading", level: 2, name: text(published.home.pain.heading) } },
     { do: "mark" },
-    { do: "click", target: { within: "main", role: "link", name: "See the proof log" } },
+    { do: "click", target: { within: "main", role: "link", name: text(published.home.proof.link.label) } },
     { do: "expectUrl", path: "/about/" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "About Carlos" } },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.about.hero.title) } },
     { do: "expectMark", note: "proof link navigated client-side" },
     { do: "goto", path: "/" },
     { do: "click", target: { css: ".hero-copy a.button" } },
     { do: "expectUrl", path: "/contact/" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "Book a free workflow audit." } },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.booking.longLabel) } },
     { do: "shot", name: "home-booking-landed" },
   ],
   agents: [
     { do: "goto", path: "/" },
     { do: "mark" },
-    { do: "click", target: { within: NAV, role: "link", name: "Agents" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.nav[0].label) } },
     { do: "expectUrl", path: "/agents/" },
     { do: "expectMark", note: "header nav navigated client-side" },
-    { do: "expectTitle", text: "Agents | Alfaro Labs" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "Alfaro Labs Agents" } },
-    { do: "expectText", target: { css: ".pilot .price" }, text: "$850" },
-    { do: "expectText", target: { css: ".pilot h3" }, text: "Pilot audit" },
-    { do: "expectVisible", target: { role: "heading", level: 3, name: "Will this replace my people?" } },
-    { do: "expectVisible", target: { role: "heading", level: 3, name: "What if the AI messes up?" } },
-    { do: "expectVisible", target: { role: "heading", level: 3, name: "What does it cost?" } },
-    { do: "expectVisible", target: { role: "heading", level: 2, name: "Not a fit" } },
+    { do: "expectTitle", text: text(published.agents.meta.title) },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.agents.hero.title) } },
+    { do: "expectText", target: { css: ".pilot .price" }, text: text(published.agents.how.pilot.price) },
+    { do: "expectText", target: { css: ".pilot h3" }, text: text(published.agents.how.pilot.name) },
+    { do: "expectVisible", target: { role: "heading", level: 3, name: text(published.agents.faq.items[0].q) } },
+    { do: "expectVisible", target: { role: "heading", level: 3, name: text(published.agents.faq.items[1].q) } },
+    { do: "expectVisible", target: { role: "heading", level: 3, name: text(published.agents.faq.items[2].q) } },
+    { do: "expectVisible", target: { role: "heading", level: 2, name: text(published.agents.notFit.heading) } },
     { do: "shot", name: "agents-pricing", target: { css: ".pilot" } },
     { do: "shot", name: "agents-full", fullPage: true },
     { do: "aria", name: "agents-main", target: { css: "main" } },
-    { do: "click", target: { within: "main", role: "link", name: "Ask about custom builds" } },
+    { do: "click", target: { within: "main", role: "link", name: text(published.agents.custom.cta) } },
     { do: "expectUrl", path: "/contact/" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "Book a free workflow audit." } },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.booking.longLabel) } },
   ],
   about: [
     { do: "goto", path: "/" },
-    { do: "click", target: { within: NAV, role: "link", name: "About" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.nav[1].label) } },
     { do: "expectUrl", path: "/about/" },
-    { do: "expectTitle", text: "About Carlos | Alfaro Labs" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "About Carlos" } },
-    { do: "expectVisible", target: { role: "heading", level: 2, name: "Agentify yourself. I did it first." } },
+    { do: "expectTitle", text: text(published.about.meta.title) },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.about.hero.title) } },
+    { do: "expectVisible", target: { role: "heading", level: 2, name: text(published.about.proof.heading) } },
     { do: "expectCount", target: { css: ".cell.proof" }, count: 8 },
     { do: "expectCount", target: { css: ".placeholder[data-kind=screenshot]" }, count: 8 },
-    { do: "expectText", target: { css: ".placeholder[data-kind=photo]" }, text: "Placeholder. Photo of Carlos TBD." },
-    { do: "expectVisible", target: { role: "heading", level: 3, name: "Patchlist and Gearmind" } },
+    { do: "expectText", target: { css: ".placeholder[data-kind=photo]" }, text: text(published.placeholder.photo) },
+    { do: "expectVisible", target: { role: "heading", level: 3, name: text(published.about.proof.entries[6].name) } },
     { do: "shot", name: "about-full", fullPage: true },
     { do: "aria", name: "about-main", target: { css: "main" } },
-    { do: "click", target: { within: "main", role: "link", name: "Book a call" } },
+    { do: "click", target: { within: "main", role: "link", name: text(published.booking.label) } },
     { do: "expectUrl", path: "/contact/" },
   ],
   contact: [
     { do: "goto", path: "/" },
     { do: "mark" },
-    { do: "click", target: { within: "main", role: "link", name: "Book a call", nth: 0 } },
+    { do: "click", target: { within: "main", role: "link", name: text(published.booking.label), nth: 0 } },
     { do: "expectUrl", path: "/contact/" },
     { do: "expectMark", note: "hero Book a call navigated client-side" },
-    { do: "expectTitle", text: "Book a call | Alfaro Labs" },
-    { do: "expectVisible", target: { role: "heading", level: 1, name: "Book a free workflow audit." } },
-    { do: "expectText", target: { css: ".hero .eyebrow" }, text: "Book a call" },
-    { do: "expectText", target: { css: ".hero .placeholder[data-kind=link]" }, text: "Placeholder. Booking link TBD." },
-    { do: "expectAttr", target: { within: "main", role: "link", name: "carlos@alfarolabs.com" }, attr: "href", value: "mailto:carlos@alfarolabs.com" },
-    { do: "expectAttr", target: { within: "main", role: "link", name: "@alfarolabs on Instagram" }, attr: "href", value: "https://instagram.com/alfarolabs" },
-    { do: "expectText", target: { css: "main" }, text: "DM AUDIT on Instagram." },
+    { do: "expectTitle", text: text(published.contact.meta.title) },
+    { do: "expectVisible", target: { role: "heading", level: 1, name: text(published.booking.longLabel) } },
+    { do: "expectText", target: { css: ".hero .eyebrow" }, text: text(published.booking.label) },
+    { do: "expectText", target: { css: ".hero .placeholder[data-kind=link]" }, text: text(published.placeholder.link) },
+    { do: "expectAttr", target: { within: "main", role: "link", name: text(published.email) }, attr: "href", value: emailHref() },
+    { do: "expectAttr", target: { within: "main", role: "link", name: text(published.instagram.label) }, attr: "href", value: instagramHref() },
+    { do: "expectText", target: { css: "main" }, text: text(published.instagram.dm) },
     { do: "shot", name: "contact" , fullPage: true },
     { do: "aria", name: "contact-main", target: { css: "main" } },
     { do: "goto", path: "/agents/" },
-    { do: "click", target: { within: NAV, role: "link", name: "Book a call" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.booking.label) } },
     { do: "expectUrl", path: "/contact/" },
   ],
   nav: [
@@ -137,26 +145,26 @@ const journeys = {
     { do: "aria", name: "header", target: { css: ".site-header" } },
     { do: "expectCount", target: { within: NAV, role: "link" }, count: 3 },
     { do: "mark" },
-    { do: "click", target: { within: NAV, role: "link", name: "Agents" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.nav[0].label) } },
     { do: "expectUrl", path: "/agents/" },
-    { do: "click", target: { within: NAV, role: "link", name: "About" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.nav[1].label) } },
     { do: "expectUrl", path: "/about/" },
-    { do: "click", target: { within: NAV, role: "link", name: "Book a call" } },
+    { do: "click", target: { within: NAV, role: "link", name: text(published.booking.label) } },
     { do: "expectUrl", path: "/contact/" },
-    { do: "click", target: { within: "header", role: "link", name: "Alfaro Labs" } },
+    { do: "click", target: { within: "header", role: "link", name: text(published.name) } },
     { do: "expectUrl", path: "/" },
     { do: "expectMark", note: "full header loop stayed client-side" },
     { do: "goto", path: "/" },
     { do: "press", key: "Tab" },
-    { do: "expectFocused", target: { role: "link", name: "Skip to content" } },
+    { do: "expectFocused", target: { role: "link", name: text(published.skipLink) } },
     { do: "shot", name: "skip-link-focused", target: { css: ".site-header" } },
-    { do: "expectText", target: { css: "footer .footer-tagline" }, text: "Alfaro Labs. We make useful things." },
-    { do: "expectAttr", target: { within: "footer", role: "link", name: "carlos@alfarolabs.com" }, attr: "href", value: "mailto:carlos@alfarolabs.com" },
-    { do: "expectAttr", target: { within: "footer", role: "img", name: "Alfaro Labs" }, attr: "src", value: "/brand/wordmark-white.svg" },
+    { do: "expectText", target: { css: "footer .footer-tagline" }, text: ledger.everyPage[0] },
+    { do: "expectAttr", target: { within: "footer", role: "link", name: text(published.email) }, attr: "href", value: emailHref() },
+    { do: "expectAttr", target: { within: "footer", role: "img", name: text(published.name) }, attr: "src", value: logoSrc("wordmark") },
     { do: "shot", name: "footer", target: { css: "footer" } },
     { do: "goto", path: "/__verify_missing_route__", status: 404 },
     { do: "expectText", target: { css: "main" }, text: "Not Found" },
-    { do: "expectVisible", target: { within: NAV, role: "link", name: "Agents" } },
+    { do: "expectVisible", target: { within: NAV, role: "link", name: text(published.nav[0].label) } },
     { do: "shot", name: "not-found", fullPage: true },
     { do: "aria", name: "not-found", target: { css: "body" } },
   ],
@@ -222,7 +230,8 @@ function pickExecutable(pw) {
 const { pw, from } = await loadPlaywright();
 const executablePath = pickExecutable(pw);
 const browser = await pw.chromium.launch({ headless: !values.headed, ...(executablePath ? { executablePath } : {}) });
-const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+const viewport = { width: 1440, height: 900 };
+const context = await browser.newContext({ viewport });
 const page = await context.newPage();
 page.setDefaultTimeout(8000);
 const pageErrors = [];
@@ -322,7 +331,22 @@ const actions = {
   },
 };
 
-log({ event: "start", journey: journeyName, origin, outDir, playwright: from, executable: executablePath ?? pw.chromium.executablePath(), browser: browser.version() });
+await page.goto(new URL("/", origin).href, { waitUntil: "networkidle" });
+const column = await page.evaluate(() => ({
+  frame: Math.round(document.querySelector(".frame").getBoundingClientRect().width),
+  main: Math.round(document.querySelector("main").getBoundingClientRect().width),
+}));
+log({
+  event: "start",
+  journey: journeyName,
+  origin,
+  outDir,
+  viewport,
+  column,
+  playwright: from,
+  executable: executablePath ?? pw.chromium.executablePath(),
+  browser: browser.version(),
+});
 console.log(`drive: ${journeyName} against ${origin}\ndrive: evidence -> ${outDir}`);
 let failed = null;
 const results = [];
@@ -343,7 +367,7 @@ for (const [i, step] of steps.entries()) {
   }
 }
 if (!failed && pageErrors.length) failed = { error: `page errors: ${pageErrors.join(" | ")}` };
-const summary = { journey: journeyName, origin, ok: !failed, passed: results.length, total: steps.length, failed, outDir, finishedAt: new Date().toISOString() };
+const summary = { journey: journeyName, origin, ok: !failed, passed: results.length, total: steps.length, failed, viewport, column, outDir, finishedAt: new Date().toISOString() };
 writeFileSync(join(outDir, "summary.json"), JSON.stringify(summary, null, 2));
 await browser.close();
 console.log(`drive: ${summary.ok ? "PASS" : "FAIL"} ${summary.passed}/${summary.total} steps; summary ${join(outDir, "summary.json")}`);
