@@ -71,9 +71,9 @@ function Agents() {
 
       <Section heading={how.heading.toText()} sub={how.sub.toText()}>
         <ol className="cells cells-3">
-          {how.steps.map((step, index) => (
+          {how.steps.map((step) => (
             <li key={step.name.toText()} className="cell">
-              <p className="step-index">{index + 1}</p>
+              <p className="step-index">{step.index.toText()}</p>
               <h3>{step.name.toText()}</h3>
               <p>{step.body.toText()}</p>
             </li>
