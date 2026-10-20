@@ -1,5 +1,14 @@
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
+import { ownedLines, requiredLines } from "../src/content/index.ts";
+
+const { pages, everyPage, logos, oncePhrases } = requiredLines();
+const pageFiles = {
+  "dist/client/index.html": "/",
+  "dist/client/agents/index.html": "/agents",
+  "dist/client/about/index.html": "/about",
+  "dist/client/contact/index.html": "/contact",
+};
 
 const { values } = parseArgs({ options: { url: { type: "string" } } });
 const origin = values.url ? new URL(values.url) : null;
@@ -16,41 +25,8 @@ async function get(path) {
   return response;
 }
 
-const pages = {
-  "dist/client/index.html": [
-    "AI agents for live production.",
-    "Give humans the best, and let the machines take care of the rest.",
-    "Sound familiar?",
-    "Waiting for your approval",
-    "your team approves before anything goes out.",
-  ],
-  "dist/client/agents/index.html": [
-    "Alfaro Labs Agents",
-    "Show confirmations.",
-    "Biggest leak first. We can fix everything.",
-    "$850",
-    "Not a fit",
-    "Ask about custom builds",
-  ],
-  "dist/client/about/index.html": [
-    "close to 2 decades",
-    "Testing agents since Claude Code first shipped.",
-    "Agentify yourself. I did it first.",
-    "Patchlist and Gearmind",
-    "Placeholder. Screenshot TBD.",
-  ],
-  "dist/client/contact/index.html": [
-    "Book a free workflow audit.",
-    "Placeholder. Booking link TBD.",
-    "carlos@alfarolabs.com",
-    "@alfarolabs on Instagram",
-    "DM AUDIT",
-  ],
-};
-const everyPage = ["Alfaro Labs. We make useful things.", "Book a call"];
-const logos = new Set(["/brand/icon-on-black.svg", "/brand/wordmark-white.svg"]);
 const hype = /\b(unlock|elevate|seamless|game-changer|revolutionize|supercharge|cutting-edge)\b/gi;
-const oncePhrases = ["Agentify yourself", "We can fix everything", "Agent acceleration"];
+const owned = [...ownedLines()].sort((a, b) => b.length - a.length);
 
 const entities = { amp: "&", lt: "<", gt: ">", quot: '"', nbsp: " " };
 const decode = (text) =>
@@ -76,7 +52,8 @@ const found = [];
 const phraseCounts = Object.fromEntries(oncePhrases.map((p) => [p, 0]));
 const assets = new Set();
 
-for (const [file, required] of Object.entries(pages)) {
+for (const [file, route] of Object.entries(pageFiles)) {
+  const required = pages[route];
   const path = file.replace("dist/client", "").replace(/index\.html$/, "");
   const response = origin ? await get(path) : null;
   const html = response ? await response.text() : await readFile(file, "utf8");
@@ -105,6 +82,10 @@ for (const [file, required] of Object.entries(pages)) {
   for (const phrase of oncePhrases) {
     phraseCounts[phrase] += text.split(phrase).length - 1;
   }
+  let uncovered = text;
+  for (const line of owned) uncovered = uncovered.split(line).join(" ");
+  uncovered = uncovered.replace(/\s+/g, " ").trim();
+  if (uncovered) fail(`uncovered copy "${uncovered}"`);
   const brandSrcs = [...html.matchAll(/src="(\/brand\/[^"]+)"/g)].map((m) => m[1]);
   if (brandSrcs.length === 0) fail("no logo");
   for (const src of brandSrcs) if (!logos.has(src)) fail(`logo "${src}"`);
@@ -132,5 +113,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pages).length} pages (${origin ? `HTTP, ${assets.size} assets, missing route 404` : "static HTML"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP, ${assets.size} assets, missing route 404` : "static HTML"})`);
 for (const line of found) console.log(`found: ${line}`);

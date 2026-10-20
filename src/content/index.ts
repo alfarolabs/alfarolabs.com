@@ -188,6 +188,9 @@ const lines = mintAll({
   aloneBody: "Only after they've proven they get it right.",
   howHeading: "How it works",
   howSub: "Biggest leak first. We can fix everything.",
+  stepOne: "1",
+  stepTwo: "2",
+  stepThree: "3",
   stepAudit: "Free workflow audit",
   stepAuditBody: "30 minutes. We look at how your team works today.",
   stepBuild: "Build",
@@ -417,9 +420,9 @@ export const published = {
       heading: lines.howHeading,
       sub: lines.howSub,
       steps: [
-        { name: lines.stepAudit, body: lines.stepAuditBody },
-        { name: lines.stepBuild, body: lines.stepBuildBody },
-        { name: lines.stepRun, body: lines.stepRunBody },
+        { index: lines.stepOne, name: lines.stepAudit, body: lines.stepAuditBody },
+        { index: lines.stepTwo, name: lines.stepBuild, body: lines.stepBuildBody },
+        { index: lines.stepThree, name: lines.stepRun, body: lines.stepRunBody },
       ],
       pilot: { name: lines.pilotName, price: lines.pilotPrice, body: lines.pilotBody },
       detail: [lines.detailWeek, lines.detailProposal, lines.detailMonthly],
@@ -459,6 +462,10 @@ export const published = {
     },
   },
 };
+
+export function ownedLines(): readonly string[] {
+  return owned.map((line) => line.toText());
+}
 
 export function requiredLines(): {
   pages: { [P in "/" | "/agents" | "/about" | "/contact"]: readonly string[] };
