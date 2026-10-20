@@ -1,8 +1,0 @@
-services:
-  web:
-    command: npm run dev -- --host 0.0.0.0 --port "$PORT" --strictPort
-    port: 3000
-    health: /
-    portal:
-      title: Alfaro Labs development
-      description: Local Worker runtime with hot reload. No production data or credentials.

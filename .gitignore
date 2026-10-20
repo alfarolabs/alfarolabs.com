@@ -8,9 +8,3 @@ dist
 !.env.example
 *.tsbuildinfo
 .DS_Store
-
-# Legacy local skill links; repository skills are tracked.
-.cursor/skills/
-.claude/skills/
-.amp/in/
-.amp/portals/
