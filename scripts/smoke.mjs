@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { ownedLines, requiredLines } from "../src/content/index.ts";
@@ -105,6 +106,21 @@ if (origin) {
   }
   const missing = await fetch(new URL("/__smoke_missing_route__", origin), { signal: AbortSignal.timeout(10_000) });
   if (missing.status !== 404) failures.push(`missing route: expected 404, got ${missing.status}`);
+}
+
+const brandBytes = {
+  "public/brand/icon-on-black.svg": "b8f437c6283861a49aa0efecb2dd51db8520b6d86ab3aa8a001457fea91eaa78",
+  "public/brand/wordmark-white.svg": "da803916a5c7b1ad5fc713f23262f50b0093daa6962a9fe495a49ce42a1ba2b3",
+  "public/brand/icon-black.svg": "5e7e20132e27b1c39669704ae17c99238824acc4cad4ecd8afe8c09ac6dc4473",
+  "public/brand/wordmark-black.svg": "585dc19baab55e6a064cb1778231ad509e9146c32f2e0cf45972764eec408409",
+};
+for (const [file, sha256] of Object.entries(brandBytes)) {
+  try {
+    const digest = createHash("sha256").update(await readFile(file)).digest("hex");
+    if (digest !== sha256) failures.push(`${file}: sha256 ${digest}`);
+  } catch {
+    failures.push(`${file}: missing brand file`);
+  }
 }
 
 if (failures.length > 0) {
