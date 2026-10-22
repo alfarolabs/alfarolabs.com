@@ -7,6 +7,8 @@ services:
       title: Alfaro Labs development
       description: Public site with live reload. No application sign-in required.
     portals:
+      - url: /manifesto
+        title: Manifesto
       - url: /agents
         title: Agents
       - url: /about

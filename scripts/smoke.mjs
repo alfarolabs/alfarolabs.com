@@ -6,6 +6,7 @@ import { ownedLines, requiredLines } from "../src/content/index.ts";
 const { pages, everyPage, logos, oncePhrases } = requiredLines();
 const pageFiles = {
   "dist/client/index.html": "/",
+  "dist/client/manifesto/index.html": "/manifesto",
   "dist/client/agents/index.html": "/agents",
   "dist/client/about/index.html": "/about",
   "dist/client/contact/index.html": "/contact",

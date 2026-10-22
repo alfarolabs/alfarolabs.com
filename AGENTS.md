@@ -1,7 +1,7 @@
 # Alfaro Labs
 
-Public, four-page site for Carlos Alfaro and Alfaro Labs Agents: `/`, `/agents`,
-`/about`, `/contact`. React 19 + TanStack Start/Router + Vite, prerendered and
+Public, five-page site for Carlos Alfaro and Alfaro Labs: `/`, `/manifesto`,
+`/agents`, `/about`, `/contact`. React 19 + TanStack Start/Router + Vite, prerendered and
 served by Cloudflare Workers. No database, seed users, application sign-in, or
 required local secrets. Do not add auth bypass endpoints or backing services.
 
@@ -39,7 +39,7 @@ and `npm --version`.
 | Lint | Not configured; do not invent `npm run lint` |
 
 `check` runs typecheck → build → smoke. There is no separate unit-test runner.
-Smoke checks four pages, copy ownership/brand rules, and immutable logo hashes;
+Smoke checks five pages, copy ownership/brand rules, and immutable logo hashes;
 it does not test layout, hydration, or clicks. Do not weaken checks to accommodate
 an accidental copy change, derive new expected results from the implementation,
 or test private helpers/mock call order. Add tests only for observable contracts.

@@ -4,7 +4,7 @@
 the Node version in `.node-version`. There is no test framework or extra install.
 
 - Static mode requires `npm run build` first; `npm run check` orders this correctly.
-- HTTP mode accepts only an HTTP(S) origin via `--url`; it checks all four pages,
+- HTTP mode accepts only an HTTP(S) origin via `--url`; it checks all five pages,
   directly linked JS/CSS/SVG/font assets, and a deliberate missing-route 404.
 - Keep visible-copy and brand/hash checks meaningful. Do not loosen them for
   incidental failures, silently skip a page, or add implementation-only tests.

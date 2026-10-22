@@ -82,11 +82,18 @@ const lines = mintAll({
   noteProduct: "Link and description TBD.",
   navServices: "Services",
   navAbout: "About",
+  navManifesto: "Manifesto",
+  heroEyebrow: "Technology consulting",
   heroSoftware: "Software",
   heroAtThe: "at the",
   heroFrontier: "Frontier",
-  chipServices: "See what we do",
-  chipPatchlistSub: "The production OS for live sound",
+  servicesMore: "See how an engagement works",
+  beliefHeading: "What we believe.",
+  beliefBody: "Eight short statements on where software is going, and why we work the way we do.",
+  manifestoLink: "Read the manifesto",
+  manifestoMetaTitle: "Manifesto | Alfaro Labs",
+  manifestoTitle: "The manifesto.",
+  manifestoLede: "What we believe about software at the frontier, and how it shapes the work.",
 
   t1Heading: "The ground has moved.",
   t1a: "Models now write working code, read whole documents, and carry out multi-step tasks on their own.",
@@ -236,6 +243,7 @@ export const published = {
   },
   nav: [
     { to: "/agents" as const, label: lines.navServices },
+    { to: "/manifesto" as const, label: lines.navManifesto },
     { to: "/about" as const, label: lines.navAbout },
     { to: "/contact" as const, label: lines.bookCall },
   ],
@@ -243,13 +251,30 @@ export const published = {
   home: {
     meta: { title: lines.homeMetaTitle, description: lines.oneLiner },
     hero: {
+      eyebrow: lines.heroEyebrow,
       title: [lines.heroSoftware, lines.heroAtThe, lines.heroFrontier] as const,
       lede: lines.oneLiner,
-      chips: {
-        services: { to: "/agents" as const, label: lines.chipServices },
-        patchlist: { href: patchlist, label: lines.patchlistName, sub: lines.chipPatchlistSub },
-      },
     },
+    offers: {
+      heading: lines.servicesTitle,
+      items: [
+        { name: lines.s1Heading, body: lines.s1a },
+        { name: lines.s2Heading, body: lines.s2a },
+        { name: lines.s3Heading, body: lines.s3a },
+      ],
+      link: { to: "/agents" as const, label: lines.servicesMore },
+    },
+    work,
+    belief: {
+      heading: lines.beliefHeading,
+      body: lines.beliefBody,
+      link: { to: "/manifesto" as const, label: lines.manifestoLink },
+    },
+    book: { heading: lines.homeBookHeading, body: lines.homeBookBody },
+  },
+  manifesto: {
+    meta: { title: lines.manifestoMetaTitle, description: lines.manifestoLede },
+    hero: { title: lines.manifestoTitle, lede: lines.manifestoLede },
     theses: [
       { heading: lines.t1Heading, points: [lines.t1a, lines.t1b, lines.t1c] },
       { heading: lines.t2Heading, points: [lines.t2a, lines.t2b, lines.t2c] },
@@ -260,7 +285,6 @@ export const published = {
       { heading: lines.t7Heading, points: [lines.t7a, lines.t7b, lines.t7c] },
       { heading: lines.t8Heading, points: [lines.t8a, lines.t8b, lines.t8c, lines.t8d] },
     ],
-    work,
     book: { heading: lines.homeBookHeading, body: lines.homeBookBody },
   },
   services: {
@@ -309,22 +333,28 @@ export function ownedLines(): readonly string[] {
 }
 
 export function requiredLines(): {
-  pages: { [P in "/" | "/agents" | "/about" | "/contact"]: readonly string[] };
+  pages: { [P in "/" | "/manifesto" | "/agents" | "/about" | "/contact"]: readonly string[] };
   everyPage: readonly string[];
   logos: ReadonlySet<LogoSrc>;
   oncePhrases: readonly ["Agentify yourself", "We can fix everything", "Agent acceleration"];
 } {
-  const { home, services, about, contact } = published;
+  const { home, manifesto, services, about, contact } = published;
   return {
     pages: {
       "/": [
         home.hero.lede.toText(),
-        home.theses[0].heading.toText(),
-        home.theses[7].points[3].toText(),
+        home.offers.items[0].name.toText(),
+        home.offers.items[2].body.toText(),
+        home.belief.link.label.toText(),
         home.work.heading.toText(),
         home.work.products[0].link.label.toText(),
         home.work.products[2].name.toText(),
         published.placeholder.product.toText(),
+      ],
+      "/manifesto": [
+        manifesto.hero.title.toText(),
+        manifesto.theses[0].heading.toText(),
+        manifesto.theses[7].points[3].toText(),
       ],
       "/agents": [
         services.hero.title.toText(),

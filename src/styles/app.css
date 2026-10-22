@@ -342,12 +342,10 @@ a {
 }
 
 .hero-home {
-  grid-template-rows: minmax(0, 1fr) auto;
-  min-height: calc(100svh - 4.75rem);
-  padding: 2rem 0 2.5rem;
+  min-height: calc(88svh - 4.75rem);
+  padding: 2rem 0 4rem;
 }
 
-.hero-center,
 .hero-copy {
   display: grid;
   gap: 1.5rem;
@@ -422,54 +420,6 @@ a {
   animation: rise 2s var(--ease-out) 1.4s both;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem 3.5rem;
-  animation: rise 2.15s var(--ease-out) 1.7s both;
-}
-
-.chip {
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  gap: 0.35rem;
-  min-height: 2.75rem;
-  color: var(--ink);
-  font-family: var(--mono);
-  text-decoration: none;
-  text-shadow: 0 2px 20px rgba(8, 6, 13, 0.9);
-  transition: color 0.25s ease;
-}
-
-.chip-label {
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.chip-label::after {
-  content: "\203A";
-  display: inline-block;
-  margin-left: 0.8em;
-  color: var(--gold);
-  transition: transform 0.25s var(--ease-out);
-}
-
-.chip-sub {
-  color: var(--ink-faint);
-  font-size: 0.72rem;
-}
-
-.chip:hover {
-  color: var(--gold-bright);
-}
-
-.chip:hover .chip-label::after {
-  transform: translateX(4px);
-}
-
 .button {
   display: inline-flex;
   align-items: center;
@@ -540,6 +490,103 @@ a {
 .placeholder[data-kind="link"] {
   max-width: 32rem;
   animation: rise 2s var(--ease-out) 1.4s both;
+}
+
+/* Bands: plain home sections on the scene. */
+
+.band {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+  max-width: 64rem;
+  margin: 0 auto;
+  border-top: 1px solid rgba(236, 230, 244, 0.14);
+  padding: 4rem 0;
+  color: var(--ink-soft);
+  font-size: 1.125rem;
+}
+
+.band > p {
+  max-width: 38rem;
+}
+
+.band h2 {
+  color: var(--ink-bright);
+  font-family: var(--display);
+  font-size: 2.75rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.band .text-link {
+  color: var(--gold-bright);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.band .text-link::after {
+  content: "\2192";
+  margin-left: 0.75em;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.band .text-link:hover::after {
+  display: inline-block;
+  transform: translateX(4px);
+}
+
+.offers {
+  display: grid;
+  width: 100%;
+  gap: 1px;
+  background: rgba(236, 230, 244, 0.14);
+  border: 1px solid rgba(236, 230, 244, 0.14);
+}
+
+.offer {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  background: rgba(10, 7, 16, 0.82);
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.offer h3,
+.band .product h3 {
+  color: var(--ink-bright);
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.band .products {
+  width: 100%;
+  border-top: 1px solid rgba(236, 230, 244, 0.3);
+}
+
+.band .product {
+  display: grid;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(236, 230, 244, 0.14);
+  padding: 1.25rem 0;
+}
+
+.band .placeholder {
+  justify-items: start;
+  text-align: left;
+}
+
+.band-book {
+  justify-items: center;
+  text-align: center;
+  padding-bottom: 5rem;
 }
 
 /* Paper: the numbered sheet, set as an aged vellum manuscript. */
@@ -958,6 +1005,27 @@ a {
 
   .placeholder[data-kind="photo"] {
     max-width: 24rem;
+  }
+
+  .band {
+    padding: 5rem 0;
+  }
+
+  .band h2 {
+    font-size: 3.5rem;
+  }
+
+  .offers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .band .product {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    column-gap: 2rem;
+  }
+
+  .band .product > :not(h3) {
+    grid-column: 2;
   }
 
   .footer-closing {
