@@ -118,7 +118,7 @@ if (origin) {
 }
 
 const brandBytes = {
-  "public/brand/icon-on-black.svg": "a8893cc3563f07708de992bdd568ed842b0bae7be6b0a0e2e42138c4a966e999",
+  "public/brand/icon-on-black.svg": "267db00c7c872b756803d712b01feb4fee646d2c6d4ebe98b1bf398660728c60",
   "public/brand/wordmark-white.svg": "eec540ba401392301dd6a63a66a93b0f6f7e38887efc3da8d451fc2e2220e61c",
   "public/brand/icon-black.svg": "6f7d4b982476742f70eab77f27604849d6f9e26f48ffd74bfbc5e67f031e5b92",
   "public/brand/wordmark-black.svg": "d6e93a13bbceec0341bf7614af28fb25bffb622f3ad86003322bcfc7abce497a",

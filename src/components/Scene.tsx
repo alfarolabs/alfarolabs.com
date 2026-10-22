@@ -3,8 +3,6 @@ export function Scene() {
     <div className="scene" aria-hidden="true">
       <div className="scene-art" />
       <div className="scene-pixels" />
-      <div className="scene-stars" />
-      <div className="scene-motes" />
       <div className="scene-shade" />
       <svg width="0" height="0">
         <filter id="deckle" x="-2%" y="-2%" width="104%" height="104%">
