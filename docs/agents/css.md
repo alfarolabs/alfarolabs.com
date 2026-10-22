@@ -5,12 +5,14 @@ globs:
 
 # CSS
 
-- Preserve the current visual system unless a redesign is requested. Midnight
-  and champagne, set like a book: each page opens on the full-bleed lighthouse
-  photograph darkened to midnight, with copy low and left; the body is ivory
-  paper with Newsreader text, centered chapters opened by italic roman
-  numerals, gold-ruled service cards, and a framed photo booking panel. The
-  footer is a midnight colophon. Buttons are square and letterspaced: champagne
+- Preserve the current visual system unless a redesign is requested. Indigo
+  night and champagne, set like a book: each page opens on the full-bleed
+  lighthouse photograph tinted indigo under a gold star chart (`art/sky.svg`;
+  from 1024px the beam continues as a gold orbit, `art/orbit.svg`), with copy
+  low and left; the body is ivory paper with Newsreader text, centered chapters
+  opened by italic roman numerals, gold-ruled service cards topped with
+  engraved celestial diagrams over a faint chart, and a framed photo booking
+  panel. The footer is an indigo colophon. Buttons are square and letterspaced: champagne
   outline on midnight, solid midnight on ivory. Colors, fonts, and easings live
   in `:root` custom properties. Fonts are local; don't add a third-party font
   dependency.

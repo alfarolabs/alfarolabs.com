@@ -72,16 +72,20 @@
   --line: color-mix(in srgb, var(--ink) 12%, transparent);
   --line-strong: color-mix(in srgb, var(--ink) 32%, transparent);
 
-  /* Dark surface: midnight under the lighthouse photograph. */
-  --field: #0a0e16;
+  /* Dark surface: indigo night under the lighthouse photograph. */
+  --field: #0b1030;
   --glow: #f5f1e8;
   --glow-soft: color-mix(in srgb, var(--glow) 74%, transparent);
   --glow-line: color-mix(in srgb, var(--glow) 14%, transparent);
 
-  /* Accent: champagne on midnight, deep champagne for text on ivory. */
+  /* Gold star-chart linework over the night sky. */
+  --sky: url("/art/sky.svg");
+  --orbit: none;
+
+  /* Accent: champagne on indigo, deep champagne for text on ivory. */
   --accent: #cbb17f;
   --accent-high: #d9c293;
-  --on-accent: #0a0e16;
+  --on-accent: var(--field);
   --accent-ink: #7a5f30;
   --accent-line: color-mix(in srgb, var(--accent) 45%, transparent);
 
@@ -306,6 +310,9 @@ a {
 
 .hero {
   --focus: var(--glow);
+  /* Phones: the chart sits in the sky above the copy. Wider: it tracks the
+     photograph so the orbit leaves the lantern. */
+  --sky-place: 80% 0 / auto 70%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -330,14 +337,19 @@ a {
 }
 
 .hero::before {
-  background: url("/art/frontier.webp") 80% 58% / cover no-repeat;
+  background: url("/art/frontier.webp") 80% 58% / cover no-repeat, var(--field);
+  background-blend-mode: screen;
   animation: art-in 2.4s var(--ease-out) both;
 }
 
 .hero::after {
   background:
-    linear-gradient(0deg, var(--field) 0%, rgb(10 14 22 / 0.7) 35%, rgb(10 14 22 / 0.2) 70%, rgb(10 14 22 / 0.55) 100%),
-    linear-gradient(90deg, rgb(10 14 22 / 0.75) 0%, transparent 65%);
+    linear-gradient(180deg, rgb(11 16 48 / 0.9), rgb(11 16 48 / 0.6) var(--header-h), transparent calc(var(--header-h) + 5rem)),
+    var(--orbit) var(--sky-place) no-repeat,
+    var(--sky) var(--sky-place) no-repeat,
+    linear-gradient(0deg, var(--field) 0%, rgb(11 16 48 / 0.7) 35%, rgb(11 16 48 / 0.15) 70%, rgb(11 16 48 / 0.4) 100%),
+    linear-gradient(90deg, rgb(11 16 48 / 0.75) 0%, transparent 65%);
+  animation: art-in 2.4s var(--ease-out) 0.4s both;
 }
 
 .hero-home {
@@ -432,7 +444,7 @@ a {
 
 .hero .placeholder {
   border-color: var(--glow-line);
-  background: rgb(10 14 22 / 0.55);
+  background: rgb(11 16 48 / 0.55);
   color: var(--glow-soft);
   text-align: center;
   backdrop-filter: blur(6px);
@@ -462,6 +474,10 @@ main {
   color: var(--ink-soft);
   font-size: 1.125rem;
   text-align: center;
+}
+
+.band:has(.offers) {
+  background: url("/art/chart-paper.svg") center / cover no-repeat, var(--paper);
 }
 
 .band:has(.products) {
@@ -541,6 +557,22 @@ main {
   padding: 2rem 1.75rem;
 }
 
+.offer::after {
+  content: "";
+  order: -1;
+  height: 6rem;
+  margin: -0.5rem 0 0.5rem;
+  background: url("/art/offer-star.svg") center / contain no-repeat;
+}
+
+.offer:nth-child(2)::after {
+  background-image: url("/art/offer-orbit.svg");
+}
+
+.offer:nth-child(3)::after {
+  background-image: url("/art/offer-solid.svg");
+}
+
 .offer::before {
   content: counter(offer, lower-roman) ".";
   color: var(--accent-ink);
@@ -587,9 +619,12 @@ main {
   outline-offset: -0.75rem;
   padding: 4rem clamp(1.75rem, 6vw, 4.5rem);
   background:
-    linear-gradient(90deg, var(--field) 30%, rgb(10 14 22 / 0.6) 65%, rgb(10 14 22 / 0.2)),
+    var(--orbit) 85% 60% / cover no-repeat,
+    var(--sky) 85% 60% / cover no-repeat,
+    linear-gradient(90deg, var(--field) 30%, rgb(11 16 48 / 0.6) 65%, rgb(11 16 48 / 0.2)),
     url("/art/frontier.webp") 85% 60% / cover no-repeat,
     var(--field);
+  background-blend-mode: normal, normal, normal, screen, normal;
   color: var(--glow-soft);
   text-align: left;
 }
@@ -791,6 +826,10 @@ main {
     padding-top: 1.25rem;
   }
 
+  .hero {
+    --sky-place: 80% 58% / cover;
+  }
+
   .nav {
     column-gap: 2rem;
   }
@@ -844,6 +883,10 @@ main {
 }
 
 @media (min-width: 1024px) {
+  :root {
+    --orbit: url("/art/orbit.svg");
+  }
+
   .hero-home {
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     column-gap: 4rem;
