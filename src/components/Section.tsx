@@ -15,7 +15,9 @@ export function Section({
       {points ? (
         <ol className="points">
           {points.map((point) => (
-            <li key={point}>{point}</li>
+            <li key={point}>
+              <span>{point}</span>
+            </li>
           ))}
         </ol>
       ) : null}
