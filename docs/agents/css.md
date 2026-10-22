@@ -6,7 +6,7 @@ globs:
 # CSS
 
 - Preserve the current visual system unless a redesign is requested: a fixed
-  painted royal-purple scene, Instrument Serif display type with gold italic
+  painted royal-purple lighthouse-at-sea scene, Instrument Serif display type with gold italic
   accents, mono uppercase labels, gold buttons, and a cream numbered "paper"
   panel set in Newsreader. Colors, fonts, and easings live in `:root` custom
   properties. Fonts are local; don't add a third-party font dependency.

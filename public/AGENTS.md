@@ -2,7 +2,9 @@
 
 - `brand/*.svg` are supplied brand assets. Smoke pins all four files by SHA-256;
   do not redraw, optimize, or replace them without explicit brand-change approval.
-  The site currently renders the white wordmark and on-black icon.
+  The marks are the twin-weight "alfaro labs" wordmark (bold alfaro, hairline
+  labs, slanted) and an "a" icon. The header and footer render the white
+  wordmark; the on-black icon is the favicon.
 - Fonts are local WOFF2 files: Instrument Serif (display), Newsreader (text),
   and JetBrains Mono (labels). Keep each family's `fonts/OFL-*.txt` license.
 - `art/frontier.webp` is the commissioned hero painting; `art/frontier-pixels.png`

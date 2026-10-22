@@ -186,13 +186,13 @@ a {
 }
 
 .scene-art {
-  background: url("/art/frontier.webp") 50% 45% / cover no-repeat;
+  background: url("/art/frontier.webp") 72% 40% / cover no-repeat;
   animation: art-in 2.6s var(--ease-reveal) both;
 }
 
 .scene-pixels {
   opacity: 0;
-  background: url("/art/frontier-pixels.png") 50% 45% / cover no-repeat;
+  background: url("/art/frontier-pixels.png") 72% 40% / cover no-repeat;
   image-rendering: pixelated;
   animation: pixels-out 3s var(--ease-reveal) 0.25s both;
 }
@@ -302,8 +302,8 @@ a {
 }
 
 .brand img {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: auto;
+  height: 1.6rem;
 }
 
 .nav {
@@ -828,7 +828,7 @@ a {
 }
 
 .footer-mark {
-  width: 4rem;
+  width: 9rem;
   opacity: 0.9;
 }
 

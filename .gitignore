@@ -11,3 +11,4 @@ dist
 .amp/in/
 .amp/dev-ports.json
 .amp/portals/
+.tanstack/
