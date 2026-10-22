@@ -35,10 +35,15 @@ and `npm --version`.
 | Typecheck | `npm run typecheck` |
 | Build/prerender | `npm run build` |
 | Tests (after build) | `npm run smoke` |
-| Full suite, same as CI | `npm run check` |
+| Runtime smoke over HTTP (after build) | `npm run smoke:preview` |
+| Full gate, same checks as CI | `npm run check` |
 | Lint | Not configured; do not invent `npm run lint` |
 
-`check` runs typecheck → build → smoke. There is no separate unit-test runner.
+`check` runs typecheck → build → smoke → smoke:preview. `smoke:preview` serves
+`dist/` with `vite preview` (workerd) on a free local port and runs HTTP smoke.
+While iterating, run only the focused command; CI is the authoritative gate and
+runs `typecheck` in parallel with `build` (build, smoke, smoke:preview), then
+deploys the tested artifact on `main`. There is no separate unit-test runner.
 Smoke checks five pages, copy ownership/brand rules, and immutable logo hashes;
 it does not test layout, hydration, or clicks. Do not weaken checks to accommodate
 an accidental copy change, derive new expected results from the implementation,

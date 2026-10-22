@@ -1,0 +1,18 @@
+name: Set up Node and dependencies
+description: Pinned Node from .node-version and node_modules restored from cache, installing with npm ci only on a lockfile change.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
+    # node_modules is fully determined by the lockfile, Node version, and platform, so a hit skips npm ci.
+    - id: modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.node-version', 'package-lock.json') }}
+    - if: steps.modules.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci --no-audit --no-fund

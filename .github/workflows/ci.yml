@@ -1,5 +1,6 @@
 name: ci
 
+# Authoritative gate. `npm run check` runs the same checks serially on a checkout.
 on:
   push:
     branches: [main]
@@ -15,18 +16,47 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  check:
+  typecheck:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run check
+      - uses: ./.github/actions/setup
+      - run: npm run typecheck
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: npm run build
+      - run: npm run smoke
+      # Serves dist/ in workerd and checks pages, linked assets, and the 404 over HTTP.
+      - run: npm run smoke:preview
+      # The deploy job ships these exact bytes; .wrangler/deploy points wrangler at dist/server.
       - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: npx wrangler deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: |
+            dist
+            .wrangler/deploy
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: [typecheck, build]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+      - run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

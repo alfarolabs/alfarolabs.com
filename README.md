@@ -59,7 +59,9 @@ Local review artifacts under `.amp/in/` and generated portal metadata stay out o
 
 ## Checks
 
-`npm run check` runs typecheck, build and the static smoke check. The smoke check
+`npm run check` runs typecheck, build, the static smoke check, and
+`npm run smoke:preview`, which serves the build in workerd on a free local port
+and runs the HTTP smoke against it. It reproduces the CI gate. The smoke check
 covers all four generated pages' required text, casing, permitted logos, no en/em
 dashes, hype words or emoji, only the $850 price, and brand-phrase counts.
 
@@ -76,8 +78,10 @@ and mobile widths. Save review screenshots and recordings in `.amp/in/artifacts/
 
 ## Deploy
 
-The `ci` workflow runs `npm run check` on pull requests and `main`. On `main` only,
-it then runs `npx wrangler deploy` with the `CLOUDFLARE_API_TOKEN` secret, so every
+The `ci` workflow runs the same checks as `npm run check` on pull requests and `main`,
+in two parallel jobs: `typecheck`, and `build` (build, static smoke, preview smoke).
+On `main` only, a `deploy` job waits for both, downloads the exact `dist/` that
+`build` tested, and runs `npx wrangler deploy` with the `CLOUDFLARE_API_TOKEN` secret, so every
 merge to `main` deploys to `alfarolabs.com` and `www.alfarolabs.com`. Roll back with
 a revert pull request.
 
