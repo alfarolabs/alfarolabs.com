@@ -8,3 +8,6 @@ dist
 !.env.example
 *.tsbuildinfo
 .DS_Store
+.amp/in/
+.amp/dev-ports.json
+.amp/portals/
