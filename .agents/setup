@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$root"
+mkdir -p .amp/in/artifacts "$HOME/.local/share/alfarolabs-toolchain" "$HOME/.config/amp"
+exec > >(tee -a .amp/in/setup.log) 2>&1
+echo "Preparing Alfaro Labs ($(date -u +%FT%TZ))"
+
+version="$(tr -d '[:space:]' < .node-version)"
+case "$(uname -sm)" in
+  'Linux x86_64') arch=x64 ;;
+  'Linux aarch64') arch=arm64 ;;
+  *) echo 'Setup requires a Linux x64 or arm64 orb.' >&2; exit 1 ;;
+esac
+toolchain="$HOME/.local/share/alfarolabs-toolchain"
+node_dir="$toolchain/node-v$version-linux-$arch"
+if [[ ! -x "$node_dir/bin/node" ]] || [[ "$("$node_dir/bin/node" --version)" != "v$version" ]]; then
+  scratch="$(mktemp -d)"
+  trap 'rm -rf -- "$scratch"' EXIT
+  archive="node-v$version-linux-$arch.tar.xz"
+  curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/$archive" -o "$scratch/$archive"
+  curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/SHASUMS256.txt" -o "$scratch/SHASUMS256.txt"
+  (cd "$scratch"; grep "  $archive$" SHASUMS256.txt | sha256sum --check -)
+  tar -xJf "$scratch/$archive" -C "$toolchain"
+fi
+export PATH="$node_dir/bin:$PATH"
+# Direct agent commands and login-shell services must select the same toolchain.
+for binary in node npm npx; do
+  sudo ln -sfn "$node_dir/bin/$binary" "/usr/local/bin/$binary"
+done
+node --version
+npm --version
+npm ci --no-audit --no-fund
+
+guidance="$HOME/.config/amp/AGENTS.md"
+touch "$guidance"
+awk '/^<!-- BEGIN alfarolabs-orb -->$/ {skip=1; next} /^<!-- END alfarolabs-orb -->$/ {skip=0; next} !skip' "$guidance" > "$guidance.tmp"
+cat >> "$guidance.tmp" <<'EOF'
+<!-- BEGIN alfarolabs-orb -->
+## Alfaro Labs orb
+
+- Setup links the Node version in `.node-version` (and its bundled npm/npx) into `/usr/local/bin`. Run `node --version` if commands disagree with CI; rerun `.agents/setup` to repair.
+- Start the site with the `dev-server` project skill, not tmux or shell backgrounding. Amp supervises services across wake-ups and CLI updates.
+- Use tmux session `dev` only for interactive REPLs or work you will attach to, with one window per task. Create it from the repository root with `tmux new-session -d -s dev -c "$PWD"` if missing; open a window with `tmux new-window -t dev -c "$PWD"`.
+- This is a public site: no database, test users, credentials, or application sign-in. Portal access still requires Amp access.
+- Save review screenshots and recordings in `.amp/in/artifacts/`, logs in `.amp/in/`. Do not print secrets or commit generated runtime state.
+<!-- END alfarolabs-orb -->
+EOF
+cat "$guidance.tmp" > "$guidance"
+rm "$guidance.tmp"
+
+command -v amp >/dev/null
+command -v agent-browser >/dev/null || { echo 'agent-browser is required; use the standard Amp orb image.' >&2; exit 1; }
+agent-browser install
+echo "Setup complete ($(date -u +%FT%TZ)); no services started."
