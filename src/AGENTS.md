@@ -6,8 +6,8 @@
 - Use TanStack `Link` for internal navigation, anchors for external/mail links.
 - Components consume `published` lines via `.toText()`, not literal visible copy.
   Follow `src/content/AGENTS.md` when changing the ledger.
-- `AgentRun` is an illustration, not a working approval UI. Do not make its
-  decorative Approve span look like a real operation in tests or reports.
+- Product cards without a confirmed URL show a placeholder. Never invent a
+  product link; add one to the ledger only when Carlos supplies it.
 - Booking buttons currently navigate to `/contact`; the contact page shows a
   booking placeholder. Never invent a booking URL or claim scheduling works.
 - Keep responsive styles in `styles/app.css`; verify desktop and mobile output.

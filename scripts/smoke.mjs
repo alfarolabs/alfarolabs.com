@@ -11,6 +11,11 @@ const pageFiles = {
   "dist/client/contact/index.html": "/contact",
 };
 
+const productLinks = {
+  "/": ["https://patchlist.app/"],
+  "/about": ["https://patchlist.app/"],
+};
+
 const { values } = parseArgs({ options: { url: { type: "string" } } });
 const origin = values.url ? new URL(values.url) : null;
 if (origin && (
@@ -80,6 +85,9 @@ for (const [file, route] of Object.entries(pageFiles)) {
     if (brand !== "Alfaro Labs") fail(`brand "${brand}"`);
   }
   if (/\p{Extended_Pictographic}/u.test(text)) fail("emoji");
+  for (const href of productLinks[route] ?? []) {
+    if (!html.includes(`href="${href}"`)) fail(`missing product link ${href}`);
+  }
   for (const phrase of oncePhrases) {
     phraseCounts[phrase] += text.split(phrase).length - 1;
   }

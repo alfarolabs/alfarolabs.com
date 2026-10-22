@@ -18,35 +18,34 @@ function Contact() {
   return (
     <>
       <header className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">{hero.eyebrow.toText()}</p>
-          <h1>{hero.title.toText()}</h1>
-          <p className="lede">{hero.body.toText()}</p>
-          <BookingLink slot="status" />
-        </div>
+        <p className="eyebrow">{hero.eyebrow.toText()}</p>
+        <h1 className="display">{hero.title.toText()}</h1>
+        <p className="lede">{hero.body.toText()}</p>
+        <BookingLink slot="status" />
       </header>
 
-      <Section heading={reach.heading.toText()}>
-        <dl className="cells cells-2">
-          <div className="cell">
-            <dt>{reach.emailLabel.toText()}</dt>
-            <dd>
-              <a className="text-link" href={emailHref()}>
-                {published.email.toText()}
-              </a>
-            </dd>
-          </div>
-          <div className="cell">
-            <dt>{reach.instagramLabel.toText()}</dt>
-            <dd>
-              <a className="text-link" href={instagramHref()}>
-                {published.instagram.label.toText()}
-              </a>
-              <p>{published.instagram.dm.toText()}</p>
-            </dd>
-          </div>
-        </dl>
-      </Section>
+      <div className="paper">
+        <Section heading={reach.heading.toText()}>
+          <dl className="steps">
+            <div className="step">
+              <dt>{reach.emailLabel.toText()}</dt>
+              <dd>
+                <a className="text-link" href={emailHref()}>
+                  {published.email.toText()}
+                </a>
+              </dd>
+            </div>
+            <div className="step">
+              <dt>{reach.instagramLabel.toText()}</dt>
+              <dd>
+                <a className="text-link" href={instagramHref()}>
+                  {published.instagram.label.toText()}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        </Section>
+      </div>
     </>
   );
 }

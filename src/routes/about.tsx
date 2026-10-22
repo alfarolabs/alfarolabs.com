@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookingLink } from "../components/BookingLink";
 import { Placeholder } from "../components/Placeholder";
+import { Products } from "../components/Products";
 import { Section } from "../components/Section";
 import { published } from "../content";
 
@@ -15,12 +16,12 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
-  const { hero, proof, book } = published.about;
+  const { hero, work, book } = published.about;
   return (
     <>
       <header className="hero hero-split">
         <div className="hero-copy">
-          <h1>{hero.title.toText()}</h1>
+          <h1 className="display">{hero.title.toText()}</h1>
           {hero.story.map((paragraph) => (
             <p key={paragraph.toText()} className="lede">
               {paragraph.toText()}
@@ -30,21 +31,15 @@ function About() {
         <Placeholder kind="photo" />
       </header>
 
-      <Section heading={proof.heading.toText()}>
-        <ul className="cells cells-2">
-          {proof.entries.map((entry) => (
-            <li key={entry.name.toText()} className="cell proof">
-              <h3>{entry.name.toText()}</h3>
-              {"does" in entry ? <p>{entry.does.toText()}</p> : null}
-              <Placeholder kind="screenshot" />
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section heading={book.heading.toText()}>
-        <BookingLink />
-      </Section>
+      <div className="paper">
+        <Section heading={work.heading.toText()}>
+          <Products />
+        </Section>
+        <Section heading={book.heading.toText()}>
+          <p>{book.body.toText()}</p>
+          <BookingLink />
+        </Section>
+      </div>
     </>
   );
 }
