@@ -6,15 +6,14 @@ globs:
 # CSS
 
 - Preserve the current visual system unless a redesign is requested. Midnight
-  and champagne: each page opens on a dark midnight hero field with soft
-  champagne and blue glows, grain, and the lighthouse art tinted in; the body is
-  ivory paper with near-black ink, hairline section borders, and dotted rails
-  outside the content edge with short ticks beside headings. Instrument Serif
-  display type with same-color italic accents, system sans body, mono uppercase
-  labels, and champagne buttons with dark text. The book band is a dark midnight
-  call to action. The palette is the `:root` variables; glows take RGB triplets.
-  Colors, fonts, and easings live in `:root` custom properties. Fonts are local;
-  don't add a third-party font dependency.
+  and champagne, set like a book: each page opens on the full-bleed lighthouse
+  photograph darkened to midnight, with copy low and left; the body is ivory
+  paper with Newsreader text, centered chapters opened by italic roman
+  numerals, gold-ruled service cards, and a framed photo booking panel. The
+  footer is a midnight colophon. Buttons are square and letterspaced: champagne
+  outline on midnight, solid midnight on ivory. Colors, fonts, and easings live
+  in `:root` custom properties. Fonts are local; don't add a third-party font
+  dependency.
 - Motion is CSS only and must leave content visible without it: keyframes
   animate *from* a hidden state, and `prefers-reduced-motion` turns it off.
 - Extend existing layout classes and the 768/1024/1280px breakpoints before adding

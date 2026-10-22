@@ -7,7 +7,6 @@ null satisfies BookingHref;
 const logoPaths = {
   icon: "/brand/icon-on-black.svg",
   wordmark: "/brand/wordmark-white.svg",
-  wordmarkInk: "/brand/wordmark-black.svg",
 } as const;
 
 export type LogoSrc = (typeof logoPaths)[keyof typeof logoPaths];
@@ -382,7 +381,7 @@ export function requiredLines(): {
       ],
     },
     everyPage: [published.footerTagline.toText(), published.booking.label.toText(), published.closing.toText()],
-    logos: new Set([logoSrc("icon"), logoSrc("wordmark"), logoSrc("wordmarkInk")]),
+    logos: new Set([logoSrc("icon"), logoSrc("wordmark")]),
     oncePhrases: ["Agentify yourself", "We can fix everything", "Agent acceleration"],
   };
 }

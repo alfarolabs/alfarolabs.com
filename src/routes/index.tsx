@@ -24,8 +24,10 @@ function Home() {
           <span className="word">{software.toText()}</span> <em className="word">{atThe.toText()}</em>{" "}
           <span className="word">{frontier.toText()}</span>
         </h1>
-        <p className="lede">{hero.lede.toText()}</p>
-        <BookingLink />
+        <div className="hero-aside">
+          <p className="lede">{hero.lede.toText()}</p>
+          <BookingLink />
+        </div>
       </header>
 
       <section className="band">
