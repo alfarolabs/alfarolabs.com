@@ -35,17 +35,8 @@ ln -sfn "$node_home" "$node_link"
 export PATH="$node_link/bin:$PATH"
 [[ "$(node --version)" == "v$node_version" ]]
 
-# Agent processes and supervised services start in separate login shells.
-profile_marker="# Alfaro Labs orb Node toolchain"
-if ! grep -Fqx "$profile_marker" "$HOME/.bash_profile" 2>/dev/null; then
-  {
-    printf '\n%s\n' "$profile_marker"
-    printf 'case "$PWD/" in\n  %q/*)\n' "$repo_root"
-    printf '    case ":$PATH:" in\n      *:%q/bin:*) ;;\n' "$node_link"
-    printf '      *) export PATH=%q/bin:"$PATH" ;;\n' "$node_link"
-    printf '    esac\n    ;;\nesac\n'
-  } >> "$HOME/.bash_profile"
-fi
+# Install the login hook now; resume repairs its order after orb activation.
+"$repo_root/.agents/resume"
 echo "Node $(node --version), npm $(npm --version) ready (${SECONDS}s)"
 
 echo "Installing locked npm dependencies"

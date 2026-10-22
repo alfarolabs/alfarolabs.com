@@ -17,7 +17,9 @@ Preview the production bundle with `npm run build && npm run preview`.
 ## Amp orbs
 
 `.agents/setup` installs the pinned Node version and locked npm dependencies for
-a fresh orb. This site needs no database, seed data, authentication, or resume hook.
+a fresh orb. `.agents/resume` keeps the repository's Node login hook after Amp's
+environment loading so new agent and service shells use the pinned version. It
+does not install dependencies. This site needs no database, seed data, or authentication.
 
 Start the supervised production preview and get its portal URL:
 
@@ -37,6 +39,18 @@ Inspect it with `amp orb service status preview` and `amp orb service logs previ
 Use the portal URL printed by Amp, not a sandbox-local URL. See Amp's
 [orb workflow](https://ampcode.com/notes/putting-an-agent-in-an-orb) and
 [service documentation](https://ampcode.com/docs/orbs/portals).
+
+## Agent guidance
+
+`AGENTS.md` contains repository-wide commands, code ownership, verification, and
+publishing rules. The project skill in
+`.agents/skills/editing-site-content/SKILL.md` covers the typed content ledger,
+brand constraints, and booking placeholders; Amp loads it for those tasks.
+
+Keep reusable task instructions in `.agents/skills/` and always-needed guidance
+in `AGENTS.md`. No custom MCP servers, plugins, or workspace settings overrides
+are required. Use Amp's official skills for general browser and orb workflows.
+Local review artifacts under `.amp/in/` and generated portal metadata stay out of Git.
 
 ## Checks
 
