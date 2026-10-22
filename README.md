@@ -17,26 +17,30 @@ Preview the production bundle with `npm run build && npm run preview`.
 ## Amp orbs
 
 `.agents/setup` installs the pinned Node version and locked npm dependencies for
-a fresh orb. `.agents/resume` keeps the repository's Node login hook after Amp's
-environment loading so new agent and service shells use the pinned version. It
-does not install dependencies. This site needs no database, seed data, or authentication.
+a fresh orb, prepares Chrome, links Node/npm/npx into `/usr/local/bin`, and writes
+orb guidance without overwriting personal instructions. It starts no services.
+This site needs no database, seed data, authentication, or resume-time repair.
 
-Start the supervised production preview and get its portal URL:
-
-```bash
-amp orb services ensure
-```
-
-`.amp/services.yaml` builds the site, serves it through the Cloudflare Workers
-runtime on an assigned port, and checks `/` before reporting ready. Repeating
-ensure reuses the running service. After source changes, rebuild and restart it:
+Start or reuse the supervised development server and get its portal URL:
 
 ```bash
-amp orb service restart preview
+.agents/skills/dev-server/ensure-dev-server.sh
 ```
 
-Inspect it with `amp orb service status preview` and `amp orb service logs preview`.
-Use the portal URL printed by Amp, not a sandbox-local URL. See Amp's
+The script uses `amp orb services ensure` with `.amp/services.yaml`, serves Vite
+with the Cloudflare plugin on an assigned port, and checks `/` before reporting
+ready. It writes `.amp/dev-ports.json` and logs to `.amp/in/`. Repeating ensure
+reuses the healthy service; an unresponsive service is restarted once. Source
+changes hot reload. After configuration or dependency changes:
+
+```bash
+amp orb service restart web
+.agents/skills/dev-server/ensure-dev-server.sh
+```
+
+Inspect it with `amp orb service status web` and `amp orb service logs web`.
+Use the portal URL printed by Amp, not a sandbox-local URL. The root `AGENTS.md`
+also documents a supervised production-bundle preview. See Amp's
 [orb workflow](https://ampcode.com/notes/putting-an-agent-in-an-orb) and
 [service documentation](https://ampcode.com/docs/orbs/portals).
 
@@ -44,8 +48,9 @@ Use the portal URL printed by Amp, not a sandbox-local URL. See Amp's
 
 `AGENTS.md` contains repository-wide commands, code ownership, verification, and
 publishing rules. The project skill in
-`.agents/skills/editing-site-content/SKILL.md` covers the typed content ledger,
-brand constraints, and booking placeholders; Amp loads it for those tasks.
+`.agents/skills/dev-server/SKILL.md` covers starting and repairing the server.
+Subtree `AGENTS.md` files and glob-scoped `docs/agents/*.md` cover code, content,
+brand assets, and test conventions.
 
 Keep reusable task instructions in `.agents/skills/` and always-needed guidance
 in `AGENTS.md`. No custom MCP servers, plugins, or workspace settings overrides
