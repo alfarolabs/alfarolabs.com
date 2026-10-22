@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# This static site has no authentication, databases, or connections to restore.
-# Dependencies and the pinned Node toolchain are preserved in the orb snapshot.
