@@ -86,7 +86,7 @@ const lines = mintAll({
   heroAtThe: "at the",
   heroFrontier: "Frontier",
   chipServices: "See what we do",
-  chipPatchlist: "Patchlist. The production OS for live sound",
+  chipPatchlistSub: "The production OS for live sound",
 
   t1Heading: "The ground has moved.",
   t1a: "Models now write working code, read whole documents, and carry out multi-step tasks on their own.",
@@ -247,7 +247,7 @@ export const published = {
       lede: lines.oneLiner,
       chips: {
         services: { to: "/agents" as const, label: lines.chipServices },
-        patchlist: { href: patchlist, label: lines.chipPatchlist },
+        patchlist: { href: patchlist, label: lines.patchlistName, sub: lines.chipPatchlistSub },
       },
     },
     theses: [

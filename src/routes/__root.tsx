@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import appCss from "../styles/app.css?url";
 import { iconLink } from "../content";
 import { SiteFooter } from "../components/SiteFooter";
+import { Scene } from "../components/Scene";
 import { SiteHeader } from "../components/SiteHeader";
 
 export const Route = createRootRoute({
@@ -23,6 +24,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <Scene />
         <div className="frame">
           <SiteHeader />
           <main id="main">{children}</main>

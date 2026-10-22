@@ -20,23 +20,27 @@ function Home() {
   return (
     <>
       <header className="hero hero-home">
+        <div className="hero-center">
+          <h1 className="display display-words">
+            <span className="word">{software.toText()}</span> <em className="word">{atThe.toText()}</em>{" "}
+            <span className="word">{frontier.toText()}</span>
+          </h1>
+          <p className="lede">{hero.lede.toText()}</p>
+          <BookingLink />
+        </div>
         <ul className="chips">
           <li>
             <Link className="chip" to={hero.chips.services.to}>
-              {hero.chips.services.label.toText()}
+              <span className="chip-label">{hero.chips.services.label.toText()}</span>
             </Link>
           </li>
           <li>
             <a className="chip" href={hero.chips.patchlist.href.toHref()}>
-              {hero.chips.patchlist.label.toText()}
+              <span className="chip-label">{hero.chips.patchlist.label.toText()}</span>
+              <span className="chip-sub">{hero.chips.patchlist.sub.toText()}</span>
             </a>
           </li>
         </ul>
-        <h1 className="display">
-          <span>{software.toText()}</span> <em>{atThe.toText()}</em> <span>{frontier.toText()}</span>
-        </h1>
-        <p className="lede">{hero.lede.toText()}</p>
-        <BookingLink />
       </header>
 
       <div className="paper">

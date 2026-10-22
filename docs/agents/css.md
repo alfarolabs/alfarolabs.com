@@ -5,10 +5,13 @@ globs:
 
 # CSS
 
-- Preserve the current visual system unless a redesign is requested: dark
-  royal-purple hero art, a cream numbered "paper" panel, monospace display type,
-  and serif body text. Colors live in `:root` custom properties. Fonts are local
-  or system stacks; don't add a third-party font dependency.
+- Preserve the current visual system unless a redesign is requested: a fixed
+  painted royal-purple scene, Instrument Serif display type with gold italic
+  accents, mono uppercase labels, gold buttons, and a cream numbered "paper"
+  panel set in Newsreader. Colors, fonts, and easings live in `:root` custom
+  properties. Fonts are local; don't add a third-party font dependency.
+- Motion is CSS only and must leave content visible without it: keyframes
+  animate *from* a hidden state, and `prefers-reduced-motion` turns it off.
 - Extend existing layout classes and the 768/1024/1280px breakpoints before adding
   new layout systems. Keep `min-width: 0`, wrapping, focus-visible outlines, and
   minimum link target sizes where used.
