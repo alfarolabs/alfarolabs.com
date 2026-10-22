@@ -31,28 +31,30 @@
 }
 
 :root {
-  /* Light surface: cream paper and near-black ink. */
-  --paper: #dfdfc1;
-  --paper-deep: #d6d6b4;
-  --ink: #0b0d0b;
-  --ink-soft: #595959;
-  --line: rgba(11, 13, 11, 0.12);
-  --line-strong: rgba(11, 13, 11, 0.32);
+  /* Light surface: ivory paper and near-black ink. */
+  --paper: #f4f0e8;
+  --ink: #12141a;
+  --ink-soft: #5c5a55;
+  --line: color-mix(in srgb, var(--ink) 12%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 32%, transparent);
 
-  /* Dark surface: green-black field with ember and teal light. */
-  --field: #0d1614;
-  --field-high: #141f1b;
-  --deep: #091c1e;
-  --glow: #f6fff5;
-  --glow-soft: rgba(246, 255, 245, 0.74);
-  --glow-faint: #978e81;
-  --glow-line: rgba(246, 255, 245, 0.12);
-  --edge-dark: #7d665b;
+  /* Dark surface: midnight field lit by a warm and a cool glow (RGB triplets),
+     scaled by --glow-k. */
+  --field: #0a0e16;
+  --field-high: #111722;
+  --deep: #0c111b;
+  --field-floor: #1a2030;
+  --warm: 203 177 127;
+  --cool: 90 110 150;
+  --glow-k: 0.55;
+  --glow: #f5f1e8;
+  --glow-soft: color-mix(in srgb, var(--glow) 74%, transparent);
+  --glow-line: color-mix(in srgb, var(--glow) 12%, transparent);
 
-  /* Accent. */
-  --ember: #f6833b;
-  --ember-high: #ff9655;
-  --on-ember: #091c1e;
+  /* Accent: champagne. */
+  --accent: #cbb17f;
+  --accent-high: #d9c293;
+  --on-accent: #0a0e16;
 
   --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -94,8 +96,8 @@ body {
 }
 
 ::selection {
-  background: var(--ember);
-  color: var(--on-ember);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 h1,
@@ -219,8 +221,8 @@ a {
   min-height: 2.75rem;
   border: 1px solid transparent;
   border-radius: 6px;
-  background: var(--ember);
-  color: var(--on-ember);
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 0.45rem 1rem;
   font-family: var(--sans);
   font-size: 1rem;
@@ -236,7 +238,7 @@ a {
 }
 
 .button:hover {
-  background: var(--ember-high);
+  background: var(--accent-high);
 }
 
 .button:hover::after {
@@ -284,7 +286,7 @@ a {
   letter-spacing: 0.02em;
 }
 
-/* Hero: the dark field. Lighthouse photograph tinted by the field, ember and
+/* Hero: the dark field. Lighthouse photograph tinted by the field, warm and
    teal glows, film grain and a vignette. */
 
 .hero {
@@ -299,7 +301,7 @@ a {
   min-height: 30rem;
   padding: calc(var(--header-h) + 3rem) var(--edge) 4.5rem;
   background:
-    radial-gradient(120% 130% at 50% 115%, #192923 0%, transparent 55%),
+    radial-gradient(120% 130% at 50% 115%, var(--field-floor) 0%, transparent 55%),
     linear-gradient(var(--field), var(--field-high));
   color: var(--glow);
   text-align: center;
@@ -324,11 +326,11 @@ a {
 .hero::after {
   background:
     var(--grain),
-    radial-gradient(115% 100% at 50% 45%, transparent 55%, rgba(4, 12, 8, 0.6) 100%),
-    radial-gradient(45% 75% at 0% 40%, rgba(255, 138, 60, 0.42), rgba(196, 84, 28, 0.16) 55%, transparent 80%),
-    radial-gradient(40% 55% at 92% 85%, rgba(255, 170, 90, 0.16), transparent 70%),
-    radial-gradient(45% 60% at 60% 70%, rgba(70, 160, 110, 0.14), transparent 75%),
-    linear-gradient(rgba(255, 138, 60, 0.1), transparent 30%);
+    radial-gradient(115% 100% at 50% 45%, transparent 55%, rgb(0 0 0 / 0.55) 100%),
+    radial-gradient(45% 75% at 0% 40%, rgb(var(--warm) / calc(0.42 * var(--glow-k))), rgb(var(--warm) / calc(0.14 * var(--glow-k))) 55%, transparent 80%),
+    radial-gradient(40% 55% at 92% 85%, rgb(var(--warm) / calc(0.16 * var(--glow-k))), transparent 70%),
+    radial-gradient(45% 60% at 60% 70%, rgb(var(--cool) / calc(0.14 * var(--glow-k))), transparent 75%),
+    linear-gradient(rgb(var(--warm) / calc(0.1 * var(--glow-k))), transparent 30%);
 }
 
 .hero-home {
@@ -344,7 +346,7 @@ a {
 }
 
 .hero .eyebrow {
-  color: var(--ember);
+  color: var(--accent);
   animation: rise 1.2s var(--ease-out) 0.2s both;
 }
 
@@ -407,8 +409,8 @@ a {
 }
 
 .hero .placeholder {
-  border-color: rgba(246, 255, 245, 0.28);
-  background: rgba(13, 22, 20, 0.5);
+  border-color: var(--glow-line);
+  background: color-mix(in srgb, var(--field) 50%, transparent);
   color: var(--glow-soft);
   text-align: center;
   backdrop-filter: blur(6px);
@@ -561,8 +563,8 @@ main > * {
   padding-block: 5rem;
   background:
     var(--grain),
-    radial-gradient(50% 80% at 100% 100%, rgba(246, 131, 59, 0.22), transparent 70%),
-    radial-gradient(60% 90% at 0% 0%, rgba(70, 160, 110, 0.14), transparent 70%),
+    radial-gradient(50% 80% at 100% 100%, rgb(var(--warm) / calc(0.22 * var(--glow-k))), transparent 70%),
+    radial-gradient(60% 90% at 0% 0%, rgb(var(--cool) / calc(0.14 * var(--glow-k))), transparent 70%),
     var(--deep);
   color: var(--glow-soft);
   text-align: center;
