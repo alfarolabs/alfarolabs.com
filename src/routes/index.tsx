@@ -29,7 +29,10 @@ function Home() {
       </header>
 
       <section className="band">
-        <h2>{offers.heading.toText()}</h2>
+        <header className="band-head">
+          <p className="label">{offers.label.toText()}</p>
+          <h2>{offers.heading.toText()}</h2>
+        </header>
         <ul className="offers">
           {offers.items.map((item) => (
             <li key={item.name.toText()} className="offer">
@@ -44,12 +47,18 @@ function Home() {
       </section>
 
       <section className="band">
-        <h2>{work.heading.toText()}</h2>
+        <header className="band-head">
+          <p className="label">{work.label.toText()}</p>
+          <h2>{work.heading.toText()}</h2>
+        </header>
         <Products />
       </section>
 
       <section className="band">
-        <h2>{belief.heading.toText()}</h2>
+        <header className="band-head">
+          <p className="label">{belief.label.toText()}</p>
+          <h2>{belief.heading.toText()}</h2>
+        </header>
         <p>{belief.body.toText()}</p>
         <Link className="text-link" to={belief.link.to}>
           {belief.link.label.toText()}

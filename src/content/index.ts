@@ -7,6 +7,7 @@ null satisfies BookingHref;
 const logoPaths = {
   icon: "/brand/icon-on-black.svg",
   wordmark: "/brand/wordmark-white.svg",
+  wordmarkInk: "/brand/wordmark-black.svg",
 } as const;
 
 export type LogoSrc = (typeof logoPaths)[keyof typeof logoPaths];
@@ -256,6 +257,7 @@ export const published = {
       lede: lines.oneLiner,
     },
     offers: {
+      label: lines.navServices,
       heading: lines.servicesTitle,
       items: [
         { name: lines.s1Heading, body: lines.s1a },
@@ -264,8 +266,9 @@ export const published = {
       ],
       link: { to: "/agents" as const, label: lines.servicesMore },
     },
-    work,
+    work: { ...work, label: lines.navAbout },
     belief: {
+      label: lines.navManifesto,
       heading: lines.beliefHeading,
       body: lines.beliefBody,
       link: { to: "/manifesto" as const, label: lines.manifestoLink },
@@ -274,7 +277,7 @@ export const published = {
   },
   manifesto: {
     meta: { title: lines.manifestoMetaTitle, description: lines.manifestoLede },
-    hero: { title: lines.manifestoTitle, lede: lines.manifestoLede },
+    hero: { eyebrow: lines.navManifesto, title: lines.manifestoTitle, lede: lines.manifestoLede },
     theses: [
       { heading: lines.t1Heading, points: [lines.t1a, lines.t1b, lines.t1c] },
       { heading: lines.t2Heading, points: [lines.t2a, lines.t2b, lines.t2c] },
@@ -289,7 +292,7 @@ export const published = {
   },
   services: {
     meta: { title: lines.servicesMetaTitle, description: lines.oneLiner },
-    hero: { title: lines.servicesTitle, lede: lines.oneLiner, sub: lines.servicesLede },
+    hero: { eyebrow: lines.navServices, title: lines.servicesTitle, lede: lines.oneLiner, sub: lines.servicesLede },
     areas: [
       { heading: lines.s1Heading, points: [lines.s1a, lines.s1b, lines.s1c] },
       { heading: lines.s2Heading, points: [lines.s2a, lines.s2b, lines.s2c] },
@@ -309,7 +312,7 @@ export const published = {
   },
   about: {
     meta: { title: lines.aboutMetaTitle, description: lines.aboutMetaDescription },
-    hero: { title: lines.aboutTitle, story: [lines.storyCareer, lines.storyAgents] },
+    hero: { eyebrow: lines.navAbout, title: lines.aboutTitle, story: [lines.storyCareer, lines.storyAgents] },
     work,
     book: { heading: lines.bookLong, body: lines.contactBody },
   },
@@ -379,7 +382,7 @@ export function requiredLines(): {
       ],
     },
     everyPage: [published.footerTagline.toText(), published.booking.label.toText(), published.closing.toText()],
-    logos: new Set([logoSrc("icon"), logoSrc("wordmark")]),
+    logos: new Set([logoSrc("icon"), logoSrc("wordmark"), logoSrc("wordmarkInk")]),
     oncePhrases: ["Agentify yourself", "We can fix everything", "Agent acceleration"],
   };
 }

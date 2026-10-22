@@ -21,6 +21,7 @@ function About() {
     <>
       <header className="hero hero-split">
         <div className="hero-copy">
+          <p className="eyebrow">{hero.eyebrow.toText()}</p>
           <h1 className="display">{hero.title.toText()}</h1>
           {hero.story.map((paragraph) => (
             <p key={paragraph.toText()} className="lede">
@@ -31,7 +32,7 @@ function About() {
         <Placeholder kind="photo" />
       </header>
 
-      <div className="paper">
+      <div className="rows">
         <Section heading={work.heading.toText()}>
           <Products />
         </Section>

@@ -5,12 +5,15 @@ globs:
 
 # CSS
 
-- Preserve the current visual system unless a redesign is requested: a fixed
-  black-and-white lighthouse-at-sea photograph, near-black and white only,
-  Instrument Serif display type with soft grey italic accents, mono uppercase
-  labels, white buttons, and a vellum manuscript panel in black ink with a black
-  wax seal. Colors, fonts, and easings live in `:root` custom
-  properties. Fonts are local; don't add a third-party font dependency.
+- Preserve the current visual system unless a redesign is requested. It follows
+  ampcode.com: each page opens on a dark green-black hero field with ember and
+  teal glows, grain, and the lighthouse art tinted in; the body is cream paper
+  with near-black ink, hairline section borders, and dotted rails outside the
+  content edge with short ticks beside headings. Instrument Serif display type
+  with same-color italic accents, system sans body, mono uppercase labels, and
+  orange buttons with dark text. The book band is a dark teal call to action.
+  Colors, fonts, and easings live in `:root` custom properties. Fonts are local;
+  don't add a third-party font dependency.
 - Motion is CSS only and must leave content visible without it: keyframes
   animate *from* a hidden state, and `prefers-reduced-motion` turns it off.
 - Extend existing layout classes and the 768/1024/1280px breakpoints before adding

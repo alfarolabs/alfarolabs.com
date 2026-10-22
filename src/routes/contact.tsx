@@ -24,7 +24,7 @@ function Contact() {
         <BookingLink slot="status" />
       </header>
 
-      <div className="paper">
+      <div className="rows">
         <Section heading={reach.heading.toText()}>
           <dl className="steps">
             <div className="step">

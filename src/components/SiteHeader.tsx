@@ -15,7 +15,9 @@ export function SiteHeader() {
         <ul className="nav">
           {published.nav.map((item) => (
             <li key={item.to}>
-              <Link to={item.to}>{item.label.toText()}</Link>
+              <Link className={item.to === "/contact" ? "button button-sm" : undefined} to={item.to}>
+                {item.label.toText()}
+              </Link>
             </li>
           ))}
         </ul>

@@ -18,13 +18,14 @@ function Services() {
   return (
     <>
       <header className="hero">
+        <p className="eyebrow">{hero.eyebrow.toText()}</p>
         <h1 className="display">{hero.title.toText()}</h1>
         <p className="lede">{hero.lede.toText()}</p>
         <p className="lede">{hero.sub.toText()}</p>
         <BookingLink />
       </header>
 
-      <div className="paper">
+      <div className="rows">
         {areas.map((area) => (
           <Section
             key={area.heading.toText()}
