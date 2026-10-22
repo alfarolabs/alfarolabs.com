@@ -1,0 +1,15 @@
+services:
+  web:
+    command: set -o pipefail; mkdir -p .amp/in; npm run dev -- --host 0.0.0.0 --port "$PORT" --strictPort 2>&1 | tee -a .amp/in/server.log
+    health: /
+    portal:
+      url: /
+      title: Alfaro Labs development
+      description: Public site with live reload. No application sign-in required.
+    portals:
+      - url: /agents
+        title: Agents
+      - url: /about
+        title: About Carlos
+      - url: /contact
+        title: Contact
