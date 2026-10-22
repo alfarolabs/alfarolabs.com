@@ -1,7 +1,0 @@
-services:
-  preview:
-    command: npm run build && npm run preview -- --host 0.0.0.0 --port "$PORT" --strictPort
-    health: /
-    portal:
-      title: Alfaro Labs
-      description: Production build served by the Cloudflare Workers runtime.
