@@ -10,8 +10,8 @@
   license.
 - `art/frontier.webp` is the commissioned lighthouse art, shown full bleed
   in the hero of every page and in the home booking panel.
-- `art/sky.svg` and `art/orbit.svg` share the photograph's 1672x941 frame so
-  they stay aligned with it under `cover`; the orbit starts at the lantern.
-  `art/chart-paper.svg` and `art/offer-*.svg` decorate the services band.
+- `art/offer-plan.svg`, `art/offer-workflow.svg`, and `art/offer-software.svg`
+  illustrate the services in matching 160x96 frames. Keep this artwork
+  business-focused, without celestial or mystical ornaments.
 - Public assets are served from `/` unchanged. Do not put secrets or private
   material here. Keep asset URLs in the content ledger or stylesheet as appropriate.

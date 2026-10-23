@@ -105,6 +105,17 @@ for (const [phrase, count] of Object.entries(phraseCounts)) {
   if (count > 1) failures.push(`"${phrase}" appears ${count} times`);
 }
 
+for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
+  const css = origin ? await (await get(asset)).text() : await readFile(`dist/client${asset}`, "utf8");
+  for (const match of css.matchAll(/url\(["']?(\/[^\s"')]+)["']?\)/g)) {
+    const path = match[1];
+    if (/^\/art\/(sky|orbit|chart-paper|offer-star|offer-orbit|offer-solid)\.svg$/.test(path)) {
+      failures.push(`${asset}: retired celestial artwork ${path}`);
+    }
+    assets.add(path);
+  }
+}
+
 if (origin) {
   for (const asset of assets) {
     const response = await get(asset);
