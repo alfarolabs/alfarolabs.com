@@ -4,6 +4,7 @@ Public, five-page site for Carlos Alfaro and Alfaro Labs: `/`, `/manifesto`,
 `/agents`, `/about`, `/contact`. React 19 + TanStack Start/Router + Vite, prerendered and
 served by Cloudflare Workers. No database, seed users, application sign-in, or
 required local secrets. Do not add auth bypass endpoints or backing services.
+pstack is paused until Carlos re-enables it.
 
 ## Map and conventions
 
