@@ -1,18 +1,25 @@
 name: ci
 
 # Authoritative gate. `npm run check` runs the same checks serially on a checkout.
+# CI runs typecheck in parallel with build → smoke → smoke:preview for fail-fast.
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# A newer push cancels a PR run; a run on main is never cancelled, so one deploy never cuts off another.
+# Align group with the standard; never cancel a main deploy mid-flight.
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
@@ -20,23 +27,61 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: ./.github/actions/setup
-      - run: npm run typecheck
+      - run: echo "GATE_START=$(date +%s)" >> "$GITHUB_ENV"
+      - id: typecheck
+        run: npm run typecheck
+      - if: success()
+        run: |
+          {
+            echo "### Gate time"
+            echo ""
+            echo "typecheck wall time: $(($(date +%s) - GATE_START))s on \`${{ runner.name }}\` (\`${{ runner.os }}\`)."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - if: failure()
+        run: |
+          {
+            echo "### typecheck failed"
+            echo ""
+            echo "Command: \`npm run typecheck\`"
+            echo "Inspect this job log; fix forward on the branch and re-push."
+          } >> "$GITHUB_STEP_SUMMARY"
 
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: ./.github/actions/setup
-      - run: npm run build
-      - run: npm run smoke
+      - run: echo "GATE_START=$(date +%s)" >> "$GITHUB_ENV"
+      - id: build
+        run: npm run build
+      - id: smoke
+        run: npm run smoke
       # Serves dist/ in workerd and checks pages, linked assets, and the 404 over HTTP.
-      - run: npm run smoke:preview
+      - id: smoke_preview
+        run: npm run smoke:preview
+      - if: success()
+        run: |
+          {
+            echo "### Gate time"
+            echo ""
+            echo "build+smoke wall time: $(($(date +%s) - GATE_START))s on \`${{ runner.name }}\` (\`${{ runner.os }}\`)."
+          } >> "$GITHUB_STEP_SUMMARY"
+      - if: failure()
+        run: |
+          {
+            echo "### build job failed"
+            echo ""
+            echo "Ordered gate: \`npm run build\` → \`npm run smoke\` → \`npm run smoke:preview\`"
+            echo "(same sequence as \`npm run check\` after typecheck)."
+            echo "Smoke is Node HTTP/static checks, not Playwright — no trace artifact."
+            echo "Inspect this job log; fix forward on the branch and re-push."
+          } >> "$GITHUB_STEP_SUMMARY"
       # The deploy job ships these exact bytes; .wrangler/deploy points wrangler at dist/server.
       - if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: site
           path: |
@@ -52,11 +97,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: ./.github/actions/setup
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: site
       - run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - if: failure()
+        run: |
+          {
+            echo "### deploy failed"
+            echo ""
+            echo "Command: \`npx wrangler deploy\` (artifact from the green build job)."
+            echo "Inspect this job log; do not redeploy from a laptop."
+          } >> "$GITHUB_STEP_SUMMARY"
