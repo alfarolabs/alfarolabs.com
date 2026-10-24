@@ -29,8 +29,16 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: ./.github/actions/setup
+      - run: echo "GATE_START=$(date +%s)" >> "$GITHUB_ENV"
       - id: typecheck
         run: npm run typecheck
+      - if: success()
+        run: |
+          {
+            echo "### Gate time"
+            echo ""
+            echo "typecheck wall time: $(($(date +%s) - GATE_START))s on \`${{ runner.name }}\` (\`${{ runner.os }}\`)."
+          } >> "$GITHUB_STEP_SUMMARY"
       - if: failure()
         run: |
           {
@@ -46,6 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - uses: ./.github/actions/setup
+      - run: echo "GATE_START=$(date +%s)" >> "$GITHUB_ENV"
       - id: build
         run: npm run build
       - id: smoke
@@ -53,6 +62,13 @@ jobs:
       # Serves dist/ in workerd and checks pages, linked assets, and the 404 over HTTP.
       - id: smoke_preview
         run: npm run smoke:preview
+      - if: success()
+        run: |
+          {
+            echo "### Gate time"
+            echo ""
+            echo "build+smoke wall time: $(($(date +%s) - GATE_START))s on \`${{ runner.name }}\` (\`${{ runner.os }}\`)."
+          } >> "$GITHUB_STEP_SUMMARY"
       - if: failure()
         run: |
           {
