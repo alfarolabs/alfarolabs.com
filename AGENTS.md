@@ -66,6 +66,7 @@ It ensures `.amp/services.yaml`, checks `/`, repairs a wedged service, and print
 the portal URL. Repeating it reuses the healthy process. Vite defaults to 3000
 outside supervision; in an orb use the assigned port in `.amp/dev-ports.json`.
 Use printed portals for people, local URLs only for orb automation.
+When `amp` is missing (for example Cursor cloud), use `npm run dev` instead of `amp orb service` commands.
 
 Server logs: `.amp/in/server.log`; ensure logs: `.amp/in/dev-server.log`;
 setup logs: `.amp/in/setup.log` (also `~/.cache/amp/logs/setup.log` when Amp runs it).
@@ -95,8 +96,12 @@ and limitations. A screenshot alone is not proof that a link or deployment works
 
 ## Git and deployment
 
-Commit focused pieces separately. Preserve others' edits. Ask Carlos before
-pushing, opening a PR, merging, deploying, or changing shared infrastructure.
+Commit focused pieces separately. Preserve others' edits. Agents may push
+feature branches (and open or update PRs) so CI can run; never push `main`
+without Carlos's say-so. Ask Carlos before merging, deploying, or changing
+shared infrastructure. Before each push, run the quick check
+`npm run typecheck` only (seconds); do not run the full suite in cloud — CI
+is the gate (see **CI** above).
 `main` push **automatically deploys** via CI; never use it as a test branch.
 Do not run `wrangler deploy` locally. Roll back via an approved revert PR.
 

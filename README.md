@@ -1,7 +1,8 @@
 # Alfaro Labs
 
 Public site for Carlos Alfaro and Alfaro Labs Agents. TanStack Start, React and
-Vite, built for Cloudflare Workers. Four routes: `/`, `/agents`, `/about`, `/contact`.
+Vite, built for Cloudflare Workers. Five routes: `/`, `/manifesto`, `/agents`,
+`/about`, `/contact`.
 
 ## Development
 
@@ -62,7 +63,7 @@ Local review artifacts under `.amp/in/` and generated portal metadata stay out o
 `npm run check` runs typecheck, build, the static smoke check, and
 `npm run smoke:preview`, which serves the build in workerd on a free local port
 and runs the HTTP smoke against it. It reproduces the CI gate. The smoke check
-covers all four generated pages' required text, casing, permitted logos, no en/em
+covers all five generated pages' required text, casing, permitted logos, no en/em
 dashes, hype words or emoji, only the $850 price, and brand-phrase counts.
 
 `npm run smoke -- --url <origin>` runs the same copy checks over HTTP, plus directly
@@ -85,5 +86,6 @@ On `main` only, a `deploy` job waits for both, downloads the exact `dist/` that
 merge to `main` deploys to `alfarolabs.com` and `www.alfarolabs.com`. Roll back with
 a revert pull request.
 
-Publishing requires Carlos's approval before pushing, opening a pull request,
-merging, or deploying. Do not deploy directly from a checkout.
+Agents may push feature branches for CI; never push `main` without Carlos's
+say-so. Ask Carlos before merging or deploying. Do not deploy directly from a
+checkout.
