@@ -36,18 +36,27 @@ and `npm --version`.
 | Build/prerender | `npm run build` |
 | Tests (after build) | `npm run smoke` |
 | Runtime smoke over HTTP (after build) | `npm run smoke:preview` |
-| Full gate, same checks as CI | `npm run check` |
+| Full gate (what CI calls) | `npm run check` |
 | Lint | Not configured; do not invent `npm run lint` |
 
 `check` runs typecheck → build → smoke → smoke:preview. `smoke:preview` serves
 `dist/` with `vite preview` (workerd) on a free local port and runs HTTP smoke.
-While iterating, run only the focused command; CI is the authoritative gate and
-runs `typecheck` in parallel with `build` (build, smoke, smoke:preview), then
-deploys the tested artifact on `main`. There is no separate unit-test runner.
-Smoke checks five pages, copy ownership/brand rules, and immutable logo hashes;
-it does not test layout, hydration, or clicks. Do not weaken checks to accommodate
-an accidental copy change, derive new expected results from the implementation,
-or test private helpers/mock call order. Add tests only for observable contracts.
+CI is the authoritative gate: it runs `typecheck` in parallel with `build`
+(build, smoke, smoke:preview), then deploys the tested artifact on `main`.
+There is no separate unit-test runner. Smoke checks five pages, copy
+ownership/brand rules, and immutable logo hashes; it does not test layout,
+hydration, or clicks. Do not weaken checks to accommodate an accidental copy
+change, derive new expected results from the implementation, or test private
+helpers/mock call order. Add tests only for observable contracts.
+
+## CI
+
+The check command CI calls is `npm run check` (same scripts/order as the parallel
+jobs in `.github/workflows/ci.yml`). Do **not** re-run that full suite in Cursor
+or Amp cloud before pushing. Push to the branch, read the result from GitHub
+Actions (`gh run watch` / the PR checks), and fix failures from the CI output
+and job summaries. This public repo runs on GitHub-hosted `ubuntu-latest`
+(not a self-hosted runner).
 
 ## Run and prove
 
@@ -77,8 +86,9 @@ or the deployed origin. HTTP mode also checks linked assets and a missing-route
 and assigned port printed by `service start` for automation; never disable TLS
 validation. Stop the one-off preview with `amp orb service stop preview` when done.
 
-Before reporting a change, run `npm run check`. For visitor-facing work, load
-Amp's `using-agent-browser` skill, verify affected navigation and booking behavior,
+Before reporting a change, confirm the branch's GitHub Actions `ci` run is green
+for the exact head (see **CI** above). For visitor-facing work, load Amp's
+`using-agent-browser` skill, verify affected navigation and booking behavior,
 and inspect screenshots at desktop and mobile widths. Save review evidence under
 `.amp/in/artifacts/`; record changed interactions. Report exact commands/results
 and limitations. A screenshot alone is not proof that a link or deployment works.
