@@ -8,7 +8,7 @@ description: Starts, reuses, or repairs the supervised Alfaro Labs dev server an
 From the repository root, run:
 
 ```bash
-.agents/skills/dev-server/ensure-dev-server.sh
+.amp/skills/dev-server/ensure-dev-server.sh
 ```
 
 If dependencies are missing, run `.agents/setup` first. The ensure script requires
