@@ -1,0 +1,11 @@
+---
+description: Cursor cloud notes for Alfaro Labs (not Amp)
+alwaysApply: true
+---
+
+# Cursor cloud
+
+- Do not load Amp orb/portal tooling into Cursor instructions. Amp guidance lives in `.amp/AGENTS.amp.md`.
+- When `amp` is missing, use `npm run dev` instead of `amp orb service` commands.
+- Do not re-run the full CI suite in this environment before pushing; push and read GitHub Actions.
+- pstack is Cursor-only; do not put pstack setup under `.amp/` or shared skill folders.

@@ -25,7 +25,7 @@ This site needs no database, seed data, authentication, or resume-time repair.
 Start or reuse the supervised development server and get its portal URL:
 
 ```bash
-.agents/skills/dev-server/ensure-dev-server.sh
+.amp/skills/dev-server/ensure-dev-server.sh
 ```
 
 The script uses `amp orb services ensure` with `.amp/services.yaml`, serves Vite
@@ -36,7 +36,7 @@ changes hot reload. After configuration or dependency changes:
 
 ```bash
 amp orb service restart web
-.agents/skills/dev-server/ensure-dev-server.sh
+.amp/skills/dev-server/ensure-dev-server.sh
 ```
 
 Inspect it with `amp orb service status web` and `amp orb service logs web`.
@@ -48,15 +48,15 @@ also documents a supervised production-bundle preview. See Amp's
 ## Agent guidance
 
 `AGENTS.md` contains repository-wide commands, code ownership, verification, and
-publishing rules. The project skill in
-`.agents/skills/dev-server/SKILL.md` covers starting and repairing the server.
+publishing rules. Amp orb details are in `.amp/AGENTS.amp.md`. The project skill in
+`.amp/skills/dev-server/SKILL.md` covers starting and repairing the server.
 Subtree `AGENTS.md` files and glob-scoped `docs/agents/*.md` cover code, content,
 brand assets, and test conventions.
 
-Keep reusable task instructions in `.agents/skills/` and always-needed guidance
-in `AGENTS.md`. No custom MCP servers, plugins, or workspace settings overrides
-are required. Use Amp's official skills for general browser and orb workflows.
-Local review artifacts under `.amp/in/` and generated portal metadata stay out of Git.
+Keep Amp-only skills in `.amp/skills/` and always-needed tool-neutral guidance
+in `AGENTS.md`. No custom MCP servers are required for local work. Use Amp's
+official skills for general browser and orb workflows. Local review artifacts
+under `.amp/in/` and generated portal metadata stay out of Git.
 
 ## Checks
 

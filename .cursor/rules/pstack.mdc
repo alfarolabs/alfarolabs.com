@@ -1,0 +1,11 @@
+---
+description: When and how to use pstack on this project
+alwaysApply: true
+---
+
+# pstack
+
+- Use `/poteto-mode` only for the hardest tasks.
+- When spawning cloud agents for rigorous work, set mode to poteto-mode.
+- Do not start large swarms unless asked.
+- Use `/poteto-help` when unsure.
