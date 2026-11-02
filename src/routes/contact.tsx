@@ -1,49 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Section } from "../components/Section";
-import { emailHref, instagramHref, published } from "../content";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: published.contact.meta.title.toText() },
-      { name: "description", content: published.contact.meta.description.toText() },
-    ],
-  }),
-  component: Contact,
+  beforeLoad: () => {
+    throw redirect({ to: "/services", statusCode: 301 });
+  },
 });
-
-function Contact() {
-  const { hero, reach } = published.contact;
-  return (
-    <>
-      <header className="hero">
-        <p className="eyebrow">{hero.eyebrow.toText()}</p>
-        <h1 className="display">{hero.title.toText()}</h1>
-        <p className="lede">{hero.body.toText()}</p>
-      </header>
-
-      <div className="rows">
-        <Section heading={reach.heading.toText()}>
-          <dl className="steps">
-            <div className="step">
-              <dt>{reach.emailLabel.toText()}</dt>
-              <dd>
-                <a className="text-link" href={emailHref()}>
-                  {published.email.toText()}
-                </a>
-              </dd>
-            </div>
-            <div className="step">
-              <dt>{reach.instagramLabel.toText()}</dt>
-              <dd>
-                <a className="text-link" href={instagramHref()}>
-                  {published.instagram.label.toText()}
-                </a>
-              </dd>
-            </div>
-          </dl>
-        </Section>
-      </div>
-    </>
-  );
-}

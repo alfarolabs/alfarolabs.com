@@ -1,5 +1,4 @@
-import { Link } from "@tanstack/react-router";
-import { published } from "../content";
+import { emailHref, published } from "../content";
 
 type Copy = typeof published.booking.label;
 
@@ -9,8 +8,8 @@ export function BookingLink({
   label?: Copy;
 }) {
   return (
-    <Link className="button" to="/contact">
+    <a className="button" href={emailHref()}>
       {label.toText()}
-    </Link>
+    </a>
   );
 }

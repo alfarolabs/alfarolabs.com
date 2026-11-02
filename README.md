@@ -1,9 +1,9 @@
 # Alfaro Labs
 
 Public site for Carlos Alfaro and Alfaro Labs. TanStack Start, React and
-Vite, built for Cloudflare Workers. Six routes: `/`, `/services`, `/software`,
-`/violet-audio`, `/show`, `/contact`. The retired `/agents`, `/about`, and
-`/manifesto` routes redirect permanently to `/services`.
+Vite, built for Cloudflare Workers. Five pages: `/`, `/services`, `/software`,
+`/violet-audio`, `/show`. The retired `/agents`, `/about`, `/manifesto`, and
+`/contact` routes redirect permanently to `/services`, which includes contact details.
 
 ## Development
 
@@ -64,15 +64,17 @@ under `.amp/in/` and generated portal metadata stay out of Git.
 `npm run check` runs typecheck, build, the static smoke check, and
 `npm run smoke:preview`, which serves the build in workerd on a free local port
 and runs the HTTP smoke against it. It reproduces the CI gate. The smoke check
-covers all six generated pages' required text, navigation order, unchanged tagline,
+covers all five generated pages' required text, navigation order, factual positioning,
 casing, permitted logos, no en/em dashes, hype words, emoji, pricing or commission
-copy, and brand-phrase counts. HTTP mode also verifies permanent redirects.
+copy, and brand-phrase counts. HTTP mode also verifies permanent redirects and
+404s for retired brand assets. Generic AI consulting and frontier copy are rejected.
 
 `npm run smoke -- --url <origin>` runs the same copy checks over HTTP, plus directly
 referenced JS/CSS/logo/font assets and a missing-route 404.
 
 Copy belongs in `src/content/index.ts`; the smoke check rejects visible page text
-outside that ledger. Booking buttons lead to contact details until Carlos supplies a URL.
+outside that ledger. Contact buttons use Carlos's existing email address; no booking
+service is configured.
 
 Static checks do not verify layout or clicks. For visitor-facing changes, use the
 production preview in a real browser: follow the affected navigation or booking

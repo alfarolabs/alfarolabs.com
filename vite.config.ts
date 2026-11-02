@@ -13,7 +13,7 @@ export default defineConfig({
       prerender: {
         enabled: true,
         autoSubfolderIndex: false,
-        filter: ({ path }) => !["/agents", "/about", "/manifesto"].includes(path),
+        filter: ({ path }) => !["/agents", "/about", "/manifesto", "/contact"].includes(path),
       },
     }),
     viteReact(),

@@ -4,8 +4,8 @@
   external link, and permitted logo path. Add copy through `mintAll`; consumers
   use `published` and `.toText()`. Do not bypass the types with casts/raw strings.
 - Duplicate literal lines are rejected; reuse the existing line instead.
-- Booking buttons lead to `/contact` until Carlos supplies and authorizes a real
-  scheduling destination. Never invent a booking URL.
+- Contact buttons use Carlos's existing email. Never invent a booking URL or a
+  scheduling destination.
 - Smoke enforces exact `Alfaro Labs` casing, no en/em dashes, emoji or hype words,
   no pricing or commission copy, and at most one occurrence of each constrained brand phrase
   across the site. Read the checks before changing copy; do not relax them just

@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import { ownedLines, requiredLines } from "../src/content/index.ts";
@@ -10,12 +11,19 @@ const pageFiles = {
   "dist/client/software.html": "/software",
   "dist/client/violet-audio.html": "/violet-audio",
   "dist/client/show.html": "/show",
-  "dist/client/contact.html": "/contact",
 };
 
+const retiredBrandPaths = [
+  "/brand/icon-on-black.svg",
+  "/brand/icon-black.svg",
+  "/brand/wordmark-white.svg",
+  "/brand/wordmark-black.svg",
+];
+
 const productLinks = {
+  "/services": ["mailto:carlos@alfarolabs.com"],
   "/software": ["https://patchlist.app/"],
-  "/violet-audio": ["https://violetaudio.com/dmix-128", "/contact"],
+  "/violet-audio": ["https://violetaudio.com/dmix-128", "mailto:carlos@alfarolabs.com"],
   "/show": ["https://www.youtube.com/@alfarolabs"],
 };
 
@@ -72,18 +80,30 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (response && response.status !== 200) fail(`expected HTTP 200, got ${response.status}`);
   if (/Placeholder|\bTBD\b|Gearmind/.test(text)) fail("retired placeholder or hidden product");
   if (/\bcommission\b|\bpricing\b|\$\d/i.test(text)) fail("commission or pricing copy");
+  if (/\bfrontier\b|AI consulting|technology consulting|AI strategy/i.test(text)) fail("retired generic-AI framing");
   const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? "";
   const navLinks = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
     .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
   const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/violet-audio", "Violet Audio"], ["/show", "Show"]];
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
-  if (!text.includes("Alfaro Labs. Technology consulting for AI, agents, and custom software.")) fail("tagline changed");
+  if (!text.includes("Live sound services, live production software, and Violet Audio dMix 128 sales.")) fail("missing factual positioning");
+  if (route === "/") {
+    for (const pillar of ["Live Sound Services", "Live Production SaaS", "Violet Audio Dealer"]) {
+      if (!text.includes(pillar)) fail(`missing pillar "${pillar}"`);
+    }
+  }
   if (route === "/services" && !text.includes("live sound consultant and technician, with close to two decades working live shows")) fail("missing live sound experience");
   if (route === "/violet-audio" && !text.includes("official dealer of the Violet Audio dMix 128 console")) fail("missing dealer statement");
   if (route === "/software") {
     for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones."]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
+  }
+  if (route === "/show") {
+    const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0] ?? "";
+    const links = [...main.matchAll(/href="([^"]+)"/g)].map(([, href]) => href);
+    if (JSON.stringify(links) !== JSON.stringify(["https://www.youtube.com/@alfarolabs"])) fail("Show must only link the YouTube channel");
+    if (/<(?:video|audio|iframe)\b|podcast|rss/i.test(main)) fail("unconfirmed Show media or feed");
   }
   if (!html.includes('rel="icon" sizes="32x32" type="image/png" href="/brand/favicon-32.png"')) fail("missing 32px PNG favicon");
   if (!html.includes('rel="icon" type="image/svg+xml" href="/brand/favicon.svg"')) fail("missing adaptive SVG favicon");
@@ -139,13 +159,21 @@ for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
   }
 }
 
+for (const path of retiredBrandPaths) {
+  if (existsSync(`public${path}`)) failures.push(`${path}: retired brand file remains in public/`);
+}
+
 if (origin) {
-  for (const path of ["/agents", "/about", "/manifesto", "/agents/", "/about/", "/manifesto/"]) {
+  for (const path of ["/agents", "/about", "/manifesto", "/contact", "/agents/", "/about/", "/manifesto/", "/contact/"]) {
     const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
     const location = response.headers.get("location");
     if (response.status !== 301 || !location || new URL(location, origin).pathname !== "/services") {
       failures.push(`${path}: expected 301 to /services, got ${response.status} to ${location}`);
     }
+  }
+  for (const path of retiredBrandPaths) {
+    const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+    if (response.status !== 404) failures.push(`${path}: expected retired brand 404, got ${response.status}`);
   }
   for (const asset of assets) {
     const response = await get(asset);
@@ -183,5 +211,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 6 permanent redirects, ${assets.size} assets, missing route 404` : "static HTML"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 8 permanent redirects, 4 retired brand 404s, ${assets.size} assets, missing route 404` : "static HTML"})`);
 for (const line of found) console.log(`found: ${line}`);

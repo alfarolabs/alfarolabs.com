@@ -621,7 +621,7 @@ main {
   }
 }
 
-/* Footer: original wordmark and unchanged closing line. */
+/* Footer: original wordmark and factual positioning. */
 
 .site-footer {
   --focus: var(--glow);
@@ -634,15 +634,6 @@ main {
   color: var(--glow-soft);
   font-size: 0.95rem;
   text-align: center;
-}
-
-.footer-closing {
-  color: var(--glow);
-  font-family: var(--display);
-  font-size: 2.5rem;
-  font-style: normal;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
 }
 
 .footer-mark {

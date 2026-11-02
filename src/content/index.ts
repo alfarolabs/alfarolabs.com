@@ -63,8 +63,7 @@ function mintAll<const T extends Record<string, string>>(raw: T & NoDupes<T>) {
 
 const lines = mintAll({
   name: "Alfaro Labs",
-  tagline: "Technology consulting for AI, agents, and custom software.",
-  closing: "Stay at the frontier.",
+  tagline: "Live sound services, live production software, and Violet Audio dMix 128 sales.",
   skipLink: "Skip to content",
   navLabel: "Main",
   email: "carlos@alfarolabs.com",
@@ -72,18 +71,17 @@ const lines = mintAll({
   contactLabel: "Contact Carlos",
   contactTitle: "Talk to Carlos.",
   contactBody: "For live sound services, software, or Violet Audio, get in touch.",
-  contactMetaTitle: "Contact | Alfaro Labs",
   reachHeading: "Reach Carlos directly.",
-  emailLabel: "Email",
-  igReachLabel: "Instagram",
   navServices: "Services",
   navSoftware: "Software",
   navViolet: "Violet Audio",
   navShow: "Show",
   homeMetaTitle: "Alfaro Labs. Live sound and software.",
-  homeTitle: "Built for live production.",
-  homeBody: "Live sound services, software from the field, and Violet Audio. The work of Carlos Alfaro.",
+  homeTitle: "Live sound, software, and Violet Audio.",
   pillarsHeading: "Live sound, software, and consoles.",
+  servicesPillar: "Live Sound Services",
+  softwarePillar: "Live Production SaaS",
+  violetPillar: "Violet Audio Dealer",
   servicesMetaTitle: "Services | Alfaro Labs",
   servicesTitle: "Live sound services.",
   servicesBody: "Carlos Alfaro works as a live sound consultant and technician, with close to two decades working live shows.",
@@ -143,7 +141,6 @@ export const published = {
   skipLink: lines.skipLink,
   navLabel: lines.navLabel,
   email: lines.email,
-  closing: lines.closing,
   footerTagline,
   instagram: { label: lines.igLabel },
   booking: { label: lines.contactLabel },
@@ -154,14 +151,14 @@ export const published = {
     { to: "/show" as const, label: lines.navShow },
   ],
   home: {
-    meta: { title: lines.homeMetaTitle, description: lines.homeBody },
-    hero: { eyebrow: lines.name, title: lines.homeTitle, lede: lines.homeBody },
+    meta: { title: lines.homeMetaTitle, description: lines.tagline },
+    hero: { eyebrow: lines.name, title: lines.homeTitle, lede: lines.tagline },
     offers: {
       heading: lines.pillarsHeading,
       items: [
-        { name: lines.navServices, body: lines.servicesBody, to: "/services" as const },
-        { name: lines.navSoftware, body: lines.softwareBody, to: "/software" as const },
-        { name: lines.navViolet, body: lines.violetBody, to: "/violet-audio" as const },
+        { name: lines.servicesPillar, body: lines.servicesBody, to: "/services" as const },
+        { name: lines.softwarePillar, body: lines.softwareBody, to: "/software" as const },
+        { name: lines.violetPillar, body: lines.violetBody, to: "/violet-audio" as const },
       ],
     },
     show: { heading: lines.navShow, body: lines.showBody, link: { to: "/show" as const, label: lines.navShow } },
@@ -171,6 +168,7 @@ export const published = {
     meta: { title: lines.servicesMetaTitle, description: lines.servicesBody },
     hero: { eyebrow: lines.navServices, title: lines.servicesTitle, lede: lines.servicesBody },
     career: { heading: lines.careerHeading, body: lines.careerBody },
+    contact: { heading: lines.reachHeading, body: lines.contactBody },
   },
   software: {
     meta: { title: lines.softwareMetaTitle, description: lines.softwareBody },
@@ -188,11 +186,6 @@ export const published = {
     hero: { eyebrow: lines.name, title: lines.navShow, lede: lines.showBody },
     link: { href: youtube, label: lines.showLink },
   },
-  contact: {
-    meta: { title: lines.contactMetaTitle, description: lines.contactBody },
-    hero: { eyebrow: lines.contactLabel, title: lines.contactTitle, body: lines.contactBody },
-    reach: { heading: lines.reachHeading, emailLabel: lines.emailLabel, instagramLabel: lines.igReachLabel },
-  },
 };
 
 export function ownedLines(): readonly string[] {
@@ -200,21 +193,20 @@ export function ownedLines(): readonly string[] {
 }
 
 export function requiredLines(): {
-  pages: { [P in "/" | "/services" | "/software" | "/violet-audio" | "/show" | "/contact"]: readonly string[] };
+  pages: { [P in "/" | "/services" | "/software" | "/violet-audio" | "/show"]: readonly string[] };
   everyPage: readonly string[];
   logos: ReadonlySet<LogoSrc>;
   oncePhrases: readonly ["Agentify yourself", "We can fix everything", "Agent acceleration"];
 } {
   return {
     pages: {
-      "/": [lines.homeTitle.toText(), lines.homeBody.toText(), lines.pillarsHeading.toText(), lines.showBody.toText()],
-      "/services": [lines.servicesTitle.toText(), lines.servicesBody.toText(), lines.careerBody.toText()],
+      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.violetPillar.toText(), lines.showBody.toText()],
+      "/services": [lines.servicesTitle.toText(), lines.servicesBody.toText(), lines.careerBody.toText(), lines.contactBody.toText(), lines.email.toText()],
       "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText()],
       "/violet-audio": [lines.violetTitle.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
-      "/contact": [lines.contactTitle.toText(), lines.contactBody.toText(), lines.email.toText(), lines.igLabel.toText()],
     },
-    everyPage: [footerTagline.toText(), lines.closing.toText()],
+    everyPage: [footerTagline.toText()],
     logos: new Set([logoSrc("icon"), logoSrc("wordmark")]),
     oncePhrases: ["Agentify yourself", "We can fix everything", "Agent acceleration"],
   };
