@@ -71,15 +71,15 @@ screenshot alone is not proof that a link or deployment works.
 ## Git and deployment
 
 Commit focused pieces separately. Preserve others' edits. Agents may push
-feature branches (and open or update PRs) so CI can run; never push `main`
-without Carlos's say-so. Ask Carlos before merging, deploying, or changing
-shared infrastructure. Before each push, run the quick check
+feature branches (and open or update PRs) so CI can run. Amp threads may push
+CI-green commits to `main` and let green CI deploy them without asking again.
+Ask Carlos before changing shared infrastructure. Before each push, run the quick check
 `npm run typecheck` only (seconds); do not run the full suite in cloud — CI
 is the gate (see **CI** above).
 `main` push **automatically deploys** via CI; never use it as a test branch.
 Do not run `wrangler deploy` locally. Roll back via an approved revert PR.
 
-After an authorized deploy, confirm the `ci` run for the exact commit succeeded
+After each deploy, confirm the `ci` run for the exact commit succeeded
 (including its deploy step), then run `npm run smoke -- --url https://alfarolabs.com`
 and `npm run smoke -- --url https://www.alfarolabs.com`. In a browser, check the
 specific changed content/behavior on production too: generic smoke success alone

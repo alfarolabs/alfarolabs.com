@@ -86,6 +86,14 @@ On `main` only, a `deploy` job waits for both, downloads the exact `dist/` that
 merge to `main` deploys to `alfarolabs.com` and `www.alfarolabs.com`. Roll back with
 a revert pull request.
 
-Agents may push feature branches for CI; never push `main` without Carlos's
-say-so. Ask Carlos before merging or deploying. Do not deploy directly from a
-checkout.
+Amp threads may push feature branches for CI, then push CI-green commits to
+`main` and let green CI deploy them without asking again. Do not deploy directly
+from a checkout. Markdown-only changes are skipped by push CI; use the existing
+`workflow_dispatch` on the feature branch and then on `main` when a deployment
+is required.
+
+After each deploy, confirm the exact commit's `ci` run and deploy job are green,
+then run `npm run smoke -- --url https://alfarolabs.com` and
+`npm run smoke -- --url https://www.alfarolabs.com`. Verify changed visitor-facing
+content and behavior in a real browser on production too; report the actual
+committed, pushed, and deployed states, not just a local preview.
