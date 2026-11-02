@@ -1,6 +1,6 @@
 const logoPaths = {
-  icon: "/brand/icon-on-black.svg",
-  wordmark: "/brand/wordmark-white.svg",
+  icon: "/brand/alfaro-labs-icon-white.svg",
+  wordmark: "/brand/alfaro-labs-logo-white.svg",
 } as const;
 
 export type LogoSrc = (typeof logoPaths)[keyof typeof logoPaths];
@@ -10,8 +10,12 @@ export function logoSrc(mark: LogoMark): LogoSrc {
   return logoPaths[mark];
 }
 
-export function iconLink(): { rel: "icon"; type: "image/svg+xml"; href: LogoSrc } {
-  return { rel: "icon", type: "image/svg+xml", href: logoSrc("icon") };
+export function iconLinks() {
+  return [
+    { rel: "icon", sizes: "32x32", type: "image/png", href: "/brand/favicon-32.png" },
+    { rel: "icon", type: "image/svg+xml", href: "/brand/favicon.svg" },
+    { rel: "apple-touch-icon", href: "/brand/apple-touch-icon-180.png" },
+  ];
 }
 
 class Line {

@@ -74,7 +74,12 @@ for (const [file, route] of Object.entries(pageFiles)) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
   }
-  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|woff2)(?:\?[^"\s]*)?)"/g)) {
+  if (!html.includes('rel="icon" sizes="32x32" type="image/png" href="/brand/favicon-32.png"')) fail("missing 32px PNG favicon");
+  if (!html.includes('rel="icon" type="image/svg+xml" href="/brand/favicon.svg"')) fail("missing adaptive SVG favicon");
+  if (!html.includes('rel="apple-touch-icon" href="/brand/apple-touch-icon-180.png"')) fail("missing Apple touch icon");
+  if (!html.includes('src="/brand/alfaro-labs-logo-white.svg"')) fail("missing original vector wordmark");
+  if (/\/brand\/(?:icon-on-black|icon-black|wordmark-white|wordmark-black)\.svg/.test(html)) fail("retired slanted logo");
+  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|png|woff2)(?:\?[^"\s]*)?)"/g)) {
     if (!match[1].startsWith("//")) assets.add(match[1]);
   }
   for (const line of [...required, ...everyPage]) {
@@ -113,6 +118,10 @@ for (const [phrase, count] of Object.entries(phraseCounts)) {
 
 for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
   const css = origin ? await (await get(asset)).text() : await readFile(`dist/client${asset}`, "utf8");
+  if (/instrument[- ]serif|newsreader|jetbrains/i.test(css)) failures.push(`${asset}: retired font reference`);
+  for (const family of ["Geist Sans", "Geist Mono"]) {
+    if (!css.includes(family)) failures.push(`${asset}: missing ${family}`);
+  }
   for (const match of css.matchAll(/url\(["']?(\/[^\s"')]+)["']?\)/g)) {
     const path = match[1];
     if (/^\/art\/(sky|orbit|chart-paper|offer-star|offer-orbit|offer-solid)\.svg$/.test(path)) {
@@ -135,14 +144,18 @@ if (origin) {
 }
 
 const brandBytes = {
-  "public/brand/icon-on-black.svg": "267db00c7c872b756803d712b01feb4fee646d2c6d4ebe98b1bf398660728c60",
-  "public/brand/wordmark-white.svg": "eec540ba401392301dd6a63a66a93b0f6f7e38887efc3da8d451fc2e2220e61c",
-  "public/brand/icon-black.svg": "6f7d4b982476742f70eab77f27604849d6f9e26f48ffd74bfbc5e67f031e5b92",
-  "public/brand/wordmark-black.svg": "d6e93a13bbceec0341bf7614af28fb25bffb622f3ad86003322bcfc7abce497a",
+  "public/brand/alfaro-labs-icon-white.svg": "8ab88a385fd4928ac0793173121be6aa2811879ecde9f8466eb60fe6786c0396",
+  "public/brand/alfaro-labs-icon.svg": "c6d8df9967d202fd0f79b0a27d9347045bea66259cac1f49c5c2d917398ee1b9",
+  "public/brand/alfaro-labs-logo-white.svg": "126f8b289c4cbc4f85a717b6ee3e97e41fb756bf2f466838bfbe2a8f44e5a7b0",
+  "public/brand/alfaro-labs-logo.svg": "d39e3ff5b54869838e1fd36ef61715ac64ac29a806a8fc975ba6445fd4bb1453",
+  "public/brand/favicon.svg": "e8a1d1186fa8cb2c19f83edff9e0571bc61460ca99739516c93beadf75f6b91f",
+  "public/brand/apple-touch-icon-180.png": "8c3f4b158c70723895a3f089dfae779f0cff73c994218153752b42ff81061508",
+  "public/brand/favicon-32.png": "e18a605ca6c2bd7addca5ed1f902813b2a74333c3655a73c08e1da0b76276daa",
 };
 for (const [file, sha256] of Object.entries(brandBytes)) {
   try {
-    const digest = createHash("sha256").update(await readFile(file)).digest("hex");
+    const bytes = origin ? Buffer.from(await (await get(file.replace("public", ""))).arrayBuffer()) : await readFile(file);
+    const digest = createHash("sha256").update(bytes).digest("hex");
     if (digest !== sha256) failures.push(`${file}: sha256 ${digest}`);
   } catch {
     failures.push(`${file}: missing brand file`);

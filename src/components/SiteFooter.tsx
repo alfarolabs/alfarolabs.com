@@ -5,7 +5,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <p className="footer-closing">{published.closing.toText()}</p>
-      <Logo mark="wordmark" alt={published.name} className="footer-mark" width={744} height={146} />
+      <Logo mark="wordmark" alt={published.name} className="footer-mark" width={2166} height={2125} />
       <p className="footer-tagline">{published.footerTagline.toText()}</p>
       <ul className="footer-links">
         <li>

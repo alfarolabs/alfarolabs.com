@@ -1,100 +1,48 @@
 @font-face {
-  font-family: "Instrument Serif";
-  src: url("/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Instrument Serif";
-  src: url("/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "JetBrains Mono";
-  src: url("/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
+  font-family: "Geist Sans";
+  src: url("/fonts/geist-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
-  src: url("/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Newsreader;
-  src: url("/fonts/newsreader-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Newsreader;
-  src: url("/fonts/newsreader-latin-400-italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Newsreader;
-  src: url("/fonts/newsreader-latin-500-normal.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Newsreader;
-  src: url("/fonts/newsreader-latin-700-normal.woff2") format("woff2");
-  font-weight: 700;
+  font-family: "Geist Mono";
+  src: url("/fonts/geist-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  /* Light surface: ivory paper and near-black ink. */
-  --paper: #f4f0e8;
-  --paper-deep: #ebe5d8;
-  --card: #faf8f3;
-  --ink: #12141a;
-  --ink-soft: #5c5a55;
-  --line: color-mix(in srgb, var(--ink) 12%, transparent);
-  --line-strong: color-mix(in srgb, var(--ink) 32%, transparent);
+  color-scheme: dark;
+  --paper: #000;
+  --paper-deep: #080808;
+  --card: #0a0a0a;
+  --ink: #fff;
+  --ink-soft: #a1a1a1;
+  --line: #262626;
+  --line-strong: #333;
+  --field: #000;
+  --glow: #fff;
+  --glow-soft: #a1a1a1;
+  --glow-line: #262626;
+  --accent: #ededed;
+  --accent-high: #fff;
+  --on-accent: #000;
+  --accent-ink: #ededed;
+  --accent-line: #333;
 
-  /* Dark surface: indigo night under the lighthouse photograph. */
-  --field: #0b1030;
-  --glow: #f5f1e8;
-  --glow-soft: color-mix(in srgb, var(--glow) 74%, transparent);
-  --glow-line: color-mix(in srgb, var(--glow) 14%, transparent);
-
-  /* Accent: champagne on indigo, deep champagne for text on ivory. */
-  --accent: #cbb17f;
-  --accent-high: #d9c293;
-  --on-accent: var(--field);
-  --accent-ink: #7a5f30;
-  --accent-line: color-mix(in srgb, var(--accent) 45%, transparent);
-
-  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --serif: Newsreader, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --display: "Geist Sans", Arial, sans-serif;
+  --sans: "Geist Sans", Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Layout: content edge and header height. */
   --max: 72rem;
   --gutter: 1.25rem;
   --edge: max(var(--gutter), calc((100% - var(--max)) / 2));
-  --header-h: 7rem;
+  --header-h: 10rem;
   --focus: var(--ink);
 }
 
@@ -107,7 +55,7 @@
 html {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: 16px;
   line-height: 1.6;
   -webkit-text-size-adjust: 100%;
@@ -160,7 +108,7 @@ a {
   outline-offset: 3px;
 }
 
-/* Header: transparent over the hero photograph on every page. */
+/* Header: original artwork and navigation on black. */
 
 .skip {
   position: absolute;
@@ -168,7 +116,7 @@ a {
   top: -4rem;
   z-index: 3;
   background: var(--glow);
-  color: var(--ink);
+  color: var(--field);
   padding: 0.6rem 1rem;
 }
 
@@ -199,7 +147,7 @@ a {
 
 .brand img {
   width: auto;
-  height: 1.6rem;
+  height: 5rem;
 }
 
 .nav {
@@ -208,6 +156,7 @@ a {
   align-items: center;
   column-gap: 1.5rem;
   font-size: 0.75rem;
+  font-family: var(--mono);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -239,8 +188,7 @@ a {
   text-decoration-color: currentColor;
 }
 
-/* Buttons: square, letterspaced, outlined in champagne on midnight and solid
-   midnight on ivory. */
+/* Buttons: monochrome with a small radius. */
 
 .button {
   display: inline-flex;
@@ -248,10 +196,11 @@ a {
   justify-content: center;
   min-height: 3rem;
   border: 1px solid var(--accent);
+  border-radius: 6px;
   background: transparent;
   color: var(--accent);
   padding: 0.75rem 1.75rem;
-  font-family: var(--serif);
+  font-family: var(--mono);
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.18em;
@@ -288,8 +237,7 @@ a {
   overflow-wrap: anywhere;
 }
 
-/* Hero: the lighthouse photograph, full bleed, darkened toward the text.
-   Copy sits low and left, like a book cover. */
+/* Hero: generous black space over a subtle one-pixel grid. */
 
 .hero {
   --focus: var(--glow);
@@ -317,17 +265,15 @@ a {
 }
 
 .hero::before {
-  background: url("/art/frontier.webp") 80% 58% / cover no-repeat, var(--field);
-  background-blend-mode: screen;
-  animation: art-in 2.4s var(--ease-out) both;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 80px 80px;
+  opacity: 0.4;
 }
 
 .hero::after {
-  background:
-    linear-gradient(180deg, rgb(11 16 48 / 0.9), rgb(11 16 48 / 0.6) var(--header-h), transparent calc(var(--header-h) + 5rem)),
-    linear-gradient(0deg, var(--field) 0%, rgb(11 16 48 / 0.7) 35%, rgb(11 16 48 / 0.15) 70%, rgb(11 16 48 / 0.4) 100%),
-    linear-gradient(90deg, rgb(11 16 48 / 0.75) 0%, transparent 65%);
-  animation: art-in 2.4s var(--ease-out) 0.4s both;
+  background: linear-gradient(var(--field), transparent 45%, var(--field));
 }
 
 .hero-home {
@@ -354,9 +300,9 @@ a {
   align-items: center;
   gap: 0.9rem;
   color: var(--accent);
-  font-family: var(--display);
-  font-size: 1.25rem;
-  font-style: italic;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-style: normal;
   line-height: 1.2;
   animation: rise 1.2s var(--ease-out) 0.2s both;
 }
@@ -371,21 +317,21 @@ a {
   max-width: 100%;
   font-family: var(--display);
   font-size: 3.25rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1.05;
   text-wrap: balance;
   animation: word-in 1s var(--ease-out) 0.3s both;
 }
 
 .display em {
   color: var(--accent);
-  font-style: italic;
+  font-style: normal;
 }
 
 .display-words {
   font-size: clamp(3.5rem, 9vw, 8rem);
-  line-height: 0.9;
+  line-height: 1.05;
   animation: none;
 }
 
@@ -420,7 +366,7 @@ a {
   animation: rise 1.4s var(--ease-out) 0.75s both;
 }
 
-/* Bands: home sections as centered chapters, each opened by a roman numeral. */
+/* Bands: generous spacing, separated by thin rules. */
 
 main {
   counter-reset: chapter;
@@ -431,6 +377,7 @@ main {
   gap: 2.25rem;
   justify-items: center;
   padding: 5rem var(--edge);
+  border-bottom: 1px solid var(--line);
   color: var(--ink-soft);
   font-size: 1.125rem;
   text-align: center;
@@ -455,14 +402,15 @@ main {
 .band-head::before {
   content: counter(chapter, upper-roman);
   color: var(--accent-ink);
-  font-family: var(--display);
-  font-size: 1.5rem;
-  font-style: italic;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  font-style: normal;
   line-height: 1;
 }
 
 .label {
   color: var(--ink-soft);
+  font-family: var(--mono);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -472,9 +420,9 @@ main {
 .band h2 {
   font-family: var(--display);
   font-size: 2.75rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
   text-wrap: balance;
 }
 
@@ -482,7 +430,7 @@ main {
 .product .text-link,
 .thesis-body .text-link {
   color: var(--ink);
-  font-style: italic;
+  font-style: normal;
   text-decoration: underline;
   text-decoration-color: var(--accent-ink);
   transition: color 0.2s ease;
@@ -508,7 +456,7 @@ main {
   gap: 0.75rem;
   align-content: start;
   border: 1px solid var(--line);
-  border-top: 2px solid var(--accent);
+  border-radius: 6px;
   background: var(--card);
   padding: 2rem 1.75rem;
 }
@@ -519,6 +467,7 @@ main {
   height: 6rem;
   margin: -0.5rem 0 0.5rem;
   background: url("/art/offer-plan.svg") center / contain no-repeat;
+  filter: grayscale(1) brightness(2);
 }
 
 .offer:nth-child(2)::after {
@@ -532,9 +481,9 @@ main {
 .offer::before {
   content: counter(offer, lower-roman) ".";
   color: var(--accent-ink);
-  font-family: var(--display);
-  font-size: 1.25rem;
-  font-style: italic;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  font-style: normal;
   line-height: 1;
 }
 
@@ -542,8 +491,8 @@ main {
 .product h3 {
   color: var(--ink);
   font-family: var(--display);
-  font-size: 1.75rem;
-  font-weight: 400;
+  font-size: 1.5rem;
+  font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.1;
 }
@@ -565,20 +514,16 @@ main {
   padding: 1.5rem 0;
 }
 
-/* Book band: a framed panel with the lighthouse photograph. */
+/* Book band: a restrained, bordered callout. */
 
 .band-book {
   --focus: var(--glow);
   justify-items: start;
   margin: 5rem var(--edge);
-  outline: 1px solid var(--accent-line);
-  outline-offset: -0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
   padding: 4rem clamp(1.75rem, 6vw, 4.5rem);
-  background:
-    linear-gradient(90deg, var(--field) 30%, rgb(11 16 48 / 0.6) 65%, rgb(11 16 48 / 0.2)),
-    url("/art/frontier.webp") 85% 60% / cover no-repeat,
-    var(--field);
-  background-blend-mode: normal, screen, normal;
+  background: var(--card);
   color: var(--glow-soft);
   text-align: left;
 }
@@ -589,8 +534,7 @@ main {
   font-size: 3rem;
 }
 
-/* Rows: inner pages set as a book. A numeral and centered heading open each
-   section; the text runs in one narrow column. */
+/* Rows: narrow reading columns for inner pages. */
 
 .rows {
   counter-reset: thesis;
@@ -616,9 +560,9 @@ main {
 .thesis::before {
   content: counter(thesis, upper-roman);
   color: var(--accent-ink);
-  font-family: var(--display);
-  font-size: 1.5rem;
-  font-style: italic;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  font-style: normal;
   line-height: 1;
 }
 
@@ -631,8 +575,8 @@ main {
   color: var(--ink);
   font-family: var(--display);
   font-size: 2.25rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: -0.04em;
   line-height: 1.05;
   text-align: center;
   text-wrap: balance;
@@ -662,6 +606,7 @@ main {
 
 .step dt {
   color: var(--accent-ink);
+  font-family: var(--mono);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -676,7 +621,7 @@ main {
   }
 }
 
-/* Footer: midnight colophon. */
+/* Footer: original wordmark and unchanged closing line. */
 
 .site-footer {
   --focus: var(--glow);
@@ -695,13 +640,13 @@ main {
   color: var(--glow);
   font-family: var(--display);
   font-size: 2.5rem;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: -0.01em;
   line-height: 1.1;
 }
 
 .footer-mark {
-  width: 9rem;
+  width: 7rem;
   margin-top: 0.5rem;
 }
 
@@ -710,7 +655,7 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   column-gap: 2rem;
-  font-style: italic;
+  font-style: normal;
 }
 
 .footer-links a {
@@ -727,13 +672,6 @@ main {
 }
 
 /* Motion. Every keyframe animates from a hidden state toward the resting style. */
-
-@keyframes art-in {
-  from {
-    opacity: 0;
-    transform: scale(1.04);
-  }
-}
 
 @keyframes rise {
   from {
@@ -769,7 +707,7 @@ main {
 @media (min-width: 768px) {
   :root {
     --gutter: 2.5rem;
-    --header-h: 5rem;
+    --header-h: 7rem;
   }
 
   html {

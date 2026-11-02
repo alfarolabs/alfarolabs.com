@@ -9,7 +9,7 @@ export function SiteHeader() {
         {published.skipLink.toText()}
       </a>
       <Link className="brand" to="/">
-        <Logo mark="wordmark" alt={published.name} width={744} height={146} />
+        <Logo mark="wordmark" alt={published.name} width={2166} height={2125} />
       </Link>
       <nav aria-label={published.navLabel.toText()}>
         <ul className="nav">
