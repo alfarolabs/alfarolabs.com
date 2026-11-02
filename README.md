@@ -1,8 +1,9 @@
 # Alfaro Labs
 
-Public site for Carlos Alfaro and Alfaro Labs Agents. TanStack Start, React and
-Vite, built for Cloudflare Workers. Five routes: `/`, `/manifesto`, `/agents`,
-`/about`, `/contact`.
+Public site for Carlos Alfaro and Alfaro Labs. TanStack Start, React and
+Vite, built for Cloudflare Workers. Six routes: `/`, `/services`, `/software`,
+`/violet-audio`, `/show`, `/contact`. The retired `/agents`, `/about`, and
+`/manifesto` routes redirect permanently to `/services`.
 
 ## Development
 
@@ -63,8 +64,9 @@ under `.amp/in/` and generated portal metadata stay out of Git.
 `npm run check` runs typecheck, build, the static smoke check, and
 `npm run smoke:preview`, which serves the build in workerd on a free local port
 and runs the HTTP smoke against it. It reproduces the CI gate. The smoke check
-covers all five generated pages' required text, casing, permitted logos, no en/em
-dashes, hype words or emoji, only the $850 price, and brand-phrase counts.
+covers all six generated pages' required text, navigation order, unchanged tagline,
+casing, permitted logos, no en/em dashes, hype words, emoji, pricing or commission
+copy, and brand-phrase counts. HTTP mode also verifies permanent redirects.
 
 `npm run smoke -- --url <origin>` runs the same copy checks over HTTP, plus directly
 referenced JS/CSS/logo/font assets and a missing-route 404.

@@ -1,7 +1,8 @@
 # Alfaro Labs
 
-Public, five-page site for Carlos Alfaro and Alfaro Labs: `/`, `/manifesto`,
-`/agents`, `/about`, `/contact`. React 19 + TanStack Start/Router + Vite, prerendered and
+Public site for Carlos Alfaro and Alfaro Labs: `/`, `/services`, `/software`,
+`/violet-audio`, `/show`, `/contact`. `/agents`, `/about`, and `/manifesto` redirect
+permanently to `/services`. React 19 + TanStack Start/Router + Vite, prerendered and
 served by Cloudflare Workers. No database, seed users, application sign-in, or
 required local secrets. Do not add auth bypass endpoints or backing services.
 
@@ -45,7 +46,7 @@ and `npm --version`.
 `dist/` with `vite preview` (workerd) on a free local port and runs HTTP smoke.
 CI is the authoritative gate: it runs `typecheck` in parallel with `build`
 (build, smoke, smoke:preview), then deploys the tested artifact on `main`.
-There is no separate unit-test runner. Smoke checks five pages, copy
+There is no separate unit-test runner. Smoke checks six pages, permanent redirects, copy
 ownership/brand rules, and immutable logo hashes; it does not test layout,
 hydration, or clicks. Do not weaken checks to accommodate an accidental copy
 change, derive new expected results from the implementation, or test private

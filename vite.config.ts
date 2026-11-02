@@ -12,6 +12,8 @@ export default defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
+        autoSubfolderIndex: false,
+        filter: ({ path }) => !["/agents", "/about", "/manifesto"].includes(path),
       },
     }),
     viteReact(),

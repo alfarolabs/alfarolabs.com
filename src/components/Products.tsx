@@ -1,7 +1,7 @@
 import { published } from "../content";
 
 export function Products() {
-  const { intro, products } = published.home.work;
+  const { intro, products } = published.software.work;
   return (
     <>
       <p>{intro.toText()}</p>

@@ -7,7 +7,7 @@
 - Booking buttons lead to `/contact` until Carlos supplies and authorizes a real
   scheduling destination. Never invent a booking URL.
 - Smoke enforces exact `Alfaro Labs` casing, no en/em dashes, emoji or hype words,
-  only the $850 price, and at most one occurrence of each constrained brand phrase
+  no pricing or commission copy, and at most one occurrence of each constrained brand phrase
   across the site. Read the checks before changing copy; do not relax them just
   to turn a failure green.
 - `requiredLines()` and `ownedLines()` feed smoke. New contract assertions should

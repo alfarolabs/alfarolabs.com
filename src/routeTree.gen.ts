@@ -14,6 +14,10 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ShowRouteImport } from './routes/show'
+import { Route as SoftwareRouteImport } from './routes/software'
+import { Route as VioletAudioRouteImport } from './routes/violet-audio'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +44,26 @@ const ManifestoRoute = ManifestoRouteImport.update({
   path: '/manifesto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowRoute = ShowRouteImport.update({
+  id: '/show',
+  path: '/show',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftwareRoute = SoftwareRouteImport.update({
+  id: '/software',
+  path: '/software',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VioletAudioRoute = VioletAudioRouteImport.update({
+  id: '/violet-audio',
+  path: '/violet-audio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +71,10 @@ export interface FileRoutesByFullPath {
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
   '/manifesto': typeof ManifestoRoute
+  '/services': typeof ServicesRoute
+  '/show': typeof ShowRoute
+  '/software': typeof SoftwareRoute
+  '/violet-audio': typeof VioletAudioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +82,10 @@ export interface FileRoutesByTo {
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
   '/manifesto': typeof ManifestoRoute
+  '/services': typeof ServicesRoute
+  '/show': typeof ShowRoute
+  '/software': typeof SoftwareRoute
+  '/violet-audio': typeof VioletAudioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +94,45 @@ export interface FileRoutesById {
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
   '/manifesto': typeof ManifestoRoute
+  '/services': typeof ServicesRoute
+  '/show': typeof ShowRoute
+  '/software': typeof SoftwareRoute
+  '/violet-audio': typeof VioletAudioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/agents' | '/contact' | '/manifesto'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/agents'
+    | '/contact'
+    | '/manifesto'
+    | '/services'
+    | '/show'
+    | '/software'
+    | '/violet-audio'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/agents' | '/contact' | '/manifesto'
-  id: '__root__' | '/' | '/about' | '/agents' | '/contact' | '/manifesto'
+  to:
+    | '/'
+    | '/about'
+    | '/agents'
+    | '/contact'
+    | '/manifesto'
+    | '/services'
+    | '/show'
+    | '/software'
+    | '/violet-audio'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/agents'
+    | '/contact'
+    | '/manifesto'
+    | '/services'
+    | '/show'
+    | '/software'
+    | '/violet-audio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +141,10 @@ export interface RootRouteChildren {
   AgentsRoute: typeof AgentsRoute
   ContactRoute: typeof ContactRoute
   ManifestoRoute: typeof ManifestoRoute
+  ServicesRoute: typeof ServicesRoute
+  ShowRoute: typeof ShowRoute
+  SoftwareRoute: typeof SoftwareRoute
+  VioletAudioRoute: typeof VioletAudioRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +184,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManifestoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/show': {
+      id: '/show'
+      path: '/show'
+      fullPath: '/show'
+      preLoaderRoute: typeof ShowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/software': {
+      id: '/software'
+      path: '/software'
+      fullPath: '/software'
+      preLoaderRoute: typeof SoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/violet-audio': {
+      id: '/violet-audio'
+      path: '/violet-audio'
+      fullPath: '/violet-audio'
+      preLoaderRoute: typeof VioletAudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +221,10 @@ const rootRouteChildren: RootRouteChildren = {
   AgentsRoute: AgentsRoute,
   ContactRoute: ContactRoute,
   ManifestoRoute: ManifestoRoute,
+  ServicesRoute: ServicesRoute,
+  ShowRoute: ShowRoute,
+  SoftwareRoute: SoftwareRoute,
+  VioletAudioRoute: VioletAudioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

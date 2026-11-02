@@ -6,15 +6,17 @@ import { ownedLines, requiredLines } from "../src/content/index.ts";
 const { pages, everyPage, logos, oncePhrases } = requiredLines();
 const pageFiles = {
   "dist/client/index.html": "/",
-  "dist/client/manifesto/index.html": "/manifesto",
-  "dist/client/agents/index.html": "/agents",
-  "dist/client/about/index.html": "/about",
-  "dist/client/contact/index.html": "/contact",
+  "dist/client/services.html": "/services",
+  "dist/client/software.html": "/software",
+  "dist/client/violet-audio.html": "/violet-audio",
+  "dist/client/show.html": "/show",
+  "dist/client/contact.html": "/contact",
 };
 
 const productLinks = {
-  "/": ["https://patchlist.app/"],
-  "/about": ["https://patchlist.app/"],
+  "/software": ["https://patchlist.app/"],
+  "/violet-audio": ["https://violetaudio.com/dmix-128", "/contact"],
+  "/show": ["https://www.youtube.com/@alfarolabs"],
 };
 
 const { values } = parseArgs({ options: { url: { type: "string" } } });
@@ -27,7 +29,7 @@ if (origin && (
 }
 
 async function get(path) {
-  const response = await fetch(new URL(path, origin), { signal: AbortSignal.timeout(10_000) });
+  const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
   if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
   return response;
 }
@@ -61,15 +63,24 @@ const assets = new Set();
 
 for (const [file, route] of Object.entries(pageFiles)) {
   const required = pages[route];
-  const path = file.replace("dist/client", "").replace(/index\.html$/, "");
-  const response = origin ? await get(path) : null;
+  const response = origin ? await get(route) : null;
   const html = response ? await response.text() : await readFile(file, "utf8");
   const text = readableText(html);
   const fail = (why) => failures.push(`${file}: ${why}`);
 
   if (response && !response.headers.get("content-type")?.includes("text/html")) fail("not HTML");
+  if (response && response.status !== 200) fail(`expected HTTP 200, got ${response.status}`);
   if (/Placeholder|\bTBD\b|Gearmind/.test(text)) fail("retired placeholder or hidden product");
-  if (route === "/" || route === "/about") {
+  if (/\bcommission\b|\bpricing\b|\$\d/i.test(text)) fail("commission or pricing copy");
+  const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const navLinks = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
+    .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
+  const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/violet-audio", "Violet Audio"], ["/show", "Show"]];
+  if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
+  if (!text.includes("Alfaro Labs. Technology consulting for AI, agents, and custom software.")) fail("tagline changed");
+  if (route === "/services" && !text.includes("live sound consultant and technician, with close to two decades working live shows")) fail("missing live sound experience");
+  if (route === "/violet-audio" && !text.includes("official dealer of the Violet Audio dMix 128 console")) fail("missing dealer statement");
+  if (route === "/software") {
     for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones."]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
@@ -90,9 +101,6 @@ for (const [file, route] of Object.entries(pageFiles)) {
     fail(`dash U+${dash.codePointAt(0).toString(16).toUpperCase()}`);
   }
   for (const word of text.match(hype) ?? []) fail(`hype word "${word}"`);
-  for (const amount of text.match(/\$\d[\d,]*(\.\d+)?/g) ?? []) {
-    if (amount !== "$850") fail(`price "${amount}"`);
-  }
   for (const brand of text.match(/alfaro labs/gi) ?? []) {
     if (brand !== "Alfaro Labs") fail(`brand "${brand}"`);
   }
@@ -132,6 +140,13 @@ for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
 }
 
 if (origin) {
+  for (const path of ["/agents", "/about", "/manifesto", "/agents/", "/about/", "/manifesto/"]) {
+    const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+    const location = response.headers.get("location");
+    if (response.status !== 301 || !location || new URL(location, origin).pathname !== "/services") {
+      failures.push(`${path}: expected 301 to /services, got ${response.status} to ${location}`);
+    }
+  }
   for (const asset of assets) {
     const response = await get(asset);
     if (response.headers.get("content-type")?.includes("text/html")) {
@@ -168,5 +183,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP, ${assets.size} assets, missing route 404` : "static HTML"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 6 permanent redirects, ${assets.size} assets, missing route 404` : "static HTML"})`);
 for (const line of found) console.log(`found: ${line}`);
