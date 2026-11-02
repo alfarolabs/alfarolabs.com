@@ -1,9 +1,3 @@
-type RejectWideString<T> = string extends T ? never : T;
-
-export type BookingHref = RejectWideString<null>;
-
-null satisfies BookingHref;
-
 const logoPaths = {
   icon: "/brand/icon-on-black.svg",
   wordmark: "/brand/wordmark-white.svg",
@@ -76,10 +70,6 @@ const lines = mintAll({
   igLabel: "@alfarolabs on Instagram",
   bookCall: "Book a call",
   bookLong: "Start with a 30 minute call.",
-  placeholderPrefix: "Placeholder.",
-  notePhoto: "Photo of Carlos TBD.",
-  noteBooking: "Booking link TBD.",
-  noteProduct: "Link and description TBD.",
   navServices: "Services",
   navAbout: "About",
   navManifesto: "Manifesto",
@@ -135,8 +125,9 @@ const lines = mintAll({
   patchlistBody:
     "The production OS for live sound. Build a patch once, export a network preset, and share it with the whole crew.",
   patchlistLink: "patchlist.app",
-  gearmindName: "Gearmind",
   verboName: "Verbo",
+  verboStatus: "In development",
+  verboBody: "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
 
   homeBookHeading: "Work with Alfaro Labs.",
   homeBookBody:
@@ -187,12 +178,6 @@ const lines = mintAll({
   igReachLabel: "Instagram",
 });
 
-const placeholderLines = {
-  photo: Line.mint(`${lines.placeholderPrefix.toText()} ${lines.notePhoto.toText()}`),
-  link: Line.mint(`${lines.placeholderPrefix.toText()} ${lines.noteBooking.toText()}`),
-  product: Line.mint(`${lines.placeholderPrefix.toText()} ${lines.noteProduct.toText()}`),
-} as const;
-
 const footerTagline = Line.mint(`${lines.name.toText()}. ${lines.tagline.toText()}`);
 const contactDescription = Line.mint(`${lines.bookLong.toText()} ${lines.contactBody.toText()}`);
 
@@ -206,8 +191,6 @@ for (const line of owned) {
 const mail = ExternalHref.mint(`mailto:${lines.email.toText()}`);
 const instagram = ExternalHref.mint("https://instagram.com/alfarolabs");
 const patchlist = ExternalHref.mint("https://patchlist.app/");
-
-export type PlaceholderKind = keyof typeof placeholderLines;
 
 export function emailHref(): string {
   return mail.toHref();
@@ -223,8 +206,7 @@ const products = [
     body: lines.patchlistBody,
     link: { href: patchlist, label: lines.patchlistLink },
   },
-  { name: lines.gearmindName },
-  { name: lines.verboName },
+  { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
 const work = { heading: lines.workHeading, intro: lines.workIntro, products };
@@ -247,7 +229,6 @@ export const published = {
     { to: "/about" as const, label: lines.navAbout },
     { to: "/contact" as const, label: lines.bookCall },
   ],
-  placeholder: placeholderLines,
   home: {
     meta: { title: lines.homeMetaTitle, description: lines.oneLiner },
     hero: {
@@ -350,8 +331,9 @@ export function requiredLines(): {
         home.belief.link.label.toText(),
         home.work.heading.toText(),
         home.work.products[0].link.label.toText(),
-        home.work.products[2].name.toText(),
-        published.placeholder.product.toText(),
+        home.work.products[1].name.toText(),
+        home.work.products[1].status.toText(),
+        home.work.products[1].body.toText(),
       ],
       "/manifesto": [
         manifesto.hero.title.toText(),
@@ -370,12 +352,12 @@ export function requiredLines(): {
         about.hero.story[1].toText(),
         about.work.products[0].body.toText(),
         about.work.products[1].name.toText(),
-        published.placeholder.photo.toText(),
+        about.work.products[1].status.toText(),
+        about.work.products[1].body.toText(),
       ],
       "/contact": [
         contact.hero.title.toText(),
         contact.hero.body.toText(),
-        published.placeholder.link.toText(),
         published.email.toText(),
         published.instagram.label.toText(),
       ],

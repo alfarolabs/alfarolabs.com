@@ -70,7 +70,7 @@ dashes, hype words or emoji, only the $850 price, and brand-phrase counts.
 referenced JS/CSS/logo/font assets and a missing-route 404.
 
 Copy belongs in `src/content/index.ts`; the smoke check rejects visible page text
-outside that ledger. Booking stays a placeholder until Carlos supplies a URL.
+outside that ledger. Booking buttons lead to contact details until Carlos supplies a URL.
 
 Static checks do not verify layout or clicks. For visitor-facing changes, use the
 production preview in a real browser: follow the affected navigation or booking

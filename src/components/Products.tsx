@@ -1,5 +1,4 @@
 import { published } from "../content";
-import { Placeholder } from "./Placeholder";
 
 export function Products() {
   const { intro, products } = published.home.work;
@@ -10,15 +9,13 @@ export function Products() {
         {products.map((product) => (
           <li key={product.name.toText()} className="product">
             <h3>{product.name.toText()}</h3>
+            <p>{product.body.toText()}</p>
             {"link" in product ? (
-              <>
-                <p>{product.body.toText()}</p>
-                <a className="text-link" href={product.link.href.toHref()}>
-                  {product.link.label.toText()}
-                </a>
-              </>
+              <a className="text-link" href={product.link.href.toHref()}>
+                {product.link.label.toText()}
+              </a>
             ) : (
-              <Placeholder kind="product" />
+              <p className="eyebrow">{product.status.toText()}</p>
             )}
           </li>
         ))}

@@ -68,6 +68,12 @@ for (const [file, route] of Object.entries(pageFiles)) {
   const fail = (why) => failures.push(`${file}: ${why}`);
 
   if (response && !response.headers.get("content-type")?.includes("text/html")) fail("not HTML");
+  if (/Placeholder|\bTBD\b|Gearmind/.test(text)) fail("retired placeholder or hidden product");
+  if (route === "/" || route === "/about") {
+    for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones."]) {
+      if (!text.includes(line)) fail(`missing product copy "${line}"`);
+    }
+  }
   for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|woff2)(?:\?[^"\s]*)?)"/g)) {
     if (!match[1].startsWith("//")) assets.add(match[1]);
   }

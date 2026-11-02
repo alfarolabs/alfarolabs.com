@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookingLink } from "../components/BookingLink";
 import { Section } from "../components/Section";
 import { emailHref, instagramHref, published } from "../content";
 
@@ -21,7 +20,6 @@ function Contact() {
         <p className="eyebrow">{hero.eyebrow.toText()}</p>
         <h1 className="display">{hero.title.toText()}</h1>
         <p className="lede">{hero.body.toText()}</p>
-        <BookingLink slot="status" />
       </header>
 
       <div className="rows">

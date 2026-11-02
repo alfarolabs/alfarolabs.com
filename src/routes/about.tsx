@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookingLink } from "../components/BookingLink";
-import { Placeholder } from "../components/Placeholder";
 import { Products } from "../components/Products";
 import { Section } from "../components/Section";
 import { published } from "../content";
@@ -19,7 +18,7 @@ function About() {
   const { hero, work, book } = published.about;
   return (
     <>
-      <header className="hero hero-split">
+      <header className="hero">
         <div className="hero-copy">
           <p className="eyebrow">{hero.eyebrow.toText()}</p>
           <h1 className="display">{hero.title.toText()}</h1>
@@ -29,7 +28,6 @@ function About() {
             </p>
           ))}
         </div>
-        <Placeholder kind="photo" />
       </header>
 
       <div className="rows">
