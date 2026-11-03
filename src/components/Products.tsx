@@ -1,10 +1,11 @@
 import { published } from "../content";
 
 export function Products() {
-  const { intro, products } = published.software.work;
+  const { intro, agents, products } = published.software.work;
   return (
     <>
       <p>{intro.toText()}</p>
+      <p>{agents.toText()}</p>
       <ul className="products">
         {products.map((product) => (
           <li key={product.name.toText()} className="product">

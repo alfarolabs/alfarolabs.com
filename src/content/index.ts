@@ -10,6 +10,12 @@ export function logoSrc(mark: LogoMark): LogoSrc {
   return logoPaths[mark];
 }
 
+const pillarIcons = {
+  sound: "/art/pillar-sound.svg",
+  software: "/art/pillar-software.svg",
+  console: "/art/pillar-console.svg",
+} as const;
+
 export function iconLinks() {
   return [
     { rel: "icon", sizes: "32x32", type: "image/png", href: "/brand/favicon-32.png" },
@@ -79,6 +85,7 @@ const lines = mintAll({
   homeMetaTitle: "Alfaro Labs. Live sound and software.",
   homeTitle: "Live sound, software, and Violet Audio.",
   pillarsHeading: "Live sound, software, and consoles.",
+  pillarsIntro: "Where technology meets live production.",
   servicesPillar: "Live Sound Services",
   softwarePillar: "Live Production SaaS",
   violetPillar: "Violet Audio Dealer",
@@ -92,6 +99,7 @@ const lines = mintAll({
   softwareBody: "Live production SaaS, built from work in the field.",
   workHeading: "Made at Alfaro Labs.",
   workIntro: "Tools for the people behind live production.",
+  workAgents: "Carlos builds and runs his software and day-to-day work with AI agents.",
   patchlistName: "Patchlist",
   patchlistBody: "The production OS for live sound. Build a patch once, export a network preset, and share it with the whole crew.",
   patchlistLink: "patchlist.app",
@@ -155,10 +163,11 @@ export const published = {
     hero: { eyebrow: lines.name, title: lines.homeTitle, lede: lines.tagline },
     offers: {
       heading: lines.pillarsHeading,
+      intro: lines.pillarsIntro,
       items: [
-        { name: lines.servicesPillar, body: lines.servicesBody, to: "/services" as const },
-        { name: lines.softwarePillar, body: lines.softwareBody, to: "/software" as const },
-        { name: lines.violetPillar, body: lines.violetBody, to: "/violet-audio" as const },
+        { name: lines.servicesPillar, body: lines.servicesBody, to: "/services" as const, icon: pillarIcons.sound },
+        { name: lines.softwarePillar, body: lines.softwareBody, to: "/software" as const, icon: pillarIcons.software },
+        { name: lines.violetPillar, body: lines.violetBody, to: "/violet-audio" as const, icon: pillarIcons.console },
       ],
     },
     show: { heading: lines.navShow, body: lines.showBody, link: { to: "/show" as const, label: lines.navShow } },
@@ -173,7 +182,7 @@ export const published = {
   software: {
     meta: { title: lines.softwareMetaTitle, description: lines.softwareBody },
     hero: { eyebrow: lines.navSoftware, title: lines.softwareTitle, lede: lines.softwareBody },
-    work: { heading: lines.workHeading, intro: lines.workIntro, products },
+    work: { heading: lines.workHeading, intro: lines.workIntro, agents: lines.workAgents, products },
   },
   violet: {
     meta: { title: lines.violetMetaTitle, description: lines.violetBody },
@@ -200,9 +209,9 @@ export function requiredLines(): {
 } {
   return {
     pages: {
-      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.violetPillar.toText(), lines.showBody.toText()],
+      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.violetPillar.toText(), lines.pillarsIntro.toText(), lines.showBody.toText()],
       "/services": [lines.servicesTitle.toText(), lines.servicesBody.toText(), lines.careerBody.toText(), lines.contactBody.toText(), lines.email.toText()],
-      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText()],
+      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText()],
       "/violet-audio": [lines.violetTitle.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },

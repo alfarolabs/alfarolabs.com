@@ -20,6 +20,14 @@ const retiredBrandPaths = [
   "/brand/wordmark-black.svg",
 ];
 
+const retiredArtPaths = ["/art/offer-plan.svg", "/art/offer-workflow.svg", "/art/offer-software.svg"];
+
+const pillarIcons = {
+  "Live Sound Services": "/art/pillar-sound.svg",
+  "Live Production SaaS": "/art/pillar-software.svg",
+  "Violet Audio Dealer": "/art/pillar-console.svg",
+};
+
 const productLinks = {
   "/services": ["mailto:carlos@alfarolabs.com"],
   "/software": ["https://patchlist.app/"],
@@ -91,11 +99,19 @@ for (const [file, route] of Object.entries(pageFiles)) {
     for (const pillar of ["Live Sound Services", "Live Production SaaS", "Violet Audio Dealer"]) {
       if (!text.includes(pillar)) fail(`missing pillar "${pillar}"`);
     }
+    if (!text.includes("Where technology meets live production.")) fail("missing technology-meets-live-production line");
+    const cards = [...html.matchAll(/<li class="offer">([\s\S]*?)<\/li>/g)].map(([, card]) => card);
+    for (const [pillar, icon] of Object.entries(pillarIcons)) {
+      const card = cards.find((c) => readableText(c).includes(pillar));
+      const srcs = [...(card ?? "").matchAll(/<img\b[^>]*src="([^"]+)"/g)].map(([, src]) => src);
+      if (JSON.stringify(srcs) !== JSON.stringify([icon])) fail(`${pillar} card icon ${JSON.stringify(srcs)}, expected ${icon}`);
+      if (card && (retiredArtPaths.some((path) => card.includes(path)) || /&lt;\/&gt;|<\/>/.test(card))) fail(`${pillar} card shows a code icon`);
+    }
   }
   if (route === "/services" && !text.includes("live sound consultant and technician, with close to two decades working live shows")) fail("missing live sound experience");
   if (route === "/violet-audio" && !text.includes("official dealer of the Violet Audio dMix 128 console")) fail("missing dealer statement");
   if (route === "/software") {
-    for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones."]) {
+    for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.", "Carlos builds and runs his software and day-to-day work with AI agents."]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
   }
@@ -159,8 +175,20 @@ for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
   }
 }
 
-for (const path of retiredBrandPaths) {
-  if (existsSync(`public${path}`)) failures.push(`${path}: retired brand file remains in public/`);
+for (const path of [...retiredBrandPaths, ...retiredArtPaths]) {
+  if (existsSync(`public${path}`)) failures.push(`${path}: retired file remains in public/`);
+}
+
+try {
+  const response = origin ? await get("/favicon.ico") : null;
+  if (response?.headers.get("content-type")?.includes("text/html")) failures.push("/favicon.ico: returned HTML");
+  const ico = response ? Buffer.from(await response.arrayBuffer()) : await readFile("dist/client/favicon.ico");
+  const sizes = ico.readUInt16LE(0) === 0 && ico.readUInt16LE(2) === 1
+    ? Array.from({ length: ico.readUInt16LE(4) }, (_, i) => ico[6 + i * 16] || 256)
+    : [];
+  if (JSON.stringify(sizes) !== "[16,32,48]") failures.push(`/favicon.ico: expected ICO with 16, 32, 48 px, got ${JSON.stringify(sizes)}`);
+} catch (error) {
+  failures.push(`/favicon.ico: ${error.message}`);
 }
 
 if (origin) {
@@ -171,9 +199,9 @@ if (origin) {
       failures.push(`${path}: expected 301 to /services, got ${response.status} to ${location}`);
     }
   }
-  for (const path of retiredBrandPaths) {
+  for (const path of [...retiredBrandPaths, ...retiredArtPaths]) {
     const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
-    if (response.status !== 404) failures.push(`${path}: expected retired brand 404, got ${response.status}`);
+    if (response.status !== 404) failures.push(`${path}: expected retired file 404, got ${response.status}`);
   }
   for (const asset of assets) {
     const response = await get(asset);
@@ -194,6 +222,7 @@ const brandBytes = {
   "public/brand/favicon.svg": "e8a1d1186fa8cb2c19f83edff9e0571bc61460ca99739516c93beadf75f6b91f",
   "public/brand/apple-touch-icon-180.png": "8c3f4b158c70723895a3f089dfae779f0cff73c994218153752b42ff81061508",
   "public/brand/favicon-32.png": "e18a605ca6c2bd7addca5ed1f902813b2a74333c3655a73c08e1da0b76276daa",
+  "public/favicon.ico": "baf96f7e106a59e9f87deeece932b689d6cca74d1dedbfe7566199275846c0ac",
 };
 for (const [file, sha256] of Object.entries(brandBytes)) {
   try {
@@ -211,5 +240,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 8 permanent redirects, 4 retired brand 404s, ${assets.size} assets, missing route 404` : "static HTML"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 8 permanent redirects, 7 retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
 for (const line of found) console.log(`found: ${line}`);

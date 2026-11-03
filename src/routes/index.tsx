@@ -30,10 +30,12 @@ function Home() {
       <section className="band">
         <header className="band-head">
           <h2>{offers.heading.toText()}</h2>
+          <p>{offers.intro.toText()}</p>
         </header>
         <ul className="offers">
           {offers.items.map((item) => (
             <li key={item.name.toText()} className="offer">
+              <img className="offer-icon" src={item.icon} alt="" width="160" height="96" />
               <h3><Link to={item.to}>{item.name.toText()}</Link></h3>
               <p>{item.body.toText()}</p>
             </li>
