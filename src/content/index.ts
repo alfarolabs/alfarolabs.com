@@ -85,7 +85,7 @@ const lines = mintAll({
   servicesTitle: "Live sound consulting and tech work",
   servicesLede: "I work as a live sound consultant and technician for live shows.",
   careerHeading: "Built in the field",
-  careerBody: "Alfaro Labs is the studio of Carlos Alfaro. Carlos spent close to 2 decades as a live-show audio tech, working with production companies big and small.",
+  careerBody: "Alfaro Labs is my studio. I've spent close to two decades as a live-show audio tech, working with production companies big and small.",
   softwareMetaTitle: "Software | Alfaro Labs",
   softwareTitle: "Software for live production",
   softwareLede: "Tools I build for the people who run shows.",

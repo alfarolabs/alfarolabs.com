@@ -116,7 +116,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
     if (!text.includes("I mix live shows and build the software I wish I had")) fail("missing first-person headline");
     if (!text.includes("where my work in technology meets live production.")) fail("missing technology-meets-live-production line");
   }
-  if (route === "/services" && !text.includes("Carlos spent close to 2 decades as a live-show audio tech, working with production companies big and small.")) fail("career line changed");
+  if (route === "/services" && !text.includes("Alfaro Labs is my studio. I've spent close to two decades as a live-show audio tech, working with production companies big and small.")) fail("career line changed");
   if (route === "/hardware" && !text.includes("I'm an official dealer of the Violet Audio dMix 128 digital mixer")) fail("missing dealer statement");
   if (route === "/software") {
     for (const line of [
