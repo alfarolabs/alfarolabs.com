@@ -18,6 +18,8 @@ const retiredBrandPaths = [
   "/brand/icon-black.svg",
   "/brand/wordmark-white.svg",
   "/brand/wordmark-black.svg",
+  "/brand/alfaro-labs-logo-white.svg",
+  "/brand/alfaro-labs-icon-white.svg",
 ];
 
 // Stock card icons, retired for plain type and Carlos's own images.
@@ -128,7 +130,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
     ]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
-    if (!html.includes('src="/art/patchlist-project-home.webp"')) fail("missing Patchlist screenshot");
+    if (!/srcset="\/art\/patchlist-project-home-dark\.webp" media="\(prefers-color-scheme: dark\)"/i.test(html) || !html.includes('src="/art/patchlist-project-home-light.webp"')) fail("missing light and dark Patchlist screenshots");
   }
   if (route === "/show") {
     const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0] ?? "";
@@ -139,9 +141,11 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (!html.includes('rel="icon" sizes="32x32" type="image/png" href="/brand/favicon-32.png"')) fail("missing 32px PNG favicon");
   if (!html.includes('rel="icon" type="image/svg+xml" href="/brand/favicon.svg"')) fail("missing adaptive SVG favicon");
   if (!html.includes('rel="apple-touch-icon" href="/brand/apple-touch-icon-180.png"')) fail("missing Apple touch icon");
-  if (!html.includes('src="/brand/alfaro-labs-logo-white.svg"')) fail("missing original vector wordmark");
+  if (!html.includes('src="/brand/alfaro-labs-logo.svg"')) fail("missing original logo for the light theme");
+  const logoPictures = html.match(/<picture>\s*<source srcset="\/brand\/alfaro-labs-logo-dark\.svg" media="\(prefers-color-scheme: dark\)"\s*\/?>\s*<img src="\/brand\/alfaro-labs-logo\.svg"/gi) ?? [];
+  if (logoPictures.length === 0 || logoPictures.length !== html.split('src="/brand/alfaro-labs-logo.svg"').length - 1) fail("every logo needs the original for light and the dark-theme source");
   if (/\/brand\/(?:icon-on-black|icon-black|wordmark-white|wordmark-black)\.svg/.test(html)) fail("retired slanted logo");
-  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|png|webp|woff2)(?:\?[^"\s]*)?)"/g)) {
+  for (const match of html.matchAll(/(?:src|srcset|href)="(\/[^"\s]+\.(?:js|css|svg|png|webp|woff2)(?:\?[^"\s]*)?)"/gi)) {
     if (!match[1].startsWith("//")) assets.add(match[1]);
   }
   for (const line of [...required, ...everyPage]) {
@@ -166,7 +170,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
   for (const line of owned) uncovered = uncovered.split(line).join(" ");
   uncovered = uncovered.replace(/\s+/g, " ").trim();
   if (uncovered) fail(`uncovered copy "${uncovered}"`);
-  const brandSrcs = [...html.matchAll(/src="(\/brand\/[^"]+)"/g)].map((m) => m[1]);
+  const brandSrcs = [...html.matchAll(/(?:src|srcset)="(\/brand\/[^"]+)"/gi)].map((m) => m[1]);
   if (brandSrcs.length === 0) fail("no logo");
   for (const src of brandSrcs) if (!logos.has(src)) fail(`logo "${src}"`);
 }
@@ -182,6 +186,7 @@ for (const [phrase, count] of Object.entries(phraseCounts)) {
 for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
   const css = origin ? await (await get(asset)).text() : await readFile(`dist/client${asset}`, "utf8");
   if (/instrument[- ]serif|newsreader|jetbrains/i.test(css)) failures.push(`${asset}: retired font reference`);
+  if (!/@media \(prefers-color-scheme: ?dark\)/.test(css)) failures.push(`${asset}: no dark theme`);
   if (/(?:upper|lower)-roman/.test(css)) failures.push(`${asset}: roman numeral counters`);
   for (const family of ["Geist Sans", "Geist Mono"]) {
     if (!css.includes(family)) failures.push(`${asset}: missing ${family}`);
@@ -238,12 +243,11 @@ if (origin) {
 }
 
 const brandBytes = {
-  "public/brand/alfaro-labs-icon-white.svg": "8ab88a385fd4928ac0793173121be6aa2811879ecde9f8466eb60fe6786c0396",
   "public/brand/alfaro-labs-icon.svg": "c6d8df9967d202fd0f79b0a27d9347045bea66259cac1f49c5c2d917398ee1b9",
-  "public/brand/alfaro-labs-logo-white.svg": "126f8b289c4cbc4f85a717b6ee3e97e41fb756bf2f466838bfbe2a8f44e5a7b0",
+  "public/brand/alfaro-labs-logo-dark.svg": "e64f678e480f9c3bb910807731013129290421f61d4b93ce41adc4c57c8bba4b",
   "public/brand/alfaro-labs-logo.svg": "d39e3ff5b54869838e1fd36ef61715ac64ac29a806a8fc975ba6445fd4bb1453",
-  "public/brand/favicon.svg": "e8a1d1186fa8cb2c19f83edff9e0571bc61460ca99739516c93beadf75f6b91f",
-  "public/brand/apple-touch-icon-180.png": "8c3f4b158c70723895a3f089dfae779f0cff73c994218153752b42ff81061508",
+  "public/brand/favicon.svg": "c6d8df9967d202fd0f79b0a27d9347045bea66259cac1f49c5c2d917398ee1b9",
+  "public/brand/apple-touch-icon-180.png": "4dc65d70227e424a7e574ed3a4acaf5efbcb37e90b2b3721fffe86574d30b630",
   "public/brand/favicon-32.png": "e18a605ca6c2bd7addca5ed1f902813b2a74333c3655a73c08e1da0b76276daa",
   "public/favicon.ico": "baf96f7e106a59e9f87deeece932b689d6cca74d1dedbfe7566199275846c0ac",
 };

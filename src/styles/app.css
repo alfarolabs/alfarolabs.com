@@ -15,12 +15,12 @@
 }
 
 :root {
-  color-scheme: dark;
-  --paper: #000;
-  --ink: #fff;
-  --ink-soft: #a1a1a1;
-  --line: #262626;
-  --line-strong: #333;
+  color-scheme: light dark;
+  --paper: #fff;
+  --ink: #000;
+  --ink-soft: #5c5c5c;
+  --line: #e5e5e5;
+  --line-strong: #d4d4d4;
 
   --sans: "Geist Sans", Arial, sans-serif;
   --mono: "Geist Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -32,6 +32,17 @@
   --edge: max(var(--gutter), calc((100% - var(--max)) / 2));
   --header-h: 10rem;
   --focus: var(--ink);
+}
+
+/* Dark theme follows the visitor's system setting. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #000;
+    --ink: #fff;
+    --ink-soft: #a1a1a1;
+    --line: #262626;
+    --line-strong: #333;
+  }
 }
 
 *,

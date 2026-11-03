@@ -5,7 +5,8 @@ globs:
 
 # CSS
 
-- Preserve the dark-first monochrome system unless a redesign is requested:
+- Light and dark themes follow the visitor's system setting
+  (`prefers-color-scheme`); both use the monochrome system:
   black/white and grays only, Geist Sans and Geist Mono, thin one-pixel borders
   and grid lines, generous whitespace, and small rounded corners. No colored
   accents or serif fonts. Use the original vector circle/triangle logo, never the

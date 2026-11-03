@@ -1,16 +1,23 @@
+// Carlos's original logo for the light theme; the same mark with a white ring
+// and white wordmark for the dark theme.
 const logoPaths = {
-  icon: "/brand/alfaro-labs-icon-white.svg",
-  wordmark: "/brand/alfaro-labs-logo-white.svg",
+  light: "/brand/alfaro-labs-logo.svg",
+  dark: "/brand/alfaro-labs-logo-dark.svg",
 } as const;
 
 export type LogoSrc = (typeof logoPaths)[keyof typeof logoPaths];
-export type LogoMark = keyof typeof logoPaths;
+export type LogoTheme = keyof typeof logoPaths;
 
-export function logoSrc(mark: LogoMark): LogoSrc {
-  return logoPaths[mark];
+export function logoSrc(theme: LogoTheme): LogoSrc {
+  return logoPaths[theme];
 }
 
-const patchlistShot = { src: "/art/patchlist-project-home.webp", width: 1600, height: 1000 } as const;
+const patchlistShot = {
+  light: "/art/patchlist-project-home-light.webp",
+  dark: "/art/patchlist-project-home-dark.webp",
+  width: 1600,
+  height: 1000,
+} as const;
 
 export function iconLinks() {
   return [
@@ -212,7 +219,7 @@ export function requiredLines(): {
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },
     everyPage: [lines.email.toText()],
-    logos: new Set([logoSrc("icon"), logoSrc("wordmark")]),
+    logos: new Set([logoSrc("light"), logoSrc("dark")]),
     oncePhrases: ["Agentify yourself", "We can fix everything", "Agent acceleration"],
   };
 }

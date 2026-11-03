@@ -1,13 +1,19 @@
 import type { ComponentProps } from "react";
-import { logoSrc, published, type LogoMark } from "../content";
+import { logoSrc, published } from "../content";
 
 type Name = typeof published.name;
 
+// Light theme shows Carlos's original logo; dark theme shows the same mark with
+// a white ring and wordmark so the black disc reads on black.
 export function Logo({
-  mark,
   alt = "",
   ...rest
-}: { mark: LogoMark; alt?: "" | Name } & Omit<ComponentProps<"img">, "src" | "alt">) {
+}: { alt?: "" | Name } & Omit<ComponentProps<"img">, "src" | "alt">) {
   const text = alt === "" ? "" : alt.toText();
-  return <img src={logoSrc(mark)} alt={text} {...rest} />;
+  return (
+    <picture>
+      <source srcSet={logoSrc("dark")} media="(prefers-color-scheme: dark)" />
+      <img src={logoSrc("light")} alt={text} {...rest} />
+    </picture>
+  );
 }
