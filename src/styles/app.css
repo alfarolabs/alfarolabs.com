@@ -356,6 +356,18 @@ a {
   width: 7rem;
 }
 
+/* Dark theme: the original logo sits on a white tile so its black circle and
+   wordmark stay visible. The artwork itself is never recolored. */
+@media (prefers-color-scheme: dark) {
+  .brand img,
+  .footer-mark {
+    box-sizing: content-box;
+    border-radius: 6px;
+    background: #fff;
+    padding: 0.5rem;
+  }
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;

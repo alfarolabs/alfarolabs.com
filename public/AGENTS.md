@@ -2,12 +2,11 @@
 
 - `brand/alfaro-labs-logo.svg` and `brand/alfaro-labs-icon.svg` are Carlos's
   original vector logo: a black circle with overlapping white triangles. Keep
-  them byte-for-byte and never invert the mark (no white circle with black
-  triangles). The light theme shows the original logo. `alfaro-labs-logo-dark.svg`
-  is the same file with a thin white ring around the disc and a white wordmark,
-  for the dark theme. `favicon.svg` is a copy of the original icon, and
-  `apple-touch-icon-180.png` renders it on white. Smoke pins all of them by
-  SHA-256. Size logos with CSS; never redraw or substitute the retired slanted marks.
+  them byte-for-byte and use them unchanged in both themes: never invert,
+  recolor, or add a ring. In the dark theme CSS places the logo on a white tile.
+  `favicon.svg` is a copy of the original icon, and `apple-touch-icon-180.png`
+  renders it on white. Smoke pins them by SHA-256. Size logos with CSS; never
+  redraw or substitute the retired slanted marks.
 - Fonts are local variable WOFF2 files: Geist Sans and Geist Mono. Keep their
   `fonts/OFL-*.txt` licenses.
 - `art/frontier.webp` is archived lighthouse art, not used by the dark grid theme.

@@ -19,6 +19,7 @@ const retiredBrandPaths = [
   "/brand/wordmark-white.svg",
   "/brand/wordmark-black.svg",
   "/brand/alfaro-labs-logo-white.svg",
+  "/brand/alfaro-labs-logo-dark.svg",
   "/brand/alfaro-labs-icon-white.svg",
 ];
 
@@ -141,9 +142,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (!html.includes('rel="icon" sizes="32x32" type="image/png" href="/brand/favicon-32.png"')) fail("missing 32px PNG favicon");
   if (!html.includes('rel="icon" type="image/svg+xml" href="/brand/favicon.svg"')) fail("missing adaptive SVG favicon");
   if (!html.includes('rel="apple-touch-icon" href="/brand/apple-touch-icon-180.png"')) fail("missing Apple touch icon");
-  if (!html.includes('src="/brand/alfaro-labs-logo.svg"')) fail("missing original logo for the light theme");
-  const logoPictures = html.match(/<picture>\s*<source srcset="\/brand\/alfaro-labs-logo-dark\.svg" media="\(prefers-color-scheme: dark\)"\s*\/?>\s*<img src="\/brand\/alfaro-labs-logo\.svg"/gi) ?? [];
-  if (logoPictures.length === 0 || logoPictures.length !== html.split('src="/brand/alfaro-labs-logo.svg"').length - 1) fail("every logo needs the original for light and the dark-theme source");
+  if (!html.includes('src="/brand/alfaro-labs-logo.svg"')) fail("missing original logo");
   if (/\/brand\/(?:icon-on-black|icon-black|wordmark-white|wordmark-black)\.svg/.test(html)) fail("retired slanted logo");
   for (const match of html.matchAll(/(?:src|srcset|href)="(\/[^"\s]+\.(?:js|css|svg|png|webp|woff2)(?:\?[^"\s]*)?)"/gi)) {
     if (!match[1].startsWith("//")) assets.add(match[1]);
@@ -244,7 +243,6 @@ if (origin) {
 
 const brandBytes = {
   "public/brand/alfaro-labs-icon.svg": "c6d8df9967d202fd0f79b0a27d9347045bea66259cac1f49c5c2d917398ee1b9",
-  "public/brand/alfaro-labs-logo-dark.svg": "e64f678e480f9c3bb910807731013129290421f61d4b93ce41adc4c57c8bba4b",
   "public/brand/alfaro-labs-logo.svg": "d39e3ff5b54869838e1fd36ef61715ac64ac29a806a8fc975ba6445fd4bb1453",
   "public/brand/favicon.svg": "c6d8df9967d202fd0f79b0a27d9347045bea66259cac1f49c5c2d917398ee1b9",
   "public/brand/apple-touch-icon-180.png": "4dc65d70227e424a7e574ed3a4acaf5efbcb37e90b2b3721fffe86574d30b630",
