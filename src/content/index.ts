@@ -100,7 +100,7 @@ const lines = mintAll({
   gearmindLink: "gearmind.app",
   verboName: "Verbo",
   verboStatus: "In development",
-  verboBody: "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
+  verboBody: "Live sermon translation in many languages, heard through earphones with captions on phones.",
   workHeading: "How I work",
   workAgents: "I build and run my software and day-to-day work with AI agents.",
   hardwareMetaTitle: "Hardware | Alfaro Labs",

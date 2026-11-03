@@ -128,7 +128,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
       "Crew scheduling and communication for live production. Schedulers build and staff shows, and crew confirm their calls from their phones.",
       "Verbo",
       "In development",
-      "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
+      "Live sermon translation in many languages, heard through earphones with captions on phones.",
       "I build and run my software and day-to-day work with AI agents.",
     ]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
