@@ -13,7 +13,7 @@ export function Products() {
               <a className="text-link" href={product.link.href.toHref()}>
                 {product.link.label.toText()}
               </a>
-              <Shot shot={product.shot} />
+              {"shot" in product && <Shot shot={product.shot} />}
             </>
           ) : (
             <p className="status">{product.status.toText()}</p>

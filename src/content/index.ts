@@ -81,7 +81,7 @@ const lines = mintAll({
   homeTitle: "I mix live shows and build the software I wish I had",
   homeLede: "I'm Carlos Alfaro. Alfaro Labs is where my work in technology meets live production.",
   homeServices: "Consulting and hands-on work as a live sound technician.",
-  homeSoftware: "I build Patchlist and Verbo for the crews behind live production.",
+  homeSoftware: "I build Patchlist, Gearmind, and Verbo for the crews behind live production.",
   homeHardware: "I'm an official dealer for live production hardware.",
   servicesMetaTitle: "Services | Alfaro Labs",
   servicesTitle: "Live sound consulting and tech work",
@@ -95,6 +95,9 @@ const lines = mintAll({
   patchlistBody: "The production OS for live sound. Patch the show once, export the network preset, and send your crew a link. They don't need an account.",
   patchlistShotAlt: "Patchlist project home for a show, with the patch, comms plan, cable counts, and inventory",
   patchlistLink: "patchlist.app",
+  gearmindName: "Gearmind",
+  gearmindBody: "Crew scheduling and communication for live production. Schedulers build and staff shows, and crew confirm their calls from their phones.",
+  gearmindLink: "gearmind.app",
   verboName: "Verbo",
   verboStatus: "In development",
   verboBody: "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
@@ -121,6 +124,7 @@ for (const line of owned) {
 const mail = ExternalHref.mint(`mailto:${lines.email.toText()}`);
 const instagram = ExternalHref.mint("https://instagram.com/alfarolabs");
 const patchlist = ExternalHref.mint("https://patchlist.app/");
+const gearmind = ExternalHref.mint("https://gearmind.app/");
 const violet = ExternalHref.mint("https://violetaudio.com/dmix-128");
 const youtube = ExternalHref.mint("https://www.youtube.com/@alfarolabs");
 
@@ -141,6 +145,7 @@ const shot = { ...patchlistShot, alt: lines.patchlistShotAlt };
 
 const products = [
   { name: lines.patchlistName, body: lines.patchlistBody, shot, link: { href: patchlist, label: lines.patchlistLink } },
+  { name: lines.gearmindName, body: lines.gearmindBody, link: { href: gearmind, label: lines.gearmindLink } },
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
@@ -209,7 +214,7 @@ export function requiredLines(): {
     pages: {
       "/": [lines.homeTitle.toText(), lines.homeLede.toText(), lines.homeServices.toText(), lines.homeSoftware.toText(), lines.homeHardware.toText(), lines.cta.toText()],
       "/services": [lines.servicesTitle.toText(), lines.servicesLede.toText(), lines.careerBody.toText(), lines.cta.toText()],
-      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText(), lines.cta.toText()],
+      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.gearmindName.toText(), lines.gearmindBody.toText(), lines.gearmindLink.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText(), lines.cta.toText()],
       "/hardware": [lines.navHardware.toText(), lines.hardwareLede.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText(), lines.cta.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },

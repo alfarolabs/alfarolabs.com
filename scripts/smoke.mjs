@@ -35,7 +35,7 @@ const retiredArtPaths = [
 
 const productLinks = {
   "/services": ["mailto:carlos@alfarolabs.com"],
-  "/software": ["https://patchlist.app/"],
+  "/software": ["https://patchlist.app/", "https://gearmind.app/"],
   "/hardware": ["https://violetaudio.com/dmix-128", "mailto:carlos@alfarolabs.com"],
   "/show": ["https://www.youtube.com/@alfarolabs"],
 };
@@ -92,7 +92,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
 
   if (response && !response.headers.get("content-type")?.includes("text/html")) fail("not HTML");
   if (response && response.status !== 200) fail(`expected HTTP 200, got ${response.status}`);
-  if (/Placeholder|\bTBD\b|Gearmind/.test(text)) fail("retired placeholder or hidden product");
+  if (/Placeholder|\bTBD\b/.test(text)) fail("retired placeholder");
   if (/\bcommission\b|\bpricing\b|\$\d/i.test(text)) fail("commission or pricing copy");
   if (/\bfrontier\b|AI consulting|technology consulting|AI strategy/i.test(text)) fail("retired generic-AI framing");
   const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? "";
@@ -124,6 +124,8 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (route === "/software") {
     for (const line of [
       "The production OS for live sound. Patch the show once, export the network preset, and send your crew a link. They don't need an account.",
+      "Gearmind",
+      "Crew scheduling and communication for live production. Schedulers build and staff shows, and crew confirm their calls from their phones.",
       "Verbo",
       "In development",
       "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
