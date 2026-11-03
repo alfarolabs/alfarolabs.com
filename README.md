@@ -2,8 +2,9 @@
 
 Public site for Carlos Alfaro and Alfaro Labs. TanStack Start, React and
 Vite, built for Cloudflare Workers. Five pages: `/`, `/services`, `/software`,
-`/violet-audio`, `/show`. The retired `/agents`, `/about`, `/manifesto`, and
-`/contact` routes redirect permanently to `/services`, which includes contact details.
+`/hardware`, `/show`. The retired `/agents`, `/about`, `/manifesto`, and
+`/contact` routes redirect permanently to `/services`, which includes contact details;
+`/violet-audio` redirects permanently to `/hardware`.
 
 ## Development
 

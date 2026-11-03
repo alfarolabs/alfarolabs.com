@@ -1,10 +1,11 @@
 # Alfaro Labs
 
 Public site for Carlos Alfaro and Alfaro Labs: `/`, `/services`, `/software`,
-`/violet-audio`, `/show`. `/agents`, `/about`, `/manifesto`, and `/contact` redirect
-permanently to `/services`. React 19 + TanStack Start/Router + Vite, prerendered and
-served by Cloudflare Workers. No database, seed users, application sign-in, or
-required local secrets. Do not add auth bypass endpoints or backing services.
+`/hardware`, `/show`. `/agents`, `/about`, `/manifesto`, and `/contact` redirect
+permanently to `/services`; `/violet-audio` redirects permanently to `/hardware`.
+React 19 + TanStack Start/Router + Vite, prerendered and served by Cloudflare
+Workers. No database, seed users, application sign-in, or required local secrets.
+Do not add auth bypass endpoints or backing services.
 
 Amp orbs: see @.amp/AGENTS.amp.md
 

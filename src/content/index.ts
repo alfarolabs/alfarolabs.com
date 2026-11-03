@@ -69,26 +69,25 @@ function mintAll<const T extends Record<string, string>>(raw: T & NoDupes<T>) {
 
 const lines = mintAll({
   name: "Alfaro Labs",
-  tagline: "Live sound services, live production software, and Violet Audio dMix 128 sales.",
+  tagline: "Live sound services, live production software, and hardware.",
   skipLink: "Skip to content",
   navLabel: "Main",
   email: "carlos@alfarolabs.com",
   igLabel: "@alfarolabs on Instagram",
   contactLabel: "Contact Carlos",
   contactTitle: "Talk to Carlos.",
-  contactBody: "For live sound services, software, or Violet Audio, get in touch.",
+  contactBody: "For live sound services, software, or hardware, get in touch.",
   reachHeading: "Reach Carlos directly.",
   navServices: "Services",
   navSoftware: "Software",
-  navViolet: "Violet Audio",
+  navHardware: "Hardware",
   navShow: "Show",
   homeMetaTitle: "Alfaro Labs. Live sound and software.",
-  homeTitle: "Live sound, software, and Violet Audio.",
+  homeTitle: "Live sound services, software, and hardware.",
   pillarsHeading: "Live sound, software, and consoles.",
   pillarsIntro: "Where technology meets live production.",
   servicesPillar: "Live Sound Services",
   softwarePillar: "Live Production SaaS",
-  violetPillar: "Violet Audio Dealer",
   servicesMetaTitle: "Services | Alfaro Labs",
   servicesTitle: "Live sound services.",
   servicesBody: "Carlos Alfaro works as a live sound consultant and technician, with close to two decades working live shows.",
@@ -106,11 +105,14 @@ const lines = mintAll({
   verboName: "Verbo",
   verboStatus: "In development",
   verboBody: "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
-  violetMetaTitle: "Violet Audio | Alfaro Labs",
-  violetTitle: "Violet Audio dMix 128.",
-  violetBody: "Carlos Alfaro is an official dealer of the Violet Audio dMix 128 console.",
+  hardwareMetaTitle: "Hardware | Alfaro Labs",
+  hardwareTitle: "Hardware for live production.",
+  hardwareBody: "Carlos Alfaro is an official dealer for live production hardware.",
+  dealersHeading: "Official dealer.",
+  violetName: "Violet Audio dMix 128",
+  violetBody: "Carlos Alfaro is an official dealer of the Violet Audio dMix 128 digital mixer.",
   violetLink: "View the dMix 128",
-  violetContact: "Contact Carlos about the Violet Audio dMix 128.",
+  violetContact: "Ask Carlos about the dMix 128",
   showMetaTitle: "Show | Alfaro Labs",
   showBody: "Watch on the Alfaro Labs YouTube channel.",
   showLink: "Watch on YouTube",
@@ -144,6 +146,10 @@ const products = [
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
+const dealers = [
+  { name: lines.violetName, body: lines.violetBody, link: { href: violet, label: lines.violetLink }, contact: lines.violetContact },
+] as const;
+
 export const published = {
   name: lines.name,
   skipLink: lines.skipLink,
@@ -155,7 +161,7 @@ export const published = {
   nav: [
     { to: "/services" as const, label: lines.navServices },
     { to: "/software" as const, label: lines.navSoftware },
-    { to: "/violet-audio" as const, label: lines.navViolet },
+    { to: "/hardware" as const, label: lines.navHardware },
     { to: "/show" as const, label: lines.navShow },
   ],
   home: {
@@ -167,7 +173,7 @@ export const published = {
       items: [
         { name: lines.servicesPillar, body: lines.servicesBody, to: "/services" as const, icon: pillarIcons.sound },
         { name: lines.softwarePillar, body: lines.softwareBody, to: "/software" as const, icon: pillarIcons.software },
-        { name: lines.violetPillar, body: lines.violetBody, to: "/violet-audio" as const, icon: pillarIcons.console },
+        { name: lines.navHardware, body: lines.hardwareBody, to: "/hardware" as const, icon: pillarIcons.console },
       ],
     },
     show: { heading: lines.navShow, body: lines.showBody, link: { to: "/show" as const, label: lines.navShow } },
@@ -184,11 +190,10 @@ export const published = {
     hero: { eyebrow: lines.navSoftware, title: lines.softwareTitle, lede: lines.softwareBody },
     work: { heading: lines.workHeading, intro: lines.workIntro, agents: lines.workAgents, products },
   },
-  violet: {
-    meta: { title: lines.violetMetaTitle, description: lines.violetBody },
-    hero: { eyebrow: lines.navViolet, title: lines.violetTitle, lede: lines.violetBody },
-    link: { href: violet, label: lines.violetLink },
-    contact: { heading: lines.contactTitle, body: lines.violetContact },
+  hardware: {
+    meta: { title: lines.hardwareMetaTitle, description: lines.hardwareBody },
+    hero: { eyebrow: lines.navHardware, title: lines.hardwareTitle, lede: lines.hardwareBody },
+    dealers: { heading: lines.dealersHeading, items: dealers },
   },
   show: {
     meta: { title: lines.showMetaTitle, description: lines.showBody },
@@ -202,17 +207,17 @@ export function ownedLines(): readonly string[] {
 }
 
 export function requiredLines(): {
-  pages: { [P in "/" | "/services" | "/software" | "/violet-audio" | "/show"]: readonly string[] };
+  pages: { [P in "/" | "/services" | "/software" | "/hardware" | "/show"]: readonly string[] };
   everyPage: readonly string[];
   logos: ReadonlySet<LogoSrc>;
   oncePhrases: readonly ["Agentify yourself", "We can fix everything", "Agent acceleration"];
 } {
   return {
     pages: {
-      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.violetPillar.toText(), lines.pillarsIntro.toText(), lines.showBody.toText()],
+      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.navHardware.toText(), lines.hardwareBody.toText(), lines.pillarsIntro.toText(), lines.showBody.toText()],
       "/services": [lines.servicesTitle.toText(), lines.servicesBody.toText(), lines.careerBody.toText(), lines.contactBody.toText(), lines.email.toText()],
       "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText()],
-      "/violet-audio": [lines.violetTitle.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText()],
+      "/hardware": [lines.hardwareTitle.toText(), lines.hardwareBody.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },
     everyPage: [footerTagline.toText()],

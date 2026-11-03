@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AgentsRouteImport } from './routes/agents'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as HardwareRouteImport } from './routes/hardware'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ShowRouteImport } from './routes/show'
@@ -37,6 +38,11 @@ const AgentsRoute = AgentsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HardwareRoute = HardwareRouteImport.update({
+  id: '/hardware',
+  path: '/hardware',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ManifestoRoute = ManifestoRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
+  '/hardware': typeof HardwareRoute
   '/manifesto': typeof ManifestoRoute
   '/services': typeof ServicesRoute
   '/show': typeof ShowRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
+  '/hardware': typeof HardwareRoute
   '/manifesto': typeof ManifestoRoute
   '/services': typeof ServicesRoute
   '/show': typeof ShowRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/agents': typeof AgentsRoute
   '/contact': typeof ContactRoute
+  '/hardware': typeof HardwareRoute
   '/manifesto': typeof ManifestoRoute
   '/services': typeof ServicesRoute
   '/show': typeof ShowRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/agents'
     | '/contact'
+    | '/hardware'
     | '/manifesto'
     | '/services'
     | '/show'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/agents'
     | '/contact'
+    | '/hardware'
     | '/manifesto'
     | '/services'
     | '/show'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/agents'
     | '/contact'
+    | '/hardware'
     | '/manifesto'
     | '/services'
     | '/show'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AgentsRoute: typeof AgentsRoute
   ContactRoute: typeof ContactRoute
+  HardwareRoute: typeof HardwareRoute
   ManifestoRoute: typeof ManifestoRoute
   ServicesRoute: typeof ServicesRoute
   ShowRoute: typeof ShowRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hardware': {
+      id: '/hardware'
+      path: '/hardware'
+      fullPath: '/hardware'
+      preLoaderRoute: typeof HardwareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/manifesto': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AgentsRoute: AgentsRoute,
   ContactRoute: ContactRoute,
+  HardwareRoute: HardwareRoute,
   ManifestoRoute: ManifestoRoute,
   ServicesRoute: ServicesRoute,
   ShowRoute: ShowRoute,

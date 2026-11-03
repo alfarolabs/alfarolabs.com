@@ -9,7 +9,7 @@ const pageFiles = {
   "dist/client/index.html": "/",
   "dist/client/services.html": "/services",
   "dist/client/software.html": "/software",
-  "dist/client/violet-audio.html": "/violet-audio",
+  "dist/client/hardware.html": "/hardware",
   "dist/client/show.html": "/show",
 };
 
@@ -25,13 +25,13 @@ const retiredArtPaths = ["/art/offer-plan.svg", "/art/offer-workflow.svg", "/art
 const pillarIcons = {
   "Live Sound Services": "/art/pillar-sound.svg",
   "Live Production SaaS": "/art/pillar-software.svg",
-  "Violet Audio Dealer": "/art/pillar-console.svg",
+  "Hardware": "/art/pillar-console.svg",
 };
 
 const productLinks = {
   "/services": ["mailto:carlos@alfarolabs.com"],
   "/software": ["https://patchlist.app/"],
-  "/violet-audio": ["https://violetaudio.com/dmix-128", "mailto:carlos@alfarolabs.com"],
+  "/hardware": ["https://violetaudio.com/dmix-128", "mailto:carlos@alfarolabs.com"],
   "/show": ["https://www.youtube.com/@alfarolabs"],
 };
 
@@ -92,11 +92,12 @@ for (const [file, route] of Object.entries(pageFiles)) {
   const nav = html.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? "";
   const navLinks = [...nav.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
     .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
-  const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/violet-audio", "Violet Audio"], ["/show", "Show"]];
+  const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/hardware", "Hardware"], ["/show", "Show"]];
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
-  if (!text.includes("Live sound services, live production software, and Violet Audio dMix 128 sales.")) fail("missing factual positioning");
+  if (!text.includes("Live sound services, live production software, and hardware.")) fail("missing factual positioning");
+  if (route !== "/hardware" && /violet|dmix/i.test(html)) fail("Violet Audio outside the Hardware brand list");
   if (route === "/") {
-    for (const pillar of ["Live Sound Services", "Live Production SaaS", "Violet Audio Dealer"]) {
+    for (const pillar of ["Live Sound Services", "Live Production SaaS", "Hardware"]) {
       if (!text.includes(pillar)) fail(`missing pillar "${pillar}"`);
     }
     if (!text.includes("Where technology meets live production.")) fail("missing technology-meets-live-production line");
@@ -109,7 +110,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
     }
   }
   if (route === "/services" && !text.includes("live sound consultant and technician, with close to two decades working live shows")) fail("missing live sound experience");
-  if (route === "/violet-audio" && !text.includes("official dealer of the Violet Audio dMix 128 console")) fail("missing dealer statement");
+  if (route === "/hardware" && !text.includes("official dealer of the Violet Audio dMix 128 digital mixer")) fail("missing dealer statement");
   if (route === "/software") {
     for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.", "Carlos builds and runs his software and day-to-day work with AI agents."]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
@@ -192,11 +193,14 @@ try {
 }
 
 if (origin) {
-  for (const path of ["/agents", "/about", "/manifesto", "/contact", "/agents/", "/about/", "/manifesto/", "/contact/"]) {
-    const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
-    const location = response.headers.get("location");
-    if (response.status !== 301 || !location || new URL(location, origin).pathname !== "/services") {
-      failures.push(`${path}: expected 301 to /services, got ${response.status} to ${location}`);
+  const redirects = { "/agents": "/services", "/about": "/services", "/manifesto": "/services", "/contact": "/services", "/violet-audio": "/hardware" };
+  for (const [from, to] of Object.entries(redirects)) {
+    for (const path of [from, `${from}/`]) {
+      const response = await fetch(new URL(path, origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+      const location = response.headers.get("location");
+      if (response.status !== 301 || !location || new URL(location, origin).pathname !== to) {
+        failures.push(`${path}: expected 301 to ${to}, got ${response.status} to ${location}`);
+      }
     }
   }
   for (const path of [...retiredBrandPaths, ...retiredArtPaths]) {
@@ -240,5 +244,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 8 permanent redirects, 7 retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 10 permanent redirects, 7 retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
 for (const line of found) console.log(`found: ${line}`);
