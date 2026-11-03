@@ -15,7 +15,6 @@ function Show() {
   const { hero, link } = published.show;
   return (
     <header className="hero">
-      <p className="eyebrow">{hero.eyebrow.toText()}</p>
       <h1 className="display">{hero.title.toText()}</h1>
       <p className="lede">{hero.lede.toText()}</p>
       <a className="button" href={link.href.toHref()}>{link.label.toText()}</a>

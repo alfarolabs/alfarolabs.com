@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { BookingLink } from "../components/BookingLink";
 import { Products } from "../components/Products";
 import { Section } from "../components/Section";
 import { published } from "../content";
@@ -18,12 +19,15 @@ function Software() {
   return (
     <>
       <header className="hero">
-        <p className="eyebrow">{hero.eyebrow.toText()}</p>
         <h1 className="display">{hero.title.toText()}</h1>
         <p className="lede">{hero.lede.toText()}</p>
+        <BookingLink />
       </header>
       <div className="rows">
-        <Section heading={work.heading.toText()}><Products /></Section>
+        <Products />
+        <Section heading={work.heading.toText()}>
+          <p>{work.body.toText()}</p>
+        </Section>
       </div>
     </>
   );

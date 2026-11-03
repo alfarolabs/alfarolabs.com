@@ -1,15 +1,9 @@
 import { emailHref, published } from "../content";
 
-type Copy = typeof published.booking.label;
-
-export function BookingLink({
-  label = published.booking.label,
-}: {
-  label?: Copy;
-}) {
+export function BookingLink() {
   return (
     <a className="button" href={emailHref()}>
-      {label.toText()}
+      {published.cta.toText()}
     </a>
   );
 }

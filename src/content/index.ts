@@ -10,11 +10,7 @@ export function logoSrc(mark: LogoMark): LogoSrc {
   return logoPaths[mark];
 }
 
-const pillarIcons = {
-  sound: "/art/pillar-sound.svg",
-  software: "/art/pillar-software.svg",
-  console: "/art/pillar-console.svg",
-} as const;
+const patchlistShot = { src: "/art/patchlist-project-home.webp", width: 1600, height: 1000 } as const;
 
 export function iconLinks() {
   return [
@@ -69,57 +65,50 @@ function mintAll<const T extends Record<string, string>>(raw: T & NoDupes<T>) {
 
 const lines = mintAll({
   name: "Alfaro Labs",
-  tagline: "Live sound services, live production software, and hardware.",
   skipLink: "Skip to content",
   navLabel: "Main",
   email: "carlos@alfarolabs.com",
   igLabel: "@alfarolabs on Instagram",
-  contactLabel: "Contact Carlos",
-  contactTitle: "Talk to Carlos.",
-  contactBody: "For live sound services, software, or hardware, get in touch.",
-  reachHeading: "Reach Carlos directly.",
+  cta: "Get in touch",
   navServices: "Services",
   navSoftware: "Software",
   navHardware: "Hardware",
   navShow: "Show",
-  homeMetaTitle: "Alfaro Labs. Live sound and software.",
-  homeTitle: "Live sound services, software, and hardware.",
-  pillarsHeading: "Live sound, software, and consoles.",
-  pillarsIntro: "Where technology meets live production.",
-  servicesPillar: "Live Sound Services",
-  softwarePillar: "Live Production SaaS",
+  homeMetaTitle: "Alfaro Labs | Carlos Alfaro",
+  homeMetaDescription: "I mix live shows, build software for live production, and sell hardware as an official dealer.",
+  homeTitle: "I mix live shows and build the software I wish I had",
+  homeLede: "I'm Carlos Alfaro. Alfaro Labs is where my work in technology meets live production.",
+  homeServices: "Consulting and hands-on work as a live sound technician.",
+  homeSoftware: "I build Patchlist and Verbo for the crews behind live production.",
+  homeHardware: "I'm an official dealer for live production hardware.",
   servicesMetaTitle: "Services | Alfaro Labs",
-  servicesTitle: "Live sound services.",
-  servicesBody: "Carlos Alfaro works as a live sound consultant and technician, with close to two decades working live shows.",
-  careerHeading: "Built in the field.",
+  servicesTitle: "Live sound consulting and tech work",
+  servicesLede: "I work as a live sound consultant and technician for live shows.",
+  careerHeading: "Built in the field",
   careerBody: "Alfaro Labs is the studio of Carlos Alfaro. Carlos spent close to 2 decades as a live-show audio tech, working with production companies big and small.",
   softwareMetaTitle: "Software | Alfaro Labs",
-  softwareTitle: "Software for live production.",
-  softwareBody: "Live production SaaS, built from work in the field.",
-  workHeading: "Made at Alfaro Labs.",
-  workIntro: "Tools for the people behind live production.",
-  workAgents: "Carlos builds and runs his software and day-to-day work with AI agents.",
+  softwareTitle: "Software for live production",
+  softwareLede: "Tools I build for the people who run shows.",
   patchlistName: "Patchlist",
-  patchlistBody: "The production OS for live sound. Build a patch once, export a network preset, and share it with the whole crew.",
+  patchlistBody: "The production OS for live sound. Patch the show once, export the network preset, and send your crew a link. They don't need an account.",
+  patchlistShotAlt: "Patchlist project home for a show, with the patch, comms plan, cable counts, and inventory",
   patchlistLink: "patchlist.app",
   verboName: "Verbo",
   verboStatus: "In development",
   verboBody: "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
+  workHeading: "How I work",
+  workAgents: "I build and run my software and day-to-day work with AI agents.",
   hardwareMetaTitle: "Hardware | Alfaro Labs",
-  hardwareTitle: "Hardware for live production.",
-  hardwareBody: "Carlos Alfaro is an official dealer for live production hardware.",
-  dealersHeading: "Official dealer.",
+  hardwareLede: "Brands I'm an official dealer for.",
   violetName: "Violet Audio dMix 128",
-  violetBody: "Carlos Alfaro is an official dealer of the Violet Audio dMix 128 digital mixer.",
+  violetBody: "I'm an official dealer of the Violet Audio dMix 128 digital mixer, which Violet Audio builds for studios, live venues, and broadcast.",
   violetLink: "View the dMix 128",
-  violetContact: "Ask Carlos about the dMix 128",
+  violetContact: "Ask me about the dMix 128",
   showMetaTitle: "Show | Alfaro Labs",
   showBody: "Watch on the Alfaro Labs YouTube channel.",
   showLink: "Watch on YouTube",
-  homeContactBody: "Tell Carlos about your next show or the tools you need.",
 });
 
-const footerTagline = Line.mint(`${lines.name.toText()}. ${lines.tagline.toText()}`);
 const seen = new Set<string>();
 for (const line of owned) {
   const text = line.toText();
@@ -141,11 +130,19 @@ export function instagramHref(): string {
   return instagram.toHref();
 }
 
+// Photos Carlos owns. Slots render only when filled; until he sends a headshot
+// and field photos, the site shows no frame or placeholder for them.
+type Photo = { src: `/photos/${string}`; alt: Line; width: number; height: number };
+const photos: { headshot: Photo | null; field: readonly Photo[] } = { headshot: null, field: [] };
+
+const shot = { ...patchlistShot, alt: lines.patchlistShotAlt };
+
 const products = [
-  { name: lines.patchlistName, body: lines.patchlistBody, link: { href: patchlist, label: lines.patchlistLink } },
+  { name: lines.patchlistName, body: lines.patchlistBody, shot, link: { href: patchlist, label: lines.patchlistLink } },
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
+// Brands Carlos is an official dealer for. Add an entry per brand.
 const dealers = [
   { name: lines.violetName, body: lines.violetBody, link: { href: violet, label: lines.violetLink }, contact: lines.violetContact },
 ] as const;
@@ -155,9 +152,9 @@ export const published = {
   skipLink: lines.skipLink,
   navLabel: lines.navLabel,
   email: lines.email,
-  footerTagline,
   instagram: { label: lines.igLabel },
-  booking: { label: lines.contactLabel },
+  cta: lines.cta,
+  photos,
   nav: [
     { to: "/services" as const, label: lines.navServices },
     { to: "/software" as const, label: lines.navSoftware },
@@ -165,39 +162,33 @@ export const published = {
     { to: "/show" as const, label: lines.navShow },
   ],
   home: {
-    meta: { title: lines.homeMetaTitle, description: lines.tagline },
-    hero: { eyebrow: lines.name, title: lines.homeTitle, lede: lines.tagline },
-    offers: {
-      heading: lines.pillarsHeading,
-      intro: lines.pillarsIntro,
-      items: [
-        { name: lines.servicesPillar, body: lines.servicesBody, to: "/services" as const, icon: pillarIcons.sound },
-        { name: lines.softwarePillar, body: lines.softwareBody, to: "/software" as const, icon: pillarIcons.software },
-        { name: lines.navHardware, body: lines.hardwareBody, to: "/hardware" as const, icon: pillarIcons.console },
-      ],
-    },
-    show: { heading: lines.navShow, body: lines.showBody, link: { to: "/show" as const, label: lines.navShow } },
-    book: { heading: lines.contactTitle, body: lines.homeContactBody },
+    meta: { title: lines.homeMetaTitle, description: lines.homeMetaDescription },
+    hero: { title: lines.homeTitle, lede: lines.homeLede },
+    rows: [
+      { name: lines.navServices, body: lines.homeServices, to: "/services" as const },
+      { name: lines.navSoftware, body: lines.homeSoftware, to: "/software" as const, shot },
+      { name: lines.navHardware, body: lines.homeHardware, to: "/hardware" as const },
+    ] as const,
   },
   services: {
-    meta: { title: lines.servicesMetaTitle, description: lines.servicesBody },
-    hero: { eyebrow: lines.navServices, title: lines.servicesTitle, lede: lines.servicesBody },
+    meta: { title: lines.servicesMetaTitle, description: lines.servicesLede },
+    hero: { title: lines.servicesTitle, lede: lines.servicesLede },
     career: { heading: lines.careerHeading, body: lines.careerBody },
-    contact: { heading: lines.reachHeading, body: lines.contactBody },
   },
   software: {
-    meta: { title: lines.softwareMetaTitle, description: lines.softwareBody },
-    hero: { eyebrow: lines.navSoftware, title: lines.softwareTitle, lede: lines.softwareBody },
-    work: { heading: lines.workHeading, intro: lines.workIntro, agents: lines.workAgents, products },
+    meta: { title: lines.softwareMetaTitle, description: lines.softwareLede },
+    hero: { title: lines.softwareTitle, lede: lines.softwareLede },
+    products,
+    work: { heading: lines.workHeading, body: lines.workAgents },
   },
   hardware: {
-    meta: { title: lines.hardwareMetaTitle, description: lines.hardwareBody },
-    hero: { eyebrow: lines.navHardware, title: lines.hardwareTitle, lede: lines.hardwareBody },
-    dealers: { heading: lines.dealersHeading, items: dealers },
+    meta: { title: lines.hardwareMetaTitle, description: lines.homeHardware },
+    hero: { title: lines.navHardware, lede: lines.hardwareLede },
+    dealers,
   },
   show: {
     meta: { title: lines.showMetaTitle, description: lines.showBody },
-    hero: { eyebrow: lines.name, title: lines.navShow, lede: lines.showBody },
+    hero: { title: lines.navShow, lede: lines.showBody },
     link: { href: youtube, label: lines.showLink },
   },
 };
@@ -214,13 +205,13 @@ export function requiredLines(): {
 } {
   return {
     pages: {
-      "/": [lines.homeTitle.toText(), lines.tagline.toText(), lines.servicesPillar.toText(), lines.softwarePillar.toText(), lines.navHardware.toText(), lines.hardwareBody.toText(), lines.pillarsIntro.toText(), lines.showBody.toText()],
-      "/services": [lines.servicesTitle.toText(), lines.servicesBody.toText(), lines.careerBody.toText(), lines.contactBody.toText(), lines.email.toText()],
-      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText()],
-      "/hardware": [lines.hardwareTitle.toText(), lines.hardwareBody.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText()],
+      "/": [lines.homeTitle.toText(), lines.homeLede.toText(), lines.homeServices.toText(), lines.homeSoftware.toText(), lines.homeHardware.toText(), lines.cta.toText()],
+      "/services": [lines.servicesTitle.toText(), lines.servicesLede.toText(), lines.careerBody.toText(), lines.cta.toText()],
+      "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText(), lines.cta.toText()],
+      "/hardware": [lines.navHardware.toText(), lines.hardwareLede.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText(), lines.cta.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },
-    everyPage: [footerTagline.toText()],
+    everyPage: [lines.email.toText()],
     logos: new Set([logoSrc("icon"), logoSrc("wordmark")]),
     oncePhrases: ["Agentify yourself", "We can fix everything", "Agent acceleration"],
   };

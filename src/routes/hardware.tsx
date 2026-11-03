@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { BookingLink } from "../components/BookingLink";
 import { Section } from "../components/Section";
 import { emailHref, published } from "../content";
 
@@ -17,23 +18,20 @@ function Hardware() {
   return (
     <>
       <header className="hero">
-        <p className="eyebrow">{hero.eyebrow.toText()}</p>
         <h1 className="display">{hero.title.toText()}</h1>
         <p className="lede">{hero.lede.toText()}</p>
+        <BookingLink />
       </header>
       <div className="rows">
-        <Section heading={dealers.heading.toText()}>
-          <ul className="products">
-            {dealers.items.map((dealer) => (
-              <li key={dealer.name.toText()} className="product">
-                <h3>{dealer.name.toText()}</h3>
-                <p>{dealer.body.toText()}</p>
-                <a className="text-link" href={dealer.link.href.toHref()}>{dealer.link.label.toText()}</a>
-                <a className="text-link" href={emailHref()}>{dealer.contact.toText()}</a>
-              </li>
-            ))}
-          </ul>
-        </Section>
+        {dealers.map((dealer) => (
+          <Section key={dealer.name.toText()} heading={dealer.name.toText()}>
+            <p>{dealer.body.toText()}</p>
+            <ul className="row-links">
+              <li><a className="text-link" href={dealer.link.href.toHref()}>{dealer.link.label.toText()}</a></li>
+              <li><a className="text-link" href={emailHref()}>{dealer.contact.toText()}</a></li>
+            </ul>
+          </Section>
+        ))}
       </div>
     </>
   );

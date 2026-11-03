@@ -5,7 +5,6 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <Logo mark="wordmark" alt={published.name} className="footer-mark" width={2166} height={2125} />
-      <p className="footer-tagline">{published.footerTagline.toText()}</p>
       <ul className="footer-links">
         <li>
           <a href={emailHref()}>{published.email.toText()}</a>

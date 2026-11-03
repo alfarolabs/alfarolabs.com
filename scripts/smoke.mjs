@@ -20,13 +20,15 @@ const retiredBrandPaths = [
   "/brand/wordmark-black.svg",
 ];
 
-const retiredArtPaths = ["/art/offer-plan.svg", "/art/offer-workflow.svg", "/art/offer-software.svg"];
-
-const pillarIcons = {
-  "Live Sound Services": "/art/pillar-sound.svg",
-  "Live Production SaaS": "/art/pillar-software.svg",
-  "Hardware": "/art/pillar-console.svg",
-};
+// Stock card icons, retired for plain type and Carlos's own images.
+const retiredArtPaths = [
+  "/art/offer-plan.svg",
+  "/art/offer-workflow.svg",
+  "/art/offer-software.svg",
+  "/art/pillar-sound.svg",
+  "/art/pillar-software.svg",
+  "/art/pillar-console.svg",
+];
 
 const productLinks = {
   "/services": ["mailto:carlos@alfarolabs.com"],
@@ -76,6 +78,7 @@ const failures = [];
 const found = [];
 const phraseCounts = Object.fromEntries(oncePhrases.map((p) => [p, 0]));
 const assets = new Set();
+const siteCounts = { "meets live production": 0, "with AI agents": 0 };
 
 for (const [file, route] of Object.entries(pageFiles)) {
   const required = pages[route];
@@ -94,27 +97,38 @@ for (const [file, route] of Object.entries(pageFiles)) {
     .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
   const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/hardware", "Hardware"], ["/show", "Show"]];
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
-  if (!text.includes("Live sound services, live production software, and hardware.")) fail("missing factual positioning");
   if (route !== "/hardware" && /violet|dmix/i.test(html)) fail("Violet Audio outside the Hardware brand list");
-  if (route === "/") {
-    for (const pillar of ["Live Sound Services", "Live Production SaaS", "Hardware"]) {
-      if (!text.includes(pillar)) fail(`missing pillar "${pillar}"`);
-    }
-    if (!text.includes("Where technology meets live production.")) fail("missing technology-meets-live-production line");
-    const cards = [...html.matchAll(/<li class="offer">([\s\S]*?)<\/li>/g)].map(([, card]) => card);
-    for (const [pillar, icon] of Object.entries(pillarIcons)) {
-      const card = cards.find((c) => readableText(c).includes(pillar));
-      const srcs = [...(card ?? "").matchAll(/<img\b[^>]*src="([^"]+)"/g)].map(([, src]) => src);
-      if (JSON.stringify(srcs) !== JSON.stringify([icon])) fail(`${pillar} card icon ${JSON.stringify(srcs)}, expected ${icon}`);
-      if (card && (retiredArtPaths.some((path) => card.includes(path)) || /&lt;\/&gt;|<\/>/.test(card))) fail(`${pillar} card shows a code icon`);
-    }
+  if (/saas/i.test(text)) fail('"SaaS" copy');
+  if (/contact carlos/i.test(text)) fail('"Contact Carlos" copy');
+  if (/(?:^|\s)(?:i|ii|iii|iv|I|II|III|IV)\.(?=\s)|(?:^|\s)(?:ii|iii|iv|II|III|IV)(?=\s)/.test(text)) fail("roman numeral");
+  for (const [, heading] of html.matchAll(/<h[1-3]\b[^>]*>([\s\S]*?)<\/h[1-3]>/g)) {
+    const words = decode(heading.replace(/<[^>]*>/g, "")).trim();
+    if (words.endsWith(".")) fail(`headline ends with a period: "${words}"`);
   }
-  if (route === "/services" && !text.includes("live sound consultant and technician, with close to two decades working live shows")) fail("missing live sound experience");
-  if (route === "/hardware" && !text.includes("official dealer of the Violet Audio dMix 128 digital mixer")) fail("missing dealer statement");
+  if (retiredArtPaths.some((path) => html.includes(path))) fail("retired stock icon");
+  const bodyText = readableText(html.replace(/<head>[\s\S]*?<\/head>/, ""));
+  for (const line of owned.filter((l) => l.length > 30)) {
+    if (bodyText.split(line).length > 2) fail(`repeated line "${line}"`);
+  }
+  for (const phrase of Object.keys(siteCounts)) siteCounts[phrase] += text.split(phrase).length - 1;
+  if (route !== "/show" && !/<a\b[^>]*href="mailto:carlos@alfarolabs.com"[^>]*>Get in touch<\/a>/.test(html)) fail('missing "Get in touch" email button');
+  if (route === "/") {
+    if (!text.includes("I mix live shows and build the software I wish I had")) fail("missing first-person headline");
+    if (!text.includes("where my work in technology meets live production.")) fail("missing technology-meets-live-production line");
+  }
+  if (route === "/services" && !text.includes("Carlos spent close to 2 decades as a live-show audio tech, working with production companies big and small.")) fail("career line changed");
+  if (route === "/hardware" && !text.includes("I'm an official dealer of the Violet Audio dMix 128 digital mixer")) fail("missing dealer statement");
   if (route === "/software") {
-    for (const line of ["Verbo", "In development", "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.", "Carlos builds and runs his software and day-to-day work with AI agents."]) {
+    for (const line of [
+      "The production OS for live sound. Patch the show once, export the network preset, and send your crew a link. They don't need an account.",
+      "Verbo",
+      "In development",
+      "Live Spanish-to-English sermon translation, heard through earphones with captions on phones.",
+      "I build and run my software and day-to-day work with AI agents.",
+    ]) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
+    if (!html.includes('src="/art/patchlist-project-home.webp"')) fail("missing Patchlist screenshot");
   }
   if (route === "/show") {
     const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0] ?? "";
@@ -127,7 +141,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (!html.includes('rel="apple-touch-icon" href="/brand/apple-touch-icon-180.png"')) fail("missing Apple touch icon");
   if (!html.includes('src="/brand/alfaro-labs-logo-white.svg"')) fail("missing original vector wordmark");
   if (/\/brand\/(?:icon-on-black|icon-black|wordmark-white|wordmark-black)\.svg/.test(html)) fail("retired slanted logo");
-  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|png|woff2)(?:\?[^"\s]*)?)"/g)) {
+  for (const match of html.matchAll(/(?:src|href)="(\/[^"\s]+\.(?:js|css|svg|png|webp|woff2)(?:\?[^"\s]*)?)"/g)) {
     if (!match[1].startsWith("//")) assets.add(match[1]);
   }
   for (const line of [...required, ...everyPage]) {
@@ -157,6 +171,10 @@ for (const [file, route] of Object.entries(pageFiles)) {
   for (const src of brandSrcs) if (!logos.has(src)) fail(`logo "${src}"`);
 }
 
+for (const [phrase, count] of Object.entries(siteCounts)) {
+  if (count !== 1) failures.push(`"${phrase}" appears ${count} times; say it once`);
+}
+
 for (const [phrase, count] of Object.entries(phraseCounts)) {
   if (count > 1) failures.push(`"${phrase}" appears ${count} times`);
 }
@@ -164,6 +182,7 @@ for (const [phrase, count] of Object.entries(phraseCounts)) {
 for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
   const css = origin ? await (await get(asset)).text() : await readFile(`dist/client${asset}`, "utf8");
   if (/instrument[- ]serif|newsreader|jetbrains/i.test(css)) failures.push(`${asset}: retired font reference`);
+  if (/(?:upper|lower)-roman/.test(css)) failures.push(`${asset}: roman numeral counters`);
   for (const family of ["Geist Sans", "Geist Mono"]) {
     if (!css.includes(family)) failures.push(`${asset}: missing ${family}`);
   }
@@ -244,5 +263,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 10 permanent redirects, 7 retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 10 permanent redirects, ${retiredBrandPaths.length + retiredArtPaths.length} retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
 for (const line of found) console.log(`found: ${line}`);

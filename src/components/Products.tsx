@@ -1,26 +1,25 @@
 import { published } from "../content";
+import { Section } from "./Section";
+import { Shot } from "./Shot";
 
 export function Products() {
-  const { intro, agents, products } = published.software.work;
   return (
     <>
-      <p>{intro.toText()}</p>
-      <p>{agents.toText()}</p>
-      <ul className="products">
-        {products.map((product) => (
-          <li key={product.name.toText()} className="product">
-            <h3>{product.name.toText()}</h3>
-            <p>{product.body.toText()}</p>
-            {"link" in product ? (
+      {published.software.products.map((product) => (
+        <Section key={product.name.toText()} heading={product.name.toText()}>
+          <p>{product.body.toText()}</p>
+          {"link" in product ? (
+            <>
               <a className="text-link" href={product.link.href.toHref()}>
                 {product.link.label.toText()}
               </a>
-            ) : (
-              <p className="eyebrow">{product.status.toText()}</p>
-            )}
-          </li>
-        ))}
-      </ul>
+              <Shot shot={product.shot} />
+            </>
+          ) : (
+            <p className="status">{product.status.toText()}</p>
+          )}
+        </Section>
+      ))}
     </>
   );
 }

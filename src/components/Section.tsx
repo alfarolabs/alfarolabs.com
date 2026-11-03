@@ -1,27 +1,10 @@
 import type { ReactNode } from "react";
 
-export function Section({
-  heading,
-  points,
-  children,
-}: {
-  heading: string;
-  points?: readonly string[];
-  children?: ReactNode;
-}) {
+export function Section({ heading, children }: { heading: ReactNode; children: ReactNode }) {
   return (
-    <section className="thesis">
+    <section className="row">
       <h2>{heading}</h2>
-      {points ? (
-        <ol className="points">
-          {points.map((point) => (
-            <li key={point}>
-              <span>{point}</span>
-            </li>
-          ))}
-        </ol>
-      ) : null}
-      {children ? <div className="thesis-body">{children}</div> : null}
+      <div className="row-body">{children}</div>
     </section>
   );
 }
