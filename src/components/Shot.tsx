@@ -1,6 +1,6 @@
 import type { published } from "../content";
 
-type Shot = (typeof published.software.products)[0]["shot"];
+type Shot = (typeof published.software.products)[0 | 1]["shot"];
 
 export function Shot({ shot }: { shot: Shot }) {
   return (

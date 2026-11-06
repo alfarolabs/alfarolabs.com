@@ -14,6 +14,13 @@ const patchlistShot = {
   height: 1000,
 } as const;
 
+const gearmindShot = {
+  light: "/art/gearmind-project-light.webp",
+  dark: "/art/gearmind-project-dark.webp",
+  width: 1600,
+  height: 1000,
+} as const;
+
 export function iconLinks() {
   return [
     { rel: "icon", sizes: "32x32", type: "image/png", href: "/brand/favicon-32.png" },
@@ -97,6 +104,7 @@ const lines = mintAll({
   patchlistLink: "patchlist.app",
   gearmindName: "Gearmind",
   gearmindBody: "Crew scheduling and communication for live production. Schedulers build and staff shows, and crew confirm their calls from their phones.",
+  gearmindShotAlt: "Gearmind project for a three-day festival, with crew calls by position and who has confirmed, is pending, or declined",
   gearmindLink: "gearmind.app",
   verboName: "Verbo",
   verboStatus: "In development",
@@ -145,7 +153,7 @@ const shot = { ...patchlistShot, alt: lines.patchlistShotAlt };
 
 const products = [
   { name: lines.patchlistName, body: lines.patchlistBody, shot, link: { href: patchlist, label: lines.patchlistLink } },
-  { name: lines.gearmindName, body: lines.gearmindBody, link: { href: gearmind, label: lines.gearmindLink } },
+  { name: lines.gearmindName, body: lines.gearmindBody, shot: { ...gearmindShot, alt: lines.gearmindShotAlt }, link: { href: gearmind, label: lines.gearmindLink } },
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 

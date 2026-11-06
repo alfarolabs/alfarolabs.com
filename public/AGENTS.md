@@ -15,6 +15,9 @@
 - No stock icons or stock photos. `art/patchlist-project-home-{light,dark}.webp`
   are Patchlist screenshots from patchlist.app (Carlos's product), 1600x1000,
   shown to match the visitor's color scheme.
+  `art/gearmind-project-{light,dark}.webp` are Gearmind captures (Carlos's
+  product) of a seeded demo project from the Gearmind repo's `pnpm db:seed`
+  data, at a 1600x1000 viewport, 3x, resized to 1600x1000.
   Carlos's own headshot and field photos go in `photos/` and are listed in the
   content ledger; the site shows no slot for them until they exist.
 - Public assets are served from `/` unchanged. Do not put secrets or private

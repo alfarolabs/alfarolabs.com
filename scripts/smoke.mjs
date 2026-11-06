@@ -134,6 +134,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
     if (!/srcset="\/art\/patchlist-project-home-dark\.webp" media="\(prefers-color-scheme: dark\)"/i.test(html) || !html.includes('src="/art/patchlist-project-home-light.webp"')) fail("missing light and dark Patchlist screenshots");
+    if (!/srcset="\/art\/gearmind-project-dark\.webp" media="\(prefers-color-scheme: dark\)"/i.test(html) || !html.includes('src="/art/gearmind-project-light.webp"')) fail("missing light and dark Gearmind screenshots");
   }
   if (route === "/show") {
     const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/)?.[0] ?? "";
