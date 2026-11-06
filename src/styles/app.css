@@ -327,6 +327,12 @@ a {
   border-radius: 6px;
 }
 
+.shots {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
 .field-photos {
   display: grid;
   gap: 1rem;
@@ -434,6 +440,7 @@ a {
     padding-block: 3rem;
   }
 
+  .shots,
   .field-photos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

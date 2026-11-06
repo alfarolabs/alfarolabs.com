@@ -33,7 +33,13 @@ function Home() {
         {rows.map((row) => (
           <Section key={row.to} heading={<Link to={row.to}>{row.name.toText()}</Link>}>
             <p>{row.body.toText()}</p>
-            {"shot" in row ? <Shot shot={row.shot} /> : null}
+            {"shots" in row ? (
+              <div className="shots">
+                {row.shots.map((shot) => (
+                  <Shot key={shot.light} shot={shot} />
+                ))}
+              </div>
+            ) : null}
           </Section>
         ))}
       </div>

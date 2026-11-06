@@ -149,11 +149,14 @@ export function instagramHref(): string {
 type Photo = { src: `/photos/${string}`; alt: Line; width: number; height: number };
 const photos: { headshot: Photo | null; field: readonly Photo[] } = { headshot: null, field: [] };
 
-const shot = { ...patchlistShot, alt: lines.patchlistShotAlt };
+const shots = [
+  { ...patchlistShot, alt: lines.patchlistShotAlt },
+  { ...gearmindShot, alt: lines.gearmindShotAlt },
+] as const;
 
 const products = [
-  { name: lines.patchlistName, body: lines.patchlistBody, shot, link: { href: patchlist, label: lines.patchlistLink } },
-  { name: lines.gearmindName, body: lines.gearmindBody, shot: { ...gearmindShot, alt: lines.gearmindShotAlt }, link: { href: gearmind, label: lines.gearmindLink } },
+  { name: lines.patchlistName, body: lines.patchlistBody, shot: shots[0], link: { href: patchlist, label: lines.patchlistLink } },
+  { name: lines.gearmindName, body: lines.gearmindBody, shot: shots[1], link: { href: gearmind, label: lines.gearmindLink } },
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
@@ -181,7 +184,7 @@ export const published = {
     hero: { title: lines.homeTitle, lede: lines.homeLede },
     rows: [
       { name: lines.navServices, body: lines.homeServices, to: "/services" as const },
-      { name: lines.navSoftware, body: lines.homeSoftware, to: "/software" as const, shot },
+      { name: lines.navSoftware, body: lines.homeSoftware, to: "/software" as const, shots },
       { name: lines.navHardware, body: lines.homeHardware, to: "/hardware" as const },
     ] as const,
   },
