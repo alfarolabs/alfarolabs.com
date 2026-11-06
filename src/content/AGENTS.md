@@ -15,5 +15,7 @@
 - Voice is first person (Carlos). Headlines have no trailing period, and a line
   is said once: smoke rejects a repeated sentence on a page. Say "software",
   never "SaaS". The CTA is "Get in touch" (Carlos's email).
-- Violet Audio appears only as a `dealers` entry on `/hardware`. Add new dealer
-  brands to `dealers`, using only what the brand's own site says.
+- Violet Audio is named only in its `dealers` entry on `/hardware`; Home's
+  Hardware row may show its dMix 128 photo but keeps brand-neutral copy. Carlos
+  is a Violet Audio Gold Dealer (his own statement). Add new dealer brands to
+  `dealers`, describing products only with what the brand's own site says.

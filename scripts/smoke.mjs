@@ -100,7 +100,8 @@ for (const [file, route] of Object.entries(pageFiles)) {
     .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
   const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/hardware", "Hardware"], ["/show", "Show"]];
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
-  if (route !== "/hardware" && /violet|dmix/i.test(html)) fail("Violet Audio outside the Hardware brand list");
+  // Dealer product photos may appear on Home; brand copy, titles, and links stay on /hardware.
+  if (route !== "/hardware" && /violet|dmix/i.test(html.replace(/<img\b[^>]*>/g, ""))) fail("Violet Audio outside the Hardware brand list");
   if (/saas/i.test(text)) fail('"SaaS" copy');
   if (/contact carlos/i.test(text)) fail('"Contact Carlos" copy');
   if (/(?:^|\s)(?:i|ii|iii|iv|I|II|III|IV)\.(?=\s)|(?:^|\s)(?:ii|iii|iv|II|III|IV)(?=\s)/.test(text)) fail("roman numeral");
@@ -120,7 +121,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
     if (!text.includes("where my work in technology meets live production.")) fail("missing technology-meets-live-production line");
   }
   if (route === "/services" && !text.includes("Alfaro Labs is my studio. I've spent close to two decades as a live-show audio tech, working with production companies big and small.")) fail("career line changed");
-  if (route === "/hardware" && !text.includes("I'm an official dealer of the Violet Audio dMix 128 digital mixer")) fail("missing dealer statement");
+  if (route === "/hardware" && !text.includes("I'm an official Gold Dealer for Violet Audio")) fail("missing dealer statement");
   if (route === "/software") {
     for (const line of [
       "The production OS for live sound. Patch the show once, export the network preset, and send your crew a link. They don't need an account.",
@@ -134,6 +135,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
       if (!text.includes(line)) fail(`missing product copy "${line}"`);
     }
   }
+  if (route === "/" && !html.includes('src="/art/violet-dmix-128.webp"')) fail("missing hardware photo on Home");
   if (route === "/" || route === "/software") {
     if (!/srcset="\/art\/patchlist-project-home-dark\.webp" media="\(prefers-color-scheme: dark\)"/i.test(html) || !html.includes('src="/art/patchlist-project-home-light.webp"')) fail("missing light and dark Patchlist screenshots");
     if (!/srcset="\/art\/gearmind-project-dark\.webp" media="\(prefers-color-scheme: dark\)"/i.test(html) || !html.includes('src="/art/gearmind-project-light.webp"')) fail("missing light and dark Gearmind screenshots");

@@ -40,6 +40,9 @@ function Home() {
                 ))}
               </div>
             ) : null}
+            {"photo" in row ? (
+              <img className="product-hero" src={row.photo.src} alt={row.photo.alt.toText()} width={row.photo.width} height={row.photo.height} loading="lazy" />
+            ) : null}
           </Section>
         ))}
       </div>

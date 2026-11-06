@@ -30,6 +30,17 @@ function Hardware() {
               <li><a className="text-link" href={dealer.link.href.toHref()}>{dealer.link.label.toText()}</a></li>
               <li><a className="text-link" href={emailHref()}>{dealer.contact.toText()}</a></li>
             </ul>
+            <img className="product-hero" src={dealer.hero.src} alt={dealer.hero.alt.toText()} width={dealer.hero.width} height={dealer.hero.height} />
+            <ul className="lineup">
+              {dealer.lineup.map((product) => (
+                <li key={product.src}>
+                  <figure>
+                    <img className="shot" src={product.src} alt={product.alt.toText()} width={product.width} height={product.height} loading="lazy" />
+                    <figcaption>{product.name.toText()}</figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
           </Section>
         ))}
       </div>

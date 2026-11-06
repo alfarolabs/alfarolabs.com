@@ -333,6 +333,33 @@ a {
   width: 100%;
 }
 
+/* Dealer product photos. The hero is a transparent cutout, so it has no frame. */
+.product-hero {
+  width: 100%;
+}
+
+.lineup {
+  display: grid;
+  gap: 1.5rem 1rem;
+  width: 100%;
+}
+
+.lineup figure {
+  display: grid;
+  margin: 0;
+  gap: 0.6rem;
+}
+
+.lineup .shot {
+  aspect-ratio: 48 / 25;
+  object-fit: cover;
+}
+
+.lineup figcaption {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+}
+
 .field-photos {
   display: grid;
   gap: 1rem;
@@ -441,6 +468,7 @@ a {
   }
 
   .shots,
+  .lineup,
   .field-photos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

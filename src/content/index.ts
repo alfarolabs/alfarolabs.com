@@ -113,10 +113,19 @@ const lines = mintAll({
   workAgents: "I build and run my software and day-to-day work with AI agents.",
   hardwareMetaTitle: "Hardware | Alfaro Labs",
   hardwareLede: "Brands I'm an official dealer for.",
-  violetName: "Violet Audio dMix 128",
-  violetBody: "I'm an official dealer of the Violet Audio dMix 128 digital mixer, which Violet Audio builds for studios, live venues, and broadcast.",
+  violetName: "Violet Audio",
+  violetBody: "I'm an official Gold Dealer for Violet Audio, which builds the dMix 128 digital mixer for studios, live venues, and broadcast.",
   violetLink: "View the dMix 128",
-  violetContact: "Ask me about the dMix 128",
+  violetContact: "Ask me about Violet Audio",
+  violetDmixAlt: "Violet Audio dMix 128 digital mixer, front panel with its XLR inputs and outputs",
+  violetIo44Name: "IO44 audio splitter",
+  violetIo44Alt: "Two Violet Audio IO44 4-channel passive splitters",
+  violetDx16bName: "DX16B audio splitter",
+  violetDx16bAlt: "Violet Audio DX16B 16-channel, 3-way passive splitters in 2RU rack chassis",
+  violetDx08bName: "DX08B audio splitter",
+  violetDx08bAlt: "Violet Audio DX08B 8-channel, 2-way passive splitters in 1RU rack chassis",
+  violetAdp61Name: "ADP61 studio preamp",
+  violetAdp61Alt: "Violet Audio ADP61 studio preamp and decoder",
   showMetaTitle: "Show | Alfaro Labs",
   showBody: "Watch on the Alfaro Labs YouTube channel.",
   showLink: "Watch on YouTube",
@@ -160,9 +169,18 @@ const products = [
   { name: lines.verboName, body: lines.verboBody, status: lines.verboStatus },
 ] as const;
 
+// Product photos from violetaudio.com, used as Carlos is a Violet Audio Gold Dealer.
+const violetHero = { src: "/art/violet-dmix-128.webp", alt: lines.violetDmixAlt, width: 1686, height: 1128 } as const;
+const violetLineup = [
+  { name: lines.violetIo44Name, src: "/art/violet-io44.webp", alt: lines.violetIo44Alt, width: 1920, height: 1000 },
+  { name: lines.violetDx16bName, src: "/art/violet-dx16b.webp", alt: lines.violetDx16bAlt, width: 1920, height: 1000 },
+  { name: lines.violetDx08bName, src: "/art/violet-dx08b.webp", alt: lines.violetDx08bAlt, width: 1920, height: 1000 },
+  { name: lines.violetAdp61Name, src: "/art/violet-adp61.webp", alt: lines.violetAdp61Alt, width: 1536, height: 1024 },
+] as const;
+
 // Brands Carlos is an official dealer for. Add an entry per brand.
 const dealers = [
-  { name: lines.violetName, body: lines.violetBody, link: { href: violet, label: lines.violetLink }, contact: lines.violetContact },
+  { name: lines.violetName, body: lines.violetBody, link: { href: violet, label: lines.violetLink }, contact: lines.violetContact, hero: violetHero, lineup: violetLineup },
 ] as const;
 
 export const published = {
@@ -185,7 +203,7 @@ export const published = {
     rows: [
       { name: lines.navServices, body: lines.homeServices, to: "/services" as const },
       { name: lines.navSoftware, body: lines.homeSoftware, to: "/software" as const, shots },
-      { name: lines.navHardware, body: lines.homeHardware, to: "/hardware" as const },
+      { name: lines.navHardware, body: lines.homeHardware, to: "/hardware" as const, photo: violetHero },
     ] as const,
   },
   services: {
@@ -226,7 +244,7 @@ export function requiredLines(): {
       "/": [lines.homeTitle.toText(), lines.homeLede.toText(), lines.homeServices.toText(), lines.homeSoftware.toText(), lines.homeHardware.toText(), lines.cta.toText()],
       "/services": [lines.servicesTitle.toText(), lines.servicesLede.toText(), lines.careerBody.toText(), lines.cta.toText()],
       "/software": [lines.softwareTitle.toText(), lines.patchlistBody.toText(), lines.gearmindName.toText(), lines.gearmindBody.toText(), lines.gearmindLink.toText(), lines.verboName.toText(), lines.verboStatus.toText(), lines.verboBody.toText(), lines.workAgents.toText(), lines.cta.toText()],
-      "/hardware": [lines.navHardware.toText(), lines.hardwareLede.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText(), lines.cta.toText()],
+      "/hardware": [lines.navHardware.toText(), lines.hardwareLede.toText(), lines.violetName.toText(), lines.violetBody.toText(), lines.violetLink.toText(), lines.violetContact.toText(), lines.violetIo44Name.toText(), lines.violetDx16bName.toText(), lines.violetDx08bName.toText(), lines.violetAdp61Name.toText(), lines.cta.toText()],
       "/show": [lines.navShow.toText(), lines.showBody.toText(), lines.showLink.toText()],
     },
     everyPage: [lines.email.toText()],
