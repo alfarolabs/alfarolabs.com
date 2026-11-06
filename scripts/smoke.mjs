@@ -100,8 +100,9 @@ for (const [file, route] of Object.entries(pageFiles)) {
     .map(([, href, label]) => [href, decode(label.replace(/<[^>]*>/g, "")).trim()]);
   const expectedNav = [["/services", "Services"], ["/software", "Software"], ["/hardware", "Hardware"], ["/show", "Show"]];
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
-  // Dealer product photos may appear on Home; brand copy, titles, and links stay on /hardware.
-  if (route !== "/hardware" && /violet|dmix/i.test(html.replace(/<img\b[^>]*>/g, ""))) fail("Violet Audio outside the Hardware brand list");
+  // Violet Audio appears on Home's Hardware row and /hardware only.
+  if (route !== "/" && route !== "/hardware" && /violet|dmix/i.test(html)) fail("Violet Audio outside Home and Hardware");
+  if (route === "/" && !text.includes("a Violet Audio Gold Dealer")) fail("Home Hardware row must name Violet Audio");
   if (/saas/i.test(text)) fail('"SaaS" copy');
   if (/contact carlos/i.test(text)) fail('"Contact Carlos" copy');
   if (/(?:^|\s)(?:i|ii|iii|iv|I|II|III|IV)\.(?=\s)|(?:^|\s)(?:ii|iii|iv|II|III|IV)(?=\s)/.test(text)) fail("roman numeral");

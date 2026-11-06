@@ -89,7 +89,7 @@ const lines = mintAll({
   homeLede: "I'm Carlos Alfaro. Alfaro Labs is where my work in technology meets live production.",
   homeServices: "Consulting and hands-on work as a live sound technician.",
   homeSoftware: "I build Patchlist, Gearmind, and Verbo for the crews behind live production.",
-  homeHardware: "I'm an official dealer for live production hardware.",
+  homeHardware: "I'm an official dealer for live production hardware and a Violet Audio Gold Dealer.",
   servicesMetaTitle: "Services | Alfaro Labs",
   servicesTitle: "Live sound consulting and tech work",
   servicesLede: "I work as a live sound consultant and technician for live shows.",
