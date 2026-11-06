@@ -102,7 +102,7 @@ for (const [file, route] of Object.entries(pageFiles)) {
   if (JSON.stringify(navLinks) !== JSON.stringify(expectedNav)) fail("navigation labels, order, or destinations changed");
   // Violet Audio appears on Home's Hardware row and /hardware only.
   if (route !== "/" && route !== "/hardware" && /violet|dmix/i.test(html)) fail("Violet Audio outside Home and Hardware");
-  if (route === "/" && !text.includes("a Violet Audio Gold Dealer")) fail("Home Hardware row must name Violet Audio");
+  if (route === "/" && !text.includes("I'm an official Violet Audio Gold Dealer.")) fail("Home Hardware row must name Violet Audio");
   if (/saas/i.test(text)) fail('"SaaS" copy');
   if (/contact carlos/i.test(text)) fail('"Contact Carlos" copy');
   if (/(?:^|\s)(?:i|ii|iii|iv|I|II|III|IV)\.(?=\s)|(?:^|\s)(?:ii|iii|iv|II|III|IV)(?=\s)/.test(text)) fail("roman numeral");
