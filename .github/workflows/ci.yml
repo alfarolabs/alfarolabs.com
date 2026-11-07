@@ -94,15 +94,23 @@ jobs:
   deploy:
     needs: [typecheck, build]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    # Keep CLOUDFLARE_API_TOKEN as a secret of this environment, limited to main.
+    environment:
+      name: production
+      url: https://alfarolabs.com
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-      - uses: ./.github/actions/setup
+      # The step holding the token runs wrangler from a lockfile-verified install, never the shared cache.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .node-version
+      - run: npm ci --no-audit --no-fund
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: site
-      - run: npx wrangler deploy
+      - run: npx --no-install wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - if: failure()
@@ -110,6 +118,6 @@ jobs:
           {
             echo "### deploy failed"
             echo ""
-            echo "Command: \`npx wrangler deploy\` (artifact from the green build job)."
+            echo "Command: \`npx --no-install wrangler deploy\` (artifact from the green build job)."
             echo "Inspect this job log; do not redeploy from a laptop."
           } >> "$GITHUB_STEP_SUMMARY"
