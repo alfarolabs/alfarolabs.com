@@ -12,3 +12,7 @@ dist
 .amp/dev-ports.json
 .amp/portals/
 .tanstack/
+*.pem
+*.key
+*.p12
+credentials*.json
