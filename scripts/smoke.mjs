@@ -92,6 +92,8 @@ for (const [file, route] of Object.entries(pageFiles)) {
 
   if (response && !response.headers.get("content-type")?.includes("text/html")) fail("not HTML");
   if (response && response.status !== 200) fail(`expected HTTP 200, got ${response.status}`);
+  if (response && !response.headers.get("content-security-policy")?.includes("frame-ancestors 'none'")) fail("missing frame-ancestors 'none' CSP");
+  if (response && response.headers.get("x-content-type-options") !== "nosniff") fail("missing X-Content-Type-Options: nosniff");
   if (/Placeholder|\bTBD\b/.test(text)) fail("retired placeholder");
   if (/\bcommission\b|\bpricing\b|\$\d/i.test(text)) fail("commission or pricing copy");
   if (/\bfrontier\b|AI consulting|technology consulting|AI strategy/i.test(text)) fail("retired generic-AI framing");
@@ -203,7 +205,7 @@ for (const asset of [...assets].filter((path) => path.endsWith(".css"))) {
     if (/^\/art\/(sky|orbit|chart-paper|offer-star|offer-orbit|offer-solid)\.svg$/.test(path)) {
       failures.push(`${asset}: retired celestial artwork ${path}`);
     }
-    assets.add(path);
+    if (!path.startsWith("//")) assets.add(path);
   }
 }
 
@@ -247,6 +249,12 @@ if (origin) {
   }
   const missing = await fetch(new URL("/__smoke_missing_route__", origin), { signal: AbortSignal.timeout(10_000) });
   if (missing.status !== 404) failures.push(`missing route: expected 404, got ${missing.status}`);
+  const guidance = await fetch(new URL("/AGENTS.md", origin), { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+  if (guidance.status !== 404) failures.push(`/AGENTS.md: expected 404 (agent guidance is not published), got ${guidance.status}`);
+  // A leading double slash must never redirect off-site.
+  const doubleSlash = await fetch(`${origin.origin}//evil.example/`, { redirect: "manual", signal: AbortSignal.timeout(10_000) });
+  const offsite = doubleSlash.headers.get("location");
+  if (offsite && new URL(offsite, origin).origin !== origin.origin) failures.push(`//evil.example/: redirects off-site to ${offsite}`);
 }
 
 const brandBytes = {
@@ -273,5 +281,5 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 10 permanent redirects, ${retiredBrandPaths.length + retiredArtPaths.length} retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404` : "static HTML, favicon.ico"})`);
+console.log(`smoke ok ${Object.keys(pageFiles).length} pages (${origin ? `HTTP 200, 10 permanent redirects, ${retiredBrandPaths.length + retiredArtPaths.length} retired file 404s, /favicon.ico 200, ${assets.size} assets, missing route 404, security headers, /AGENTS.md 404, same-site // redirect` : "static HTML, favicon.ico"})`);
 for (const line of found) console.log(`found: ${line}`);

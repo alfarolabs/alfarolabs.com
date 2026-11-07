@@ -26,3 +26,6 @@
   content ledger; the site shows no slot for them until they exist.
 - Public assets are served from `/` unchanged. Do not put secrets or private
   material here. Keep asset URLs in the content ledger or stylesheet as appropriate.
+- `.assetsignore` keeps this guidance file off the site; list any other
+  non-asset file you add here. `_headers` sets the security headers on every
+  asset and page (Worker-rendered 404s and redirects do not get them).
