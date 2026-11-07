@@ -5,6 +5,9 @@
   "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+  // Serve only the custom domains: no *.workers.dev or version preview hostnames.
+  "workers_dev": false,
+  "preview_urls": false,
   "routes": [
     { "pattern": "alfarolabs.com", "custom_domain": true },
     { "pattern": "www.alfarolabs.com", "custom_domain": true }
