@@ -19,9 +19,13 @@ if [[ ! -x "$node_dir/bin/node" ]] || [[ "$("$node_dir/bin/node" --version)" != 
   scratch="$(mktemp -d)"
   trap 'rm -rf -- "$scratch"' EXIT
   archive="node-v$version-linux-$arch.tar.xz"
+  # The expected hash is pinned in the repo, not fetched from the same server as the archive.
+  if ! grep "  $archive$" .agents/node.sha256 > "$scratch/expected"; then
+    echo "No pinned sha256 for $archive in .agents/node.sha256; add it from the release's signed SHASUMS256.txt.asc." >&2
+    exit 1
+  fi
   curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/$archive" -o "$scratch/$archive"
-  curl --fail --silent --show-error --location "https://nodejs.org/dist/v$version/SHASUMS256.txt" -o "$scratch/SHASUMS256.txt"
-  (cd "$scratch"; grep "  $archive$" SHASUMS256.txt | sha256sum --check -)
+  (cd "$scratch"; sha256sum --check expected)
   tar -xJf "$scratch/$archive" -C "$toolchain"
 fi
 export PATH="$node_dir/bin:$PATH"

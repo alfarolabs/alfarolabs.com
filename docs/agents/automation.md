@@ -14,6 +14,8 @@ globs:
 - Setup is finite and idempotent: use `.node-version`, `npm ci`, no servers or
   credentials. Preserve unrelated home guidance/profile content when writing
   managed sections. Verify the pinned Node in a fresh noninteractive login shell.
+  When bumping `.node-version`, update `.agents/node.sha256` from that release's
+  GPG-verified `SHASUMS256.txt.asc`; setup refuses an unpinned archive.
 - Amp supervises long-running processes from `.amp/services.yaml`; use `$PORT`,
   an HTTP readiness check, and printed portal URLs. Never kill arbitrary listeners.
 - Runtime logs/artifacts belong in ignored `.amp/in/`; ignore port/portal metadata.
